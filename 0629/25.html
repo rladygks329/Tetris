@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul {
+            width: 100%;
+            height: 50px;
+            background-color: #069;
+            list-style-type: none;
+        }
+
+        ul li a {
+            color: #fff;
+            text-decoration: none; /* 밑줄 없애는 속성*/
+        }
+
+        ul li {
+            display: inline-block;
+            margin: 10px 120px;
+            padding: 5px
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li><a href="#">회사 소개</a></li>
+        <li><a href="#">사업 영역</a></li>
+        <li><a href="#">제품 문의</a></li>
+        <li><a href="#">고객 센터</a></li>
+    </ul>
+    <!-- 
+        display 속성
+        - 웹 페이지 상에서 요소들이 어떻게 보여지고 다른 요소와 
+          어떻게 상호 배치되는지를 결정하는 속성임.
+
+        * inline :  
+                    display 속성이 inline으로 지정된 요소는
+                    전후 줄바꿈 없이 한 줄에 다른 요소들과 
+                    나란히 배치가 됨. ==> 수평요소 변함.
+        * block :   
+                    display 속성이 block으로 지정된 요소는
+                    전후 줄바꿈이 들어가 다른 요소들을 
+                    다른 줄로 밀어내고 혼자 한줄을 차지함. 
+        * inline-block :    
+                    display 속성이 inline-block으로 지정된 요소는
+                    기본적으로 inline 요소처럼 전후 줄바꿈 없이 
+                    한 줄에 다른 요소들과 나란히 배치가 됨.
+                    하지만 inline 요소에서 불가능하던 width와 height 속성 및
+                    margin과 padding 속성의 상하 자우 간격 조정이 가능함.
+     -->
+</body>
+</html>
+

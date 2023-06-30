@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데카르트 홈페이지</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        //로그인 페이지를 보여주는 함수
+        function login_window() {
+            //format - window.open("filepath", "name", "width=11,height=11")
+            window.open("../login/login.html", "로그인", "width=380,height=250");
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <header id="head">
+            <div id="login">
+                <a href="../index.html">홈</a>
+                <a href="#" onclick="login_window()">로그인</a>
+                <a href="#" onclick="join_window()">회원가입</a>
+            </div>
+            <!-- 제목과 부제목을  묶어주는 역할을 하는 태그 -->
+            <hgroup>
+                <h1> 데카르트, 서양 근대철학의 창시자</h1>
+                <h2>René Descartes 1596 ~ 1650</h2>
+            </hgroup>
+        </header>
+
+        <!-- 웹 문서의 네비게이션 영역 - 메뉴가 설정되는 영역 -->
+        <nav id="navi">
+            <ul>
+                <li> <a href="../birth/birth.html">탄 생</a> </li>
+                <li> <a href="../writing/writing.html">저 서</a> </li>
+                <li> <a href="../philosophy/philosophy.html">철 학</a> </li>
+                <li> <a href="../saying/saying.html">명 언</a> </li>
+            </ul>
+        </nav>
+
+        <!-- 웹 문서의 영역 설정 태그 - section 태그는 여러 번 사용이 가능함. -->
+        <section id="content">
+            <h1>데카르트 철학</h2>
+
+            <!-- section 영역의 본문 -->
+            <article>
+                <p>데카르트는 철학적 논쟁을 "무엇이 참된가"에서 "내가 무엇을 확신할 수 있는가"로 전환시켰고, 
+                    이를 통해 진리의 권위를 보장하는 역할을 신에서 인간으로 바꾸었다.
+                </p>
+                
+                <p>"무엇이 참된가"에서는 진리의 근거로 신을 말할 수 있지만, "내가 무엇을 확신할 수 있는가"는 
+                    전적으로 개인의 판단에 달려있어 '진리의 근거로서의 신'은 부차적인 문제가 되어버리기 때문이다.
+                </p>
+                <p>
+                    즉, 데카르트 이후로 '신 중심'의 철학은 점차 '인간 이성 중심'의 철학으로 바뀌어 갔다. 
+                    진리의 보증인은 더 이상 신이 아니라 인간이며, 각자는 자신의 현실에 대한 '자의식의 형성자'로서 
+                    '생각하는 주체'를 가진다. <br>
+                   
+                    주체를 가진 각 사람은 하나님께 순종하는 아이가 아니라 스스로의 이성을 가지고 행동하는 어른이 된다.  <br>
+                    이제 인류는 기독교 계시 진리와 교회 교리로부터 해방되어, 스스로 법을 만들고 자기 입장을 취할 수 있게 되었다. <br>
+                    이때문에 데카르트의 철학적 작업은 기독교 중세에서 근대 주체로의 전환을 극적으로 성취한 혁명적인 결과라고 평가받으며, 지금도 그 영향이 이어지고 있는 것이다.
+                    인간 이성을 자율적으로 확립한 그의 관점은 이후 계몽주의가 신과 교회로부터 해방되는 기초를 제공한다. <br>
+                </p>
+
+                <div>
+                    <img src="../images/bg2.png" width="710" height="195" alt="오른쪽 탁자에 있는 여왕의 오른쪽 인물이 데카르트">
+                </div>
+            </article>
+        </section>
+
+        <!-- 문서의 보조 내용 (광고, 알림) -->
+        <aside id="sidebar">
+            <h3>저서 구입</h3>
+            <p>저거 구입을 원하시는 분들은 010-1111-1234로
+                연락주시기 바랍니다. 
+            </p>
+            <img src="../images/book1.png" alt="book1" width="130" height="160">
+            <img src="../images/book2.png" alt="book2" width="130" height="160">
+        </aside>
+
+        <!-- 문서의 하단 내용 -->
+        <footer id="foot">
+            <p>글: 임 정 훈 / 저술가, 번역가</p>
+            <address>E-mail : jhehun@gmail.com</address>
+            <p>Copyright &copy; All right reserved</p>
+        </footer>
+
+        
+    </div>
+</body>
+</html>

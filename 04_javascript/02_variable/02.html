@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        /* 
+            자바스크립트에서 입력 대화 상자 - 3가지
+            1. confirm() : 확인 창
+                - 확인 또는 취소 버튼이 나타나는 상자.
+                - (확인 - true, 취소 - false)를 return함
+                예) window.confirm("문자열");
+        
+            2. prompt() : 입력 창
+                - 키보드로 데이터를 입력 받을 때 사용.
+
+                예) window.prompt("문자열", [초기값 - 생략 가능]);
+        
+            문자열을 숫자로 바꾸는 두가지 방법의 차이.
+            ParseInt와 Number의 차이
+            parseInt의 경우 pasing 과정 후, 형변환
+            Number 의 경우 Nan을 리턴할 수 있다.
+        */
+        const answer = window.confirm("약관에 동의 하시겠습니까?");
+        console.log(answer);
+
+        const number = prompt("정수를 입력하세요");
+        console.log(Number(number) + 33);
+
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

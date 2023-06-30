@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>     
+        /*
+            표준 몸무게를 구해 보자. 
+            1. 키보드로 키를 입력받고
+            2. 표준 몸무게 구하는 공식에 대입
+            .(키 - 100) * 0.5 
+        */
+       const weight = prompt("키를 입력해주세요");
+       const standardWeight = (Number(weight) - 100) * 0.9;
+
+        //es6 이전 
+        document.write("당신의 표준 몸무게는 " + standardWeight + " kg 입니다.<br/>");
+
+       //템플릿 리터럴 방식
+       document.write(`당신의 표준 몸무게는 ${standardWeight} kg 입니다.<br/>`);
+
+       /* 
+       템플릿 리터럴 방식을 권장 
+       - 템플릿 리터럴은 문자열과 변수, 식을 섞어서 하나의 문자열로 만드는 표현 방식을 말함.
+       - 템플릿 리터럴 이전에는 문자열 부분을 큰 따엄표로 묶은 후에 연결 연산자인 '+' 를 사용했음
+       - 다수의 변수를 표현하는데 부적합
+       - 사용법은 위와 같다. `` 과 ${}
+       */
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

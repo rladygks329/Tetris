@@ -1,0 +1,140 @@
+/* 문서 전체에 대한 디자인 적용 */
+
+body {
+    font-size: 14px;
+    font-family: 맑은고딕, 명조체;
+
+}
+
+/* 전체 div 태그에 대한 디자인 적용 */
+#container {
+    width: 950px; /* 문서 전체의 폭(가로) 크기 설정 */
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #e8e2ae;
+}
+
+/* header 영역 디자인 적용 */
+#head {
+    height: 208px;
+    margin-top: 0;
+    background-image: url("../images/bg.jpg");
+    background-repeat: no-repeat;
+    text-align: center;
+    
+}
+
+/* header 영역 중에서 로그인 영역에 대한 디자인 적용 */
+#login { 
+    float: right;
+    margin: -20px 20px 0 0;
+    font-size: 12px;
+    word-spacing: 15px;
+    text-shadow: 1px 2px 2px #666;
+}
+
+/* 로그인 영역의 a 태그*/
+#login a {
+    text-decoration: none;
+    color: #333;
+}
+
+#login a:hover {
+    color: #f90;
+}
+
+/* header 영역의 제목과 부제목 태그 디자인 적용*/
+header hgroup {
+    position: relative;
+    top: 60px;
+    left: 180px;
+}
+
+/* header 영역의 주제목 디자인 적용 */
+header h1 {
+    font-size: 2.5em;
+    color: #f2cb78;
+    text-shadow: 1px 2px 2px #000;    
+}
+
+/* header 영역의 부제목 디자인 적용 */
+header h2 {
+    font-size: 1.5em;
+    color: #e18048;
+    text-shadow: 1px 2px 2px #000;
+}
+
+/* 네비게이션 영역 디자인 적용 */
+#navi {
+    margin-top: -15px;
+    background-color: #c07f5a;
+    width: 950px;
+    height: 50px;
+}
+
+#navi ul {
+    height: 40px;
+    padding-top: 10px;
+}
+
+#navi ul li {
+    display: inline-block;
+    font-size: 17px;
+}
+
+#navi a {
+    padding: 10px 120px 5px 60px;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* a 태그에 마우스 오버 시, 클릭 시, 포커스가 올라갔을 때 디자인 적용 */
+#navi a:hover, #navi a:active, #navi a:focus {
+    text-shadow: 0 2px 2px #000;
+    color: #fc0;
+}
+
+/*section 영역의 디자인 적용 */
+#content {
+    box-sizing: border-box;
+    background-color: #fff;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 720px;
+    float: left;
+}
+
+#content article p {
+    text-align: justify; /* 글자를 양쪽으로 균등하게 정렬 */
+}
+
+/* aside 영역 적용 */
+#sidebar {
+    background-color: #e4da7e;
+    float: right;
+    width: 200px;
+    height: 480px;
+    padding: 20px 10px 0 10px;
+}
+
+#sidebar img {
+    margin-left: 30px;
+    border: 1px solid #ccc;
+    opacity: 0.5;
+}
+
+#sidebar img:hover {
+    border: 1px solid #000;
+    opacity: 1;
+}
+
+/* footer 영역 디자인 적용*/
+#foot {
+    padding: 5px 0;
+    background-color: #997000;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    clear: both;
+}

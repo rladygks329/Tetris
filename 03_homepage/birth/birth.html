@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>데카르트 홈페이지</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        //로그인 페이지를 보여주는 함수
+        function login_window() {
+            //format - window.open("filepath", "name", "width=11,height=11")
+            window.open("../login/login.html", "로그인", "width=380,height=250");
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <header id="head">
+            <div id="login">
+                <a href="../index.html">홈</a>
+                <a href="#" onclick="login_window()">로그인</a>
+                <a href="#" onclick="join_window()">회원가입</a>
+            </div>
+            <!-- 제목과 부제목을  묶어주는 역할을 하는 태그 -->
+            <hgroup>
+                <h1> 데카르트, 서양 근대철학의 창시자</h1>
+                <h2>René Descartes 1596 ~ 1650</h2>
+            </hgroup>
+        </header>
+
+        <!-- 웹 문서의 네비게이션 영역 - 메뉴가 설정되는 영역 -->
+        <nav id="navi">
+            <ul>
+                <li> <a href="../birth/birth.html">탄 생</a> </li>
+                <li> <a href="../writing/writing.html">저 서</a> </li>
+                <li> <a href="../philosophy/philosophy.html">철 학</a> </li>
+                <li> <a href="../saying/saying.html">명 언</a> </li>
+            </ul>
+        </nav>
+
+        <!-- 웹 문서의 영역 설정 태그 - section 태그는 여러 번 사용이 가능함. -->
+        <section id="content">
+            <h1>데카르트 소개</h2>
+
+            <!-- section 영역의 본문 -->
+            <article>
+                <h3>"나는 생각한다. 고로 나는 존재한다"
+                    "그러나 나의 존재적 근거는 신"
+                </h3>
+                <p>
+                    데카르트는 1596년 3월 31일 투렌 지방(Touraine)의 투르 인근에 있는 소도시 라에의[1] 법관 귀족 가문에서 태어났다.
+                    그의 아버지는 브르타뉴 지역 렌의 시의원이었으며, 어머니는 그가 태어난 지 14달이 못 되어 세상을 떠났다. 
+                    이후 그는 외할머니 밑에서 자랐고, 어린 시절 몸이 무척 허약했다고 한다. 
+                    가톨릭 집안에서 자랐지만 그가 태어난 장소는 위그노 교세가 힘을 떨치던 푸아투 지방이었다.
+                </p>
+                <p>
+                    그는 주변 사물에 대한 호기심이 강해 어려서부터 조용한 곳에서 골똘히 생각에 잠기는 버릇이 있었다. 
+                    그의 부친은 그에게 철학가 기질이 있음을 발견하고 ‘꼬마 철학가’라는 별명을 붙여 주었다. 
+                    부자의 관계는 그다지 좋지 않았는지 그는 스스로 형제 중에서 아버지가 가장 싫어하는 아이였다고 말한 바 있다. 
+                    그리고 형제들과도 살가운 정을 나누지 못했다. 이런 이유 때문인지 그는 자주 집을 떠나 혼자 여행을 다녔고 친구들에게 마음을 쏟았다. 
+                    어린 시절 가지고 놀던 장난감 중에서 사팔뜨기 인형을 제일 좋아했던 그는 커서도 유독 장애인들에게 호감을 보였다.
+                </p>
+
+                <div>
+                    <img src="../images/bg2.png" width="710" height="195" alt="오른쪽 탁자에 있는 여왕의 오른쪽 인물이 데카르트">
+                </div>
+            </article>
+        </section>
+
+        <!-- 문서의 보조 내용 (광고, 알림) -->
+        <aside id="sidebar">
+            <h3>저서 구입</h3>
+            <p>저거 구입을 원하시는 분들은 010-1111-1234로
+                연락주시기 바랍니다. 
+            </p>
+            <img src="../images/book1.png" alt="book1" width="130" height="160">
+            <img src="../images/book2.png" alt="book2" width="130" height="160">
+        </aside>
+
+        <!-- 문서의 하단 내용 -->
+        <footer id="foot">
+            <p>글: 임 정 훈 / 저술가, 번역가</p>
+            <address>E-mail : jhehun@gmail.com</address>
+            <p>Copyright &copy; All right reserved</p>
+        </footer>
+
+        
+    </div>
+</body>
+</html>
