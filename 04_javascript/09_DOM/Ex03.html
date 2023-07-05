@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      // form 태그에 있는 특정 요소에 입력한 값을 가져오는 방법
+      // 형식) document.폼이름.name이름.value
+      // 예) document.order.product.value
+      // onload: 현재 문서 body 부분을 읽고 난 후에 자바스크립트를 실행하라는 의미
+      function handleSubmit() {
+        let pName = document.order.product.value;
+        alert(`상품명: ${pName}`);
+      }
+    </script>
+  </head>
+
+  <body>
+    <div>
+      <form name="order" onsubmit="handleSubmit()">
+        <fieldset>
+          <legend>상품 정보</legend>
+          <ul>
+            <li>상품 : <input type="text " name="product" id="product" /></li>
+            <li>수량 : <input type="number" name="qty" min="1" max="50" /></li>
+            <li><input type="submit" value="주문" /></li>
+          </ul>
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+/* 모든 선택자  */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	/* 현재 실행 중인 스크린의 크기에 맞춰 상대적 크기 반환 */
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
