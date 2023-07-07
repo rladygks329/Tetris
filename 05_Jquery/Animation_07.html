@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style></style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        - stop(): 선택한 요소에 효과 또는 에니메이션 중지
+        - delay():  선택한 요소에 효과 또는 에니메이션 딜레이
+      */
+      $(() => {
+        $("h1").animate({ marginLeft: "250px" }, 5000);
+        $("h2").delay(2000).animate({ marginLeft: "250px" }, 3000);
+
+        $(".stop").on("click", () => {
+          $("h1").stop();
+          $("h2").stop();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>내용 1</h1>
+    <h2>내용 2</h2>
+    <button class="stop">stop</button>
+  </body>
+</html>

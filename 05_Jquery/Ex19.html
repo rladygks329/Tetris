@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        위치 탐색 선택자 
+        - 전체 요소 중 특정 숫자 번째 요소만 선택하는 선택자
+          $("선택자:nth_child(숫자)")
+
+        - 전체 요소 중 특정 숫자 번째 배수의 요소만 선택하는 선택자
+          $("선택자:nth_child(숫자n)")
+       */
+      $(function () {
+        $(".menu li:nth-child(1)").css("color", "red");
+        $(".menu li:nth-child(3n)").css("background-color", "lightgray");
+        $(".menu li:nth-child(3n+1)").css("background-color", "skyblue");
+      });
+    </script>
+  </head>
+  <body>
+    <h2>인접 관계 선택자</h2>
+    <ul class="menu">
+      <li>내용 1</li>
+      <li>내용 2</li>
+      <li>내용 3</li>
+      <li>내용 4</li>
+      <li>내용 5</li>
+
+      <li>내용 6</li>
+      <li>내용 7</li>
+      <li>내용 8</li>
+      <li>내용 9</li>
+      <li>내용 10</li>
+
+      <li>내용 11</li>
+      <li>내용 12</li>
+      <li>내용 13</li>
+      <li>내용 14</li>
+      <li>내용 15</li>
+
+      <li>내용 16</li>
+      <li>내용 17</li>
+      <li>내용 18</li>
+      <li>내용 19</li>
+      <li>내용 20</li>
+    </ul>
+  </body>
+</html>

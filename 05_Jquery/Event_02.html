@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        이벤트 이름 - 목록
+        blur, change, load, unload, resize, scroll, select, submit,
+        click, dblclick, mousedown, mouseup, mousemove, mouseover
+        mouseout, mouseleave, focus, keydown, keypress, keyup, .....
+      */
+
+      $(() => {
+        $(".menu li").on("click", function () {
+          alert($(this).html());
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <ul class="menu">
+      <li>자장면</li>
+      <li>짬뽕</li>
+      <li>탕수육</li>
+      <li>볶음밥</li>
+      <li>군만두</li>
+    </ul>
+  </body>
+</html>

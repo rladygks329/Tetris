@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        mousemove(): 선택한 요소의 영역에서 마우스를 움직일 때마다 이벤트가 발생함
+        $("").mousemove(function(매개변수) { ... })
+       */
+      $(() => {
+        $(document).mousemove((e) => {
+          const x = e.pageX; // 마우스가 움직였을 때 x좌표값을 구함
+          const y = e.pageY; // 마우스가 움직였을 때 y좌표값을 구함
+
+          $("h2").text(`x 좌표는 ${x}, y좌표는 ${y}입니다. `);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h2></h2>
+  </body>
+</html>

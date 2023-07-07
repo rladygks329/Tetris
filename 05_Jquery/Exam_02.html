@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      let count = 0;
+      let img1 = "";
+
+      onload = function () {
+        this.init();
+        setInterval(changeImage, 1000);
+      };
+
+      function init() {
+        img1 = document.querySelector("img");
+      }
+
+      function changeImage() {
+        // 1 to 9 -> 0 to 8
+        count = ++count % 9;
+        img1.src = `./images/img${count + 1}.jpg`;
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <h2>이미지를 순차적으로 변경하기</h2>
+      <div id="pannel">
+        <img src="./images/img1.jpg" alt="이미지" />
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      $(() => {
+        $(".btn1").on("click", function () {
+          $("img").slideUp(1000);
+        });
+
+        $(".btn2").on("click", function () {
+          $("img").slideDown(1000);
+        });
+
+        $(".btn3").on("click", function () {
+          $("img").slideToggle(1000);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <br />
+    <br />
+    <br />
+
+    <h2>효과 관련 내용</h2>
+    <img src="./images/img.jpg" alt="튤립" />
+    <hr />
+
+    <button class="btn1">slide up</button>
+    <button class="btn2">slide down</button>
+    <button class="btn3">slideToggle</button>
+  </body>
+</html>

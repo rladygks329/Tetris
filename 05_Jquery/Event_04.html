@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        마우스 이벤트
+        - mouseout() : 마우스가 해당 영역을 벗어났을 때 발생하는 이벤트 
+        - mouseover(): 마우스가 해당 역역에 올라갔을 때 발생하는 이벤트 
+        - hover(): mouseout / mouseover 가 합쳐진 이벤트.
+          # $("*").hover( function success() {}, function fail(){})
+      */
+
+      $(() => {
+        $(".btn1")
+          .on("mouseover", () => {
+            $("p").css("background-color", "pink");
+          })
+          .on("mouseout", () => {
+            $("p").css("background-color", "lightgray");
+          });
+
+        $(".btn2").hover(
+          //마우스 올라감
+          () => {
+            $("p").css("border", "3px solid red");
+          },
+          // 마우스 내려감,
+          () => {
+            $("p").css("border", "3px solid blue");
+          }
+        );
+      });
+    </script>
+  </head>
+  <body>
+    <button class="btn1">mouse over/out</button>
+
+    <button class="btn2">hover</button>
+
+    <br />
+    <br />
+    <br />
+    <p>내용</p>
+  </body>
+</html>

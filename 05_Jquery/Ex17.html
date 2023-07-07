@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      $(function () {
+        /*
+          제이쿼리 탐색 선택자
+          - 제이쿼리 탐색 선택자를 이용하면 직접 선택자를 이용해
+            선택한 요소 중 원하는 요소를 한 번 더 탐색해서 정확히  
+            선택할 수 있는 장점이 있음.
+            
+            위치 탐색 선택자
+            선택한 요소 중 위치를 기준으로 선택하는 선택자.
+
+            $(".class:first") or $(".class").first()
+            $(".class:last") or $(".class").last()
+        */
+        $(".menu li:first").css("color", "red");
+        $(".menu li:last").css("color", "blue");
+      });
+    </script>
+  </head>
+  <body>
+    <h2>탐색 선택자 - 위치 관계 선택자</h2>
+    <ul class="menu">
+      <li>내용 1</li>
+      <li>내용 2</li>
+      <li>내용 3</li>
+      <li>내용 4</li>
+      <li>내용 5</li>
+    </ul>
+  </body>
+</html>

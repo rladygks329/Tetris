@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./js/jquery-3.7.0.js"></script>
+    <script>
+      /* 
+            jquery
+            dom 조작 쉽게할 수 있게 하는 오픈소스 라이브러리
+
+            쉽게 요소 찾기 가능 
+            호환성 좋음
+            에니메이션 네트워크 기능 제공
+            짧고 유지보수 용이함
+            플러그인 많고 구현 확장 가능
+            공식 웹사이트 및 수많은 정보있음
+            cdn 접근 가능
+
+            제이쿼리 진입점
+            - 문서의 body 부분을 읽고 제이쿼리를 실행하라는 의미
+            1. JQuery(document).ready(function(){});
+            2. JQuery(function(){})
+            3. $(document).ready(function(){})
+            4. $(function(){});
+      */
+      // 문서의 body를 읽고 제이쿼리를 실행하라는 코드.
+      //  $.("선택자").동작함수("속성, 값")
+      $(function () {
+        $("h2").css("color", "red");
+      });
+    </script>
+  </head>
+  <body>
+    <h2>HEADER 1</h2>
+    <h2>HEADER 2</h2>
+    <h2>HEADER 3</h2>
+    <h2>HEADER 4</h2>
+    <h2>HEADER 5</h2>
+  </body>
+</html>

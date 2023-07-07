@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        키보드 이벤트
+        - keypress() : 선택한 요소에서 키보드를 눌렀을 때 이벤트가 발생. $("").keypress(func)
+        - keydown() : 선택한 요소에서 키보드를 눌렀을 때 이벤트가 발생.$("").keydown(func)
+        - keyup() : 선택한 요소에서 키보드를 눌렀을 때 이벤트가 발생.$("").keyup(func)
+       */
+      $(() => {
+        $("#user_id").keypress((e) => {
+          $(".txt2").text(e.keyCode);
+        });
+
+        $("#user_id").keydown(function (e) {
+          $(".txt1").text(e.keyCode);
+          $(this).css("background-color", "yellow");
+        });
+
+        $("#user_id").keyup(function (e) {
+          $(this).css("background-color", "tomato");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <p>
+      <input type="text" name="" id="user_id" />
+    </p>
+
+    <p class="txt1"></p>
+    <p class="txt2"></p>
+  </body>
+</html>

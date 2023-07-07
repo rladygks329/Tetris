@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /* 
+        제이쿼리 선택자 사용 방법
+        1. 직접 선택자
+          - 전체 선택자: $("*")
+          - id 선택자 $("#id")
+          - 클래스 선택자 $(".className")
+          - 요소 태그 선택자 $("tagName")
+          - 그룹 선택자 $("선택ㅈ2, 선택1, ... 선택 n")
+      */
+      $(function () {
+        $("*").css("color", "blue");
+      });
+    </script>
+  </head>
+  <body>
+    <h1>h1</h1>
+    <h2>h2</h2>
+    <h3>h3</h3>
+    <h4>h4</h4>
+    <h5>h5</h5>
+  </body>
+</html>

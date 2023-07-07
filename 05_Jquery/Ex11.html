@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      $(function () {
+        // 2-4. 자식요소드르 선택자: $("요소선택").children()
+
+        $(".wrap")
+          .children()
+          .css("color", "blue")
+          .css("font-weight", "bold")
+          .css("font-style", "italic");
+      });
+    </script>
+  </head>
+  <body>
+    <h2>인접 관계 선택자</h2>
+    <ul class="wrap">
+      <li>내용 1</li>
+      <ul>
+        <li>내용 2</li>
+        <li>내용 3</li>
+      </ul>
+      <li>내용 4</li>
+      <li>내용 5</li>
+    </ul>
+  </body>
+</html>

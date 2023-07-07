@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      /*
+        toggle(): 선택한 요소가 보이면 숨기고 아니면 그 반대로 작동
+      */
+      $(() => {
+        $(".btn").on("click", function () {
+          $("img").toggle(1000);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <br />
+    <br />
+    <br />
+    <h2>효과 관련 내용</h2>
+    <img src="./images/img.jpg" alt="튤립" />
+
+    <button class="btn">Toggle</button>
+  </body>
+</html>

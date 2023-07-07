@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      $(function () {
+        // 2 - 5 형재(이전) 요소 선택자
+        $(".content").prev().css("color", "tomato");
+      });
+    </script>
+  </head>
+  <body>
+    <h2>인접 관계 선택자</h2>
+    <ul>
+      <li>내용 1</li>
+      <li class="content">내용 2</li>
+      <li>내용 3</li>
+      <li>내용 4</li>
+      <li>내용 5</li>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+      $(() => {
+        $(".btn1").on("click", () => {
+          $("p").css("background-color", "yellow");
+        });
+
+        $(".btn2").on("dblclick", () => {
+          $("p").css("border", "2px solid blue");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <button class="btn1">click</button>
+
+    <button class="btn2">dbclick</button>
+
+    <br />
+    <br />
+    <br />
+    <p>내용</p>
+  </body>
+</html>
