@@ -1,0 +1,7 @@
+JAVA_CODES/.metadata/
+*/.settings
+*/bin
+*.classpath
+*.project
+*.prefs
+*.class
