@@ -20,6 +20,8 @@ public class IfMain03 {
       System.out.println("음수");
     }
 
+    sc.close();
+
   } // end main()
 
 } // end IfMain

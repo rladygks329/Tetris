@@ -30,6 +30,7 @@ public class IfMain01 {
     if (score < 90) {
       System.out.println("B");
     }
+    sc.close();
 
   } // end main()
 

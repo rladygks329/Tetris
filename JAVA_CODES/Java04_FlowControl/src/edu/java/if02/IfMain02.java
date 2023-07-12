@@ -18,7 +18,7 @@ public class IfMain02 {
     } else { // x <= 0
       System.out.printf("%d는 0 보다 크지 않습니다.", x);
     }
-
+    sc.close();
   } // end main
 
 } // end IfMain02

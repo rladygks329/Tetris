@@ -28,6 +28,8 @@ public class ScoreMain {
 
     double avg = total / 3.0;
     System.out.printf("평균은 : %.3f", avg);
+
+    sc.close();
   } // end main
 
 } // end ScoreMain
