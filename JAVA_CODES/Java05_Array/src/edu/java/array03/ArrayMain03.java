@@ -35,6 +35,8 @@ public class ArrayMain03 {
     System.out.println("sum : " + sum);
     System.out.println("min : " + min);
     System.out.println("max : " + max);
+
+    sc.close();
   } // end main()
 
 } // end ArrayMain03
