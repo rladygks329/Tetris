@@ -6,9 +6,12 @@ public class Solution {
     int size = (int) (right - left) + 1;
     int[] answer = new int[size];
 
-
-
-    return new int[1];
+    for (int i = 0; i < size; i++) {
+      int col = (int) ((i + left) / n) + 1;
+      int row = (int) ((i + left) % n) + 1;
+      answer[i] = col > row ? col : row;
+    }
+    return answer;
   }
 
 }

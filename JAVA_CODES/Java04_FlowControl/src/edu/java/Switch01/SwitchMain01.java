@@ -45,7 +45,7 @@ public class SwitchMain01 {
         System.out.println("1 번선택");
         break;
     }
-
+    sc.close();
   } // end main()
 
 } // end SwitchMain01

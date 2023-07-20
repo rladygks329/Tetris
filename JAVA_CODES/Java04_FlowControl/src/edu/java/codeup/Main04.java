@@ -19,6 +19,7 @@ public class Main04 {
         System.out.println(i + 1);
       }
     }
+    sc.close();
   }
 
 }

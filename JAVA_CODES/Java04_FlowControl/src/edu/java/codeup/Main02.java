@@ -20,5 +20,6 @@ public class Main02 {
       }
       System.out.println();
     }
+    sc.close();
   }
 }
