@@ -1,9 +1,12 @@
 package edu.java.contact01;
 
+// 데이터 클래스 (이름, 전화번호, 이메일)
 public class Contact {
   private String name;
   private String phone;
   private String email;
+
+  public Contact() {}
 
   public Contact(String name, String phone, String email) {
     this.name = name;
@@ -39,4 +42,4 @@ public class Contact {
   public String toString() {
     return " [이름: " + name + ", 전화번호: " + phone + ", 이메일: " + email + "]";
   }
-}
+} // end Contact
