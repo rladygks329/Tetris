@@ -16,5 +16,5 @@ public interface MemberDAO {
   public abstract MemberDTO select(int index);
 
   // 회원 정보 인덱스 수정
-  public abstract int update(MemberDTO dto);
+  public abstract int update(int index, MemberDTO dto);
 }
