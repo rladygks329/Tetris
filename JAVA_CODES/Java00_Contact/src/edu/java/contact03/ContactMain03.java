@@ -1,14 +1,15 @@
-package edu.java.contact02;
+package edu.java.contact03;
 
+import java.util.List;
 import java.util.Scanner;
 
-public class ContactMain02 {
+public class ContactMain03 {
 
   private static Scanner sc;
   private static ContactDAO dao;
 
   public static void main(String[] args) {
-    System.out.println("연락처 관리 프로그램 ver 0.2");
+    System.out.println("연락처 관리 프로그램 ver 0.3");
     sc = new Scanner(System.in);
     dao = ContactDAOIMple.getInstance();
     boolean run = true;
@@ -29,6 +30,9 @@ public class ContactMain02 {
         case Menu.UPDATE:
           updateContact();
           break;
+        case Menu.DELETE:
+          deleteContact();
+          break;
         case Menu.QUIT:
           System.out.println("프로그램을 종료합니다.");
           run = false;
@@ -41,9 +45,9 @@ public class ContactMain02 {
   } // end main()
 
   private static void showMainMenu() {
-    System.out.println("-------------------------------------------------------");
-    System.out.println("1 등록 | 2.전체 검색 | 3. 상세검색 | 4.수정 | 0. 종료");
-    System.out.println("-------------------------------------------------------");
+    System.out.println("---------------------------------------------------------------");
+    System.out.println("1 등록 | 2.전체 검색 | 3. 상세검색 | 4.수정 | 5. 삭제 | 0. 종료");
+    System.out.println("---------------------------------------------------------------");
     System.out.print("선택> ");
   } // end showMainMenu()
 
@@ -68,11 +72,10 @@ public class ContactMain02 {
 
   private static void selectAllContact() {
     System.out.println("연락처 전체 정보");
-    int size = ((ContactDAOIMple) dao).getSize();
-    ContactDTO[] list = dao.select();
+    List<ContactDTO> list = dao.select();
 
-    for (int i = 0; i < size; i++) {
-      System.out.println("연락처[" + i + "]: " + list[i]);
+    for (int i = 0; i < list.size(); i++) {
+      System.out.println("연락처[" + i + "]: " + list.get(i));
     }
   } // end selectAllContact
 
@@ -108,4 +111,23 @@ public class ContactMain02 {
     }
   } // end updateContact
 
-} // end ContactMain02()
+  private static void deleteContact() {
+    System.out.println("인덱스를 입력하세요");
+    int index = sc.nextInt();
+    int size = ((ContactDAOIMple) dao).getSize();
+
+    if (index < 0 || size <= index) {
+      System.out.println("해당하는 연락처 정보가 없습니다.");
+      return;
+    }
+
+    int result = dao.delete(index);
+    if (result == 1) {
+      System.out.println("삭제에 성공하였습니다.");
+    } else {
+      System.out.println("삭제에 실패했습니다.");
+    }
+
+  }// end deleteContact
+
+} // end ContactMain03()
