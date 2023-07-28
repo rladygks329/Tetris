@@ -16,8 +16,7 @@ public class ContactDAOIMple implements ContactDAO {
     return instance;
   }
 
-  private static final int MAX = 100;
-  private ArrayList<ContactDTO> list = new ArrayList<>(MAX);
+  private ArrayList<ContactDTO> list = new ArrayList<>();
 
   public int getSize() {
     return list.size();
