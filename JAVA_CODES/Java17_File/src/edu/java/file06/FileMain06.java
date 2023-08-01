@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import edu.java.file04.MemberDTO;
 
 // 프로그램 ==> ObjectOutputStream ==> BufferedOutputStream ==>FileOutputStream ===> 파일(HDD)
@@ -23,13 +22,12 @@ public class FileMain06 {
       bout = new BufferedOutputStream(out);
       oout = new ObjectOutputStream(bout);
 
-      List<MemberDTO> list = new ArrayList<>();
+      ArrayList<MemberDTO> list = new ArrayList<>();
       Long startTime = System.currentTimeMillis();
       for (int i = 0; i < 100000; i++) {
         String id = "member" + i;
         String pw = "pw" + i;
         MemberDTO m = new MemberDTO(i, id, pw);
-        oout.writeObject(m);
         list.add(m);
       }
       oout.writeObject(list);
