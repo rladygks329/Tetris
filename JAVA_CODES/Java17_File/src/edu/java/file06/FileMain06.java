@@ -38,9 +38,7 @@ public class FileMain06 {
       System.out.println(e);
     } finally {
       try {
-        if (out != null) {
-          out.close();
-        }
+        out.close();
       } catch (Exception e2) {
         System.out.println(e2);
       }

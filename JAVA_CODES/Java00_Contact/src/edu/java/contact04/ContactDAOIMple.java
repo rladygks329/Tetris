@@ -32,20 +32,21 @@ public class ContactDAOIMple implements ContactDAO {
   // 데이터를 저장할 폴더와 파일 이름 정의
   private static final String DATA_DIR = "data";
   private static final String DATA_FILE = "contact.data";
-  private static final String DATA_PATH = DATA_DIR + File.separator + DATA_FILE;
 
   // data 폴더의 contact.data 파일을 관리할 File 객체 선언
-  private File dataDir = new File(DATA_DIR);
-  private File dataFile = new File(DATA_PATH);
+  private File dataFile;
 
   private void initDatDir() {
+    File dataDir = new File(DATA_DIR);
     System.out.println("initDataDir()");
+    System.out.println("폴더 경로 : " + dataDir.getPath());
 
     if (dataDir.exists()) {
+      System.out.println("폴더를 확인했습니다.");
       return;
     }
 
-    if (!dataDir.mkdir()) {
+    if (!dataDir.mkdirs()) {
       System.out.println("디렉토리를 만들 수 없습니다.");
       return;
     }
@@ -55,43 +56,51 @@ public class ContactDAOIMple implements ContactDAO {
 
   private void initDataFile() {
     System.out.println("initDataFile()");
+    String filePath = DATA_DIR + File.separator + DATA_FILE;
+    dataFile = new File(filePath);
 
+    // 파일이 있는 경우
     if (dataFile.exists()) {
+      System.out.println("파일이 이미 존재합니다.");
+      System.out.println("데이터 크기 : " + dataFile.length());
       readDataFromFile();
       return;
     }
 
+    // 파일이 없는 경우
     try {
       boolean result = dataFile.createNewFile();
       if (!result) {
         System.out.println("파일을 만들 수 없습니다.");
       }
     } catch (IOException e) {
-      System.out.println(e);
+      e.printStackTrace();
     }
-  }
+  } // end initDataFile()
 
+  // list -> file
   private void writeDataToFile() {
-    try (FileOutputStream out = new FileOutputStream(DATA_PATH);
+    System.out.println("writeDataToFile");
+    try (FileOutputStream out = new FileOutputStream(dataFile);
         BufferedOutputStream bout = new BufferedOutputStream(out);
         ObjectOutputStream oout = new ObjectOutputStream(bout)) {
-
       oout.writeObject(list);
     } catch (Exception e) {
       System.out.println("파일을 쓰는 도중 에러가 발생했습니다.");
     }
-  }// endwriteDataToFile()
+  }// end writeDataToFile()
 
+  // file -> list
   private void readDataFromFile() {
+    System.out.println("readDataFromFile()");
     if (dataFile.length() == 0) {
       System.out.println("기존의 데이터가 없습니다.");
       return;
     }
 
-    try (FileInputStream in = new FileInputStream(DATA_PATH);
+    try (FileInputStream in = new FileInputStream(dataFile);
         BufferedInputStream bin = new BufferedInputStream(in);
         ObjectInputStream oin = new ObjectInputStream(bin)) {
-
       list = (ArrayList<ContactDTO>) oin.readObject();
       System.out.println("데이터를 불러오는데 성공했습니다.");
     } catch (Exception e) {
@@ -105,14 +114,9 @@ public class ContactDAOIMple implements ContactDAO {
 
   @Override
   public int insert(ContactDTO dto) {
-    boolean result = list.add(dto);
-    if (result) {
-      writeDataToFile();
-      return 1;
-    }
-
-    System.out.println("insert 도중 에러가 발생했습니다.");
-    return 0;
+    list.add(dto);
+    writeDataToFile();
+    return 1;
   }
 
   @Override
