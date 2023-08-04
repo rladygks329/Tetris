@@ -4,15 +4,14 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.TextArea;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
@@ -25,14 +24,16 @@ public class ContactApplication {
   private JTextField textPhone;
   private JTextField textEmail;
   private JTextField textIndex;
+  private TextArea txtAreaLog;
+  private TextArea txtAreaInfo;
+
   private JTable table;
-  private TextArea textLog;
-  private JTextArea textResult;
+  private DefaultTableModel model;
+  String[] header = {"No", "이름", "전화번호", "이메일"};
+
   private ContactDAO dao;
 
-  /**
-   * Launch the application.
-   */
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -57,12 +58,6 @@ public class ContactApplication {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-
-    JButton btnSelect;
-    JButton btnUpdate;
-    JButton btnDelete;
-    JButton btnAdd;
-    JButton btnSelectAll;
     dao = ContactDAOIMple.getInstance();
     frame = new JFrame();
     frame.setBounds(100, 100, 755, 687);
@@ -117,153 +112,122 @@ public class ContactApplication {
     textIndex.setBounds(152, 204, 169, 38);
     frame.getContentPane().add(textIndex);
 
-    // <=== buttton ===>
-    btnAdd = new JButton("등록");
+    // <================ buttton ===============>
+    JButton btnAdd = new JButton("등록");
     btnAdd.setBounds(24, 260, 97, 23);
     frame.getContentPane().add(btnAdd);
-    btnAdd.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        String name = textName.getText();
-        String phone = textPhone.getText();
-        String email = textEmail.getText();
+    btnAdd.addActionListener(e -> insertContact());
 
-        if (name.isBlank()) {
-          log("이름을 입력해주세요.\n");
-          return;
-        }
-
-        if (phone.isBlank()) {
-          log("전화번호를 입력해주세요.\n");
-          return;
-        }
-
-        if (email.isBlank()) {
-          log("이메일을 입력해주세요.\n");
-          return;
-        }
-
-        insertContact(new ContactDTO(name, phone, email));
-      }
-    });
-
-    btnSelect = new JButton("검색");
+    JButton btnSelect = new JButton("검색");
     btnSelect.setBounds(133, 260, 97, 23);
     frame.getContentPane().add(btnSelect);
-    btnSelect.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        try {
-          String input = textIndex.getText();
-          int index = Integer.parseInt(input);
-          selectContactByIndex(index);
-        } catch (NumberFormatException numberExceoption) {
-          log("인덱스창에 올바른 숫자를 입력해주세요.\n");
-        }
-      }
-    });
+    btnSelect.addActionListener(e -> selectContactByIndex());
 
-    btnUpdate = new JButton("수정");
-    btnUpdate.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        try {
-          String input = textIndex.getText();
-          String phone = textPhone.getText();
-          String email = textEmail.getText();
-          int index = Integer.parseInt(input);
-          if (phone.isBlank()) {
-            log("핸드폰 번호를 입력해주세요\n");
-            return;
-          }
-          if (email.isBlank()) {
-            log("이메일을 입력해주세요\n");
-            return;
-          }
-          updateContact(index, phone, email);
-        } catch (NumberFormatException numberExceoption) {
-          log("인덱스창에 올바른 숫자를 입력해주세요.\n");
-        }
-      }
-    });
-    btnUpdate.setBounds(242, 260, 97, 23);
-    frame.getContentPane().add(btnUpdate);
-
-    btnDelete = new JButton("삭제");
-    btnDelete.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        try {
-          String input = textIndex.getText();
-          int index = Integer.parseInt(input);
-          deleteContact(index);
-        } catch (NumberFormatException numberExceoption) {
-          log("인덱스창에 올바른 숫자를 입력해주세요.\n");
-        }
-      }
-    });
-    btnDelete.setBounds(24, 293, 97, 23);
-    frame.getContentPane().add(btnDelete);
-
-    btnSelectAll = new JButton("전체 검색");
+    JButton btnSelectAll = new JButton("전체 검색");
     btnSelectAll.addActionListener(e -> selectAllContact());
     btnSelectAll.setBounds(133, 293, 97, 23);
     frame.getContentPane().add(btnSelectAll);
 
-    textLog = new TextArea();
-    textLog.setBounds(20, 463, 367, 86);
-    frame.getContentPane().add(textLog);
+    JButton btnUpdate = new JButton("수정");
+    btnUpdate.addActionListener(e -> updateContact());
+    btnUpdate.setBounds(242, 260, 97, 23);
+    frame.getContentPane().add(btnUpdate);
+
+    JButton btnDelete = new JButton("삭제");
+    btnDelete.addActionListener(e -> deleteContact());
+    btnDelete.setBounds(24, 293, 97, 23);
+    frame.getContentPane().add(btnDelete);
 
 
-    JScrollPane scrollResult = new JScrollPane();
-    scrollResult.setBounds(20, 329, 367, 115);
-    frame.getContentPane().add(scrollResult);
+    // <=== TextArea ====>
+    txtAreaLog = new TextArea();
+    txtAreaLog.setBounds(20, 463, 367, 147);
+    txtAreaLog.setEditable(false);
+    frame.getContentPane().add(txtAreaLog);
 
-    textResult = new JTextArea();
-    scrollResult.setViewportView(textResult);
+    txtAreaInfo = new TextArea();
+    txtAreaInfo.setBounds(20, 329, 367, 115);
+    txtAreaInfo.setEditable(false);
+    frame.getContentPane().add(txtAreaInfo);
 
+    // <== Table ==>
     JScrollPane scrollTable = new JScrollPane();
-    scrollTable.setBounds(422, 313, 290, 309);
+    scrollTable.setBounds(422, 329, 290, 281);
     frame.getContentPane().add(scrollTable);
 
     table = new JTable();
     scrollTable.setViewportView(table);
     table.setBorder(new LineBorder(new Color(0, 0, 0)));
     table.setToolTipText("Contact list");
-    updateTable();
+
+    model = new DefaultTableModel(header, 0) {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public boolean isCellEditable(int row, int column) {
+        return false;
+      }
+    };
+
+    table.addMouseListener(new MouseAdapter() {
+      public void mouseClicked(MouseEvent e) {
+        int index = table.getSelectedRow();
+        System.out.println(index);
+      };
+    });
+
+    table.setModel(model);
+    initTableData();
   }
 
+  private void insertContact() {
+    String name = textName.getText();
+    String phone = textPhone.getText();
+    String email = textEmail.getText();
 
-  private void log(String message) {
-    textLog.append(message);
-  }
+    if (name.isBlank()) {
+      txtAreaLog.append("이름을 입력해주세요.\n");
+      return;
+    }
 
-  private void insertContact(ContactDTO contact) {
-    int result = dao.insert(contact);
+    if (phone.isBlank()) {
+      txtAreaLog.append("전화번호를 입력해주세요.\n");
+      return;
+    }
+
+    if (email.isBlank()) {
+      txtAreaLog.append("이메일을 입력해주세요.\n");
+      return;
+    }
+
+    int result = dao.insert(new ContactDTO(name, phone, email));
     int size = ((ContactDAOIMple) dao).getSize();
     if (result == 1) {
-      textResult.setText("등록된 연락처 갯수: " + size);
+      txtAreaInfo.setText("연락처 등록 완료\n등록된 연락처 갯수: " + size + "\n");
+      int index = model.getRowCount();
+      Object[] tableRow = new Object[4];
+      tableRow[0] = index;
+      tableRow[1] = name;
+      tableRow[2] = phone;
+      tableRow[3] = email;
+      model.addRow(tableRow);
     } else {
-      log("연락처 등록에 문제가 생겼습니다." + "\n");
+      txtAreaLog.append("연락처 등록에 문제가 생겼습니다." + "\n");
     }
-    updateTable();
   } // insertContact()
 
-  private void updateTable() {
+  private void initTableData() {
     List<ContactDTO> list = dao.select();
-    String[] header = {"No", "이름", "전화번호", "이메일"};
-    int row = list.size();
-    int column = header.length;
-    String[][] content = new String[row][column];
-
-    DefaultTableModel model = new DefaultTableModel(header, 0);
+    String[] rowData = new String[header.length];
     for (int i = 0; i < list.size(); i++) {
       ContactDTO c = list.get(i);
-      content[i][0] = Integer.toString(i);
-      content[i][1] = c.getName();
-      content[i][2] = c.getPhone();
-      content[i][3] = c.getEmail();
+      rowData[0] = Integer.toString(i);
+      rowData[1] = c.getName();
+      rowData[2] = c.getPhone();
+      rowData[3] = c.getEmail();
+      model.addRow(rowData);
     }
-    model.setDataVector(content, header);
-    table.setModel(model);
-  }
+  }// end selectAllContactTable()
 
   private void selectAllContact() {
     StringBuilder result = new StringBuilder("=== 연락처 전체 정보 ===\n");
@@ -273,49 +237,88 @@ public class ContactApplication {
       result.append("연락처[" + i + "]: " + list.get(i) + "\n");
     }
 
-    textResult.setText(result.toString());
-    updateTable();
+    txtAreaInfo.setText(result.toString());
   } // end selectAllContact()
 
-  private void selectContactByIndex(int index) {
+  private void selectContactByIndex() {
+    int index = 0;
     int size = ((ContactDAOIMple) dao).getSize();
+
+    try {
+      String input = textIndex.getText();
+      index = Integer.parseInt(input);
+    } catch (NumberFormatException numberExceoption) {
+      txtAreaLog.append("인덱스창에 올바른 숫자를 입력해주세요.\n");
+      return;
+    }
+
     if (index < 0 || size <= index) {
-      log("해당하는 연락처 정보가 없습니다.\n");
+      txtAreaLog.append("해당하는 연락처 정보가 없습니다.\n");
       return;
     }
     ContactDTO selected = dao.select(index);
-    textResult.setText(selected.toString());
+    txtAreaInfo.setText(selected.toString());
   }// end selectContactByIndex()
 
-  private void updateContact(int index, String phone, String email) {
+  private void updateContact() {
+    String input = textIndex.getText();
+    String phone = textPhone.getText();
+    String email = textEmail.getText();
+    int index = 0;
     int size = ((ContactDAOIMple) dao).getSize();
 
+    if (phone.isBlank()) {
+      txtAreaLog.append("핸드폰 번호를 입력해주세요\n");
+      return;
+    }
+    if (email.isBlank()) {
+      txtAreaLog.append("이메일을 입력해주세요\n");
+      return;
+    }
+
+    try {
+      index = Integer.parseInt(input);
+    } catch (NumberFormatException numberExceoption) {
+      txtAreaLog.append("인덱스창에 올바른 숫자를 입력해주세요.\n");
+      return;
+    }
+
     if (index < 0 || size <= index) {
-      log("해당하는 연락처 정보가 없습니다.\n");
+      txtAreaLog.append("해당하는 연락처 정보가 없습니다.\n");
       return;
     }
 
     int result = dao.update(index, new ContactDTO("", phone, email));
     if (result == 1) {
-      textResult.setText("연락처 수정에 성공하였습니다.\n");
+      txtAreaInfo.setText("연락처 수정에 성공하였습니다.\n");
     }
-    updateTable();
+    model.setValueAt(phone, index, 2);
+    model.setValueAt(email, index, 3);
   } // end updateContact()
 
-  private void deleteContact(int index) {
+  private void deleteContact() {
+    int index = 0;
     int size = ((ContactDAOIMple) dao).getSize();
 
+    try {
+      String input = textIndex.getText();
+      index = Integer.parseInt(input);
+    } catch (NumberFormatException numberExceoption) {
+      txtAreaLog.append("인덱스창에 올바른 숫자를 입력해주세요.\n");
+      return;
+    }
+
     if (index < 0 || size <= index) {
-      log("해당하는 연락처 정보가 없습니다.\n");
+      txtAreaLog.append("해당하는 연락처 정보가 없습니다.\n");
       return;
     }
 
     int result = dao.delete(index);
     if (result == 1) {
-      textResult.setText("삭제에 성공하였습니다.\n");
+      txtAreaInfo.setText("삭제에 성공하였습니다.\n");
     } else {
-      log("삭제에 실패했습니다.\n");
+      txtAreaLog.append("삭제에 실패했습니다.\n");
     }
-    updateTable();
+    model.removeRow(index);
   }// end deleteContact()
-}
+}// end ContactApplication
