@@ -17,4 +17,101 @@ INSERT INTO EX_MEMBER
 VALUES('member', 'member1234', 'member@test.com');
 
 INSERT INTO EX_MEMBER(ID, PW)
-VALUES('alpha', 'alpha1234');
+VALUES('test', 'test1234');
+
+-- 전체 EX_MEMBER 데이터 검색
+SELECT ID, PW, EMAIL FROM EX_MEMBER;
+
+--- 회원 테이블에서 ID, PW 컬럼 데이터를 검색
+SELECT ID, PW FROM EX_MEMBER;
+
+-- 회원 테이블에서 ID가 'test'인 모든 데이터 검색
+SELECT ID, PW, EMAIL 
+FROM EX_MEMBER
+WHERE ID = 'test';
+
+-- ID가 guest인 조건을 갖는 데이터의 email 수정
+UPDATE EX_MEMBER
+SET EMAIL = 'UPDATE@TEST.COM'
+WHERE ID ='guest';
+
+-- ID가 guest인 조건을 갖는 데이터 삭제
+DELETE EX_MEMBER
+WHERE ID = 'guest';
+
+CREATE TABLE EX_STUDENT(
+    ID NUMBER PRIMARY KEY,
+    NAME VARCHAR2(20) NOT NULL,
+    BIRTHDAY TIMESTAMP DEFAULT SYSDATE,
+    EMAIL VARCHAR2(100)
+);
+
+DESC EX_STUDENT;
+-- TIMESTAMP : 시간 표현 가능한 날짜 타입
+
+INSERT INTO EX_STUDENT 
+VALUES(1, 'Aaa', '1970-01-01', 'aaa@test.com');
+
+INSERT INTO EX_STUDENT(ID, NAME)
+VALUES(2, 'Bbb');
+
+INSERT INTO EX_STUDENT(ID, NAME, EMAIL)
+VALUES(3, 'Abc', 'abc@test.com');
+
+INSERT INTO EX_STUDENT(ID, NAME, BIRTHDAY)
+VALUES(4, 'aaa', '2000-01-01');
+
+SELECT * FROM EX_STUDENT;
+
+-- EX_STUDENT 테이블에서 iD, NAME 데이터만 검색(ID를 기준으로 내림차순)
+SELECT ID, NAME
+FROM EX_STUDENT
+ORDER BY ID DESC;
+-- DESC : 내림차순
+
+-- EX_STUDENT 테이블에서 모든 데이터 검색(NAME을 기준으로 오름차순)
+SELECT * 
+FROM EX_STUDENT 
+ORDER BY NAME;
+
+SELECT * 
+FROM EX_STUDENT 
+ORDER BY BIRTHDAY;
+
+-- NAME의 데이터 중 A로 시작하는 문자열을 갖는 모든 데이터 검색
+SELECT *
+FROM EX_STUDENT
+WHERE NAME LIKE 'A%';
+
+-- NAME의 데이터 중 a로 끝나는 문자열을 갖는 모든 데이터 검색
+SELECT *
+FROM EX_STUDENT
+WHERE NAME LIKE '%a';
+
+-- NAME의 데이터 중 b를 포함하는 문자열을 갖는 모든 데이터 검색
+SELECT *
+FROM EX_STUDENT
+WHERE NAME LIKE '%b%';
+
+-- 2000년 1월 1일 이후에 출생한 학생들의 데이터 검색
+SELECT * 
+FROM EX_STUDENT
+WHERE BIRTHDAY >= '2000-01-01';
+
+-- EMAIL 값이 NULL이 아닌 모든 데이터 검색
+SELECT *
+FROM EX_STUDENT
+WHERE EMAIL IS NOT NULL;
+
+-- NAME의 값이 A로 시작하고,
+-- EMAIL 값이 NULL이 아닌 모든 데이터 검색
+SELECT *
+FROM EX_STUDENT
+WHERE NAME LIKE 'A%' AND EMAIL IS NOT NULL;
+
+-- NAME의 값이 A로 시작하거나, B로 시작하는
+-- 모든 데이터 검색
+SELECT *
+FROM EX_STUDENT
+WHERE NAME LIKE 'A%' OR NAME LIKE 'B%';
+
