@@ -1,4 +1,4 @@
-package edu.java.contact05;
+package edu.java.contact06;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -23,7 +23,7 @@ public class ContactApplication {
   private JTextField textName;
   private JTextField textPhone;
   private JTextField textEmail;
-  private JTextField textIndex;
+  private JTextField textId;
   private TextArea txtAreaLog;
   private TextArea txtAreaInfo;
 
@@ -86,10 +86,10 @@ public class ContactApplication {
     lblEmail.setBounds(24, 150, 116, 43);
     frame.getContentPane().add(lblEmail);
 
-    JLabel lblIndex = new JLabel("인덱스");
-    lblIndex.setFont(new Font("맑은 고딕", Font.BOLD, 16));
-    lblIndex.setBounds(24, 198, 116, 43);
-    frame.getContentPane().add(lblIndex);
+    JLabel lblContactID = new JLabel("ID");
+    lblContactID.setFont(new Font("맑은 고딕", Font.BOLD, 16));
+    lblContactID.setBounds(24, 198, 116, 43);
+    frame.getContentPane().add(lblContactID);
 
     // <=============== TextField ================>
     textName = new JTextField();
@@ -107,10 +107,10 @@ public class ContactApplication {
     textEmail.setBounds(152, 156, 169, 38);
     frame.getContentPane().add(textEmail);
 
-    textIndex = new JTextField();
-    textIndex.setColumns(10);
-    textIndex.setBounds(152, 204, 169, 38);
-    frame.getContentPane().add(textIndex);
+    textId = new JTextField();
+    textId.setColumns(10);
+    textId.setBounds(152, 204, 169, 38);
+    frame.getContentPane().add(textId);
 
     // <================ buttton ===============>
     JButton btnAdd = new JButton("등록");
@@ -121,7 +121,7 @@ public class ContactApplication {
     JButton btnSelect = new JButton("검색");
     btnSelect.setBounds(133, 260, 97, 23);
     frame.getContentPane().add(btnSelect);
-    btnSelect.addActionListener(e -> selectContactByIndex());
+    btnSelect.addActionListener(e -> selectContactByContactId());
 
     JButton btnSelectAll = new JButton("전체 검색");
     btnSelectAll.addActionListener(e -> selectAllContact());
@@ -201,17 +201,9 @@ public class ContactApplication {
       return;
     }
 
-    int result = dao.insert(new ContactDTO(name, phone, email));
-    int size = ((ContactDAOIMple) dao).getSize();
+    int result = dao.insert(new ContactDTO(-1, name, phone, email));
     if (result == 1) {
-      txtAreaInfo.setText("연락처 등록 완료\n등록된 연락처 갯수: " + size + "\n");
-      int index = model.getRowCount();
-      Object[] tableRow = new Object[4];
-      tableRow[0] = index;
-      tableRow[1] = name;
-      tableRow[2] = phone;
-      tableRow[3] = email;
-      model.addRow(tableRow);
+      txtAreaInfo.setText(result + "개의 데이터가 추가 되었습니다.");
     } else {
       txtAreaLog.append("연락처 등록에 문제가 생겼습니다." + "\n");
     }
@@ -222,7 +214,7 @@ public class ContactApplication {
     String[] rowData = new String[header.length];
     for (int i = 0; i < list.size(); i++) {
       ContactDTO c = list.get(i);
-      rowData[0] = Integer.toString(i);
+      rowData[0] = Integer.toString(c.getContactId());
       rowData[1] = c.getName();
       rowData[2] = c.getPhone();
       rowData[3] = c.getEmail();
@@ -232,42 +224,52 @@ public class ContactApplication {
 
   private void selectAllContact() {
     StringBuilder result = new StringBuilder("=== 연락처 전체 정보 ===\n");
+    String[] rowData = new String[header.length];
     List<ContactDTO> list = dao.select();
-
+    model.setRowCount(0);
     for (int i = 0; i < list.size(); i++) {
       result.append("연락처[" + i + "]: " + list.get(i) + "\n");
+      ContactDTO c = list.get(i);
+      rowData[0] = Integer.toString(c.getContactId());
+      rowData[1] = c.getName();
+      rowData[2] = c.getPhone();
+      rowData[3] = c.getEmail();
+      model.addRow(rowData);
     }
-
     txtAreaInfo.setText(result.toString());
   } // end selectAllContact()
 
-  private void selectContactByIndex() {
-    int index = 0;
-    int size = ((ContactDAOIMple) dao).getSize();
+  private void selectContactByContactId() {
+    int contactId = 0;
 
     try {
-      String input = textIndex.getText();
-      index = Integer.parseInt(input);
+      String input = textId.getText();
+      contactId = Integer.parseInt(input);
     } catch (NumberFormatException numberExceoption) {
-      txtAreaLog.append("인덱스창에 올바른 숫자를 입력해주세요.\n");
+      txtAreaLog.append("ID창에 올바른 숫자를 입력해주세요.\n");
       return;
     }
 
-    if (index < 0 || size <= index) {
-      txtAreaLog.append("해당하는 연락처 정보가 없습니다.\n");
-      return;
+    ContactDTO selected = dao.select(contactId);
+    if (selected != null) {
+      txtAreaInfo.setText(selected.toString());
+    } else {
+      txtAreaLog.append("해당하는 연락처가 없습니다.\n");
     }
-    ContactDTO selected = dao.select(index);
-    txtAreaInfo.setText(selected.toString());
-  }// end selectContactByIndex()
+  }// end selectContactByContactId()
 
   private void updateContact() {
-    String input = textIndex.getText();
+    String input = textId.getText();
+    String name = textName.getText();
     String phone = textPhone.getText();
     String email = textEmail.getText();
-    int index = 0;
-    int size = ((ContactDAOIMple) dao).getSize();
 
+    int contactId = 0;
+
+    if (name.isBlank()) {
+      txtAreaLog.append("이름를 입력해주세요\n");
+      return;
+    }
     if (phone.isBlank()) {
       txtAreaLog.append("핸드폰 번호를 입력해주세요\n");
       return;
@@ -278,48 +280,34 @@ public class ContactApplication {
     }
 
     try {
-      index = Integer.parseInt(input);
+      contactId = Integer.parseInt(input);
     } catch (NumberFormatException numberExceoption) {
-      txtAreaLog.append("인덱스창에 올바른 숫자를 입력해주세요.\n");
+      txtAreaLog.append("ID창에 올바른 숫자를 입력해주세요.\n");
       return;
     }
 
-    if (index < 0 || size <= index) {
-      txtAreaLog.append("해당하는 연락처 정보가 없습니다.\n");
-      return;
-    }
-
-    int result = dao.update(index, new ContactDTO("", phone, email));
+    int result = dao.update(contactId, new ContactDTO(-1, name, phone, email));
     if (result == 1) {
       txtAreaInfo.setText("연락처 수정에 성공하였습니다.\n");
     }
-    model.setValueAt(phone, index, 2);
-    model.setValueAt(email, index, 3);
   } // end updateContact()
 
   private void deleteContact() {
-    int index = 0;
-    int size = ((ContactDAOIMple) dao).getSize();
+    int contactId = 0;
 
     try {
-      String input = textIndex.getText();
-      index = Integer.parseInt(input);
+      String input = textId.getText();
+      contactId = Integer.parseInt(input);
     } catch (NumberFormatException numberExceoption) {
-      txtAreaLog.append("인덱스창에 올바른 숫자를 입력해주세요.\n");
+      txtAreaLog.append("ID창에 올바른 숫자를 입력해주세요.\n");
       return;
     }
 
-    if (index < 0 || size <= index) {
-      txtAreaLog.append("해당하는 연락처 정보가 없습니다.\n");
-      return;
-    }
-
-    int result = dao.delete(index);
+    int result = dao.delete(contactId);
     if (result == 1) {
       txtAreaInfo.setText("삭제에 성공하였습니다.\n");
     } else {
-      txtAreaLog.append("삭제에 실패했습니다.\n");
+      txtAreaLog.append(textId.getText() + "에 해당하는 연락처가 없습니다.\n");
     }
-    model.removeRow(index);
   }// end deleteContact()
 }// end ContactApplication
