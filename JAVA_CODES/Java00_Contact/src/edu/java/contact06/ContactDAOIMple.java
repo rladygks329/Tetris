@@ -1,13 +1,5 @@
 package edu.java.contact06;
 
-import static edu.java.contact06.OracleQuery.PASSWORD;
-import static edu.java.contact06.OracleQuery.SQL_DELETE;
-import static edu.java.contact06.OracleQuery.SQL_INSERT;
-import static edu.java.contact06.OracleQuery.SQL_SELECT_ALL;
-import static edu.java.contact06.OracleQuery.SQL_SELECT_BY_CONTACT_ID;
-import static edu.java.contact06.OracleQuery.SQL_UPDATE;
-import static edu.java.contact06.OracleQuery.URL;
-import static edu.java.contact06.OracleQuery.USER;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,12 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import oracle.jdbc.OracleDriver;
 
-public class ContactDAOIMple implements ContactDAO {
-  private Connection conn = null;
-  private PreparedStatement pstmt = null;
-  private ResultSet rs = null;
-
+public class ContactDAOIMple implements ContactDAO, OracleQuery {
   private static ContactDAOIMple instance;
 
   private ContactDAOIMple() {}
@@ -33,36 +22,43 @@ public class ContactDAOIMple implements ContactDAO {
     return instance;
   }
 
-
-
   @Override
   public int insert(ContactDTO dto) {
+    int result = 0;
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+
     try {
+      DriverManager.registerDriver(new OracleDriver());
       conn = DriverManager.getConnection(URL, USER, PASSWORD);
       pstmt = conn.prepareStatement(SQL_INSERT);
 
       pstmt.setString(1, dto.getName());
       pstmt.setString(2, dto.getPhone());
       pstmt.setString(3, dto.getEmail());
-      int result = pstmt.executeUpdate();
-      return result;
+      result = pstmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
       try {
         pstmt.close();
         conn.close();
-      } catch (SQLException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
-    return -1;
-  }
+    return result;
+  }// end insert()
 
   @Override
   public List<ContactDTO> select() {
     List<ContactDTO> list = new ArrayList<>();
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
     try {
+      DriverManager.registerDriver(new OracleDriver());
       conn = DriverManager.getConnection(URL, USER, PASSWORD);
       pstmt = conn.prepareStatement(SQL_SELECT_ALL);
       rs = pstmt.executeQuery();
@@ -83,17 +79,26 @@ public class ContactDAOIMple implements ContactDAO {
         rs.close();
         pstmt.close();
         conn.close();
-      } catch (SQLException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
     return list;
-  }
+  }// end select()
 
+  /*
+   * args: int return : ContactDTO or null
+   */
   @Override
   public ContactDTO select(int contactId) {
-    ContactDTO result;
+    // optional을 쓰면 더 좋을듯
+    ContactDTO result = null;
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+    ResultSet rs = null;
+
     try {
+      DriverManager.registerDriver(new OracleDriver());
       conn = DriverManager.getConnection(URL, USER, PASSWORD);
       pstmt = conn.prepareStatement(SQL_SELECT_BY_CONTACT_ID);
       pstmt.setInt(1, contactId);
@@ -116,16 +121,20 @@ public class ContactDAOIMple implements ContactDAO {
         rs.close();
         pstmt.close();
         conn.close();
-      } catch (SQLException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
-    return null;
-  }
+    return result;
+  }// end select()
 
   @Override
   public int update(int contactId, ContactDTO dto) {
+    int result = 0;
+    Connection conn = null;
+    PreparedStatement pstmt = null;
     try {
+      DriverManager.registerDriver(new OracleDriver());
       conn = DriverManager.getConnection(URL, USER, PASSWORD);
       pstmt = conn.prepareStatement(SQL_UPDATE);
 
@@ -133,41 +142,43 @@ public class ContactDAOIMple implements ContactDAO {
       pstmt.setString(2, dto.getPhone());
       pstmt.setString(3, dto.getEmail());
       pstmt.setInt(4, contactId);
-
-      int result = pstmt.executeUpdate();
-      return result;
+      result = pstmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
       try {
         pstmt.close();
         conn.close();
-      } catch (SQLException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
-    return -1;
-  }
+    return result;
+  }// end Update()
 
   @Override
   public int delete(int contactId) {
+    int result = 0;
+    Connection conn = null;
+    PreparedStatement pstmt = null;
+
     try {
+      DriverManager.registerDriver(new OracleDriver());
       conn = DriverManager.getConnection(URL, USER, PASSWORD);
       pstmt = conn.prepareStatement(SQL_DELETE);
-
       pstmt.setInt(1, contactId);
-      int result = pstmt.executeUpdate();
-      return result;
+      result = pstmt.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
       try {
         pstmt.close();
         conn.close();
-      } catch (SQLException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
-    return -1;
-  }
-}
+    return result;
+  } // end delete()
+
+} // end closeConnection

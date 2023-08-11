@@ -1,5 +1,5 @@
 package game.tetris;
 
-public class Board {
 
+public class Board {
 }

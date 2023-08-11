@@ -65,7 +65,7 @@ public class ContactApplication {
     frame.getContentPane().setLayout(null);
 
     // < ================== labels =================>
-    JLabel lblTitle = new JLabel("연락처 프로그램 ver 0.5");
+    JLabel lblTitle = new JLabel("연락처 프로그램 ver 0.6");
     lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 25));
     lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
     lblTitle.setBounds(24, 10, 353, 43);
@@ -124,7 +124,7 @@ public class ContactApplication {
     btnSelect.addActionListener(e -> selectContactByContactId());
 
     JButton btnSelectAll = new JButton("전체 검색");
-    btnSelectAll.addActionListener(e -> selectAllContact());
+    btnSelectAll.addActionListener(e -> selectAllContactTable());
     btnSelectAll.setBounds(133, 293, 97, 23);
     frame.getContentPane().add(btnSelectAll);
 
@@ -178,7 +178,7 @@ public class ContactApplication {
     });
 
     table.setModel(model);
-    initTableData();
+    selectAllContactTable();
   }
 
   private void insertContact() {
@@ -209,22 +209,9 @@ public class ContactApplication {
     }
   } // insertContact()
 
-  private void initTableData() {
-    List<ContactDTO> list = dao.select();
-    String[] rowData = new String[header.length];
-    for (int i = 0; i < list.size(); i++) {
-      ContactDTO c = list.get(i);
-      rowData[0] = Integer.toString(c.getContactId());
-      rowData[1] = c.getName();
-      rowData[2] = c.getPhone();
-      rowData[3] = c.getEmail();
-      model.addRow(rowData);
-    }
-  }// end selectAllContactTable()
-
-  private void selectAllContact() {
+  private void selectAllContactTable() {
     StringBuilder result = new StringBuilder("=== 연락처 전체 정보 ===\n");
-    String[] rowData = new String[header.length];
+    Object[] rowData = new String[header.length];
     List<ContactDTO> list = dao.select();
     model.setRowCount(0);
     for (int i = 0; i < list.size(); i++) {
