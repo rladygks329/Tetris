@@ -1,31 +1,55 @@
 package game.tetris;
 
 
+import java.util.Arrays;
+
 abstract class Tetromino {
     protected Point center;
-    protected Point[] others;
-    public Tetromino() {}
-    public Tetromino rotateLeft(){
-        return null;
-    };
-    public Tetromino rotateRight(){
-        return null;
-    };
-    public Tetromino down(){
-        Point nextCenter = new Point(center.x, center.y-1);
-        Point[] points = new Point[3];
-
-        for(int i=0;i<3;i++){
-            points[i] = new Point(others[i].x, others[i].y-1);
+    public final Point[] points = new Point[4];
+    protected Tetromino() {}
+    public void rotateLeft(){
+        for(Point point : points){
+            if(point != center){
+                point.setPoint(-point.y, point.x);
+            }
         }
-        return null;
+    };
+    public void rotateRight(){
+        for(Point point : points){
+            if(point != center){
+                point.setPoint(point.y, point.x);
+            }
+        }
+    };
+    public void down(){
+        for(Point point : points){
+            if(point != center){
+                point.setPoint(point.x, point.y + 1);
+            }
+        }
     };
 
-    public Tetromino left(){
-        return null;
+    public void up(){
+        for(Point point : points){
+            if(point != center){
+                point.setPoint(point.x, point.y - 1);
+            }
+        }
     };
 
-    public Tetromino right(){
-        return null;
+    public void left(){
+        for(Point point : points){
+            if(point != center){
+                point.setPoint(point.x - 1, point.y);
+            }
+        }
+    };
+
+    public void right(){
+        for(Point point : points){
+            if(point != center){
+                point.setPoint(point.x + 1, point.y);
+            }
+        }
     };
 }

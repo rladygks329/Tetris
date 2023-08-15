@@ -19,7 +19,6 @@ public class Board {
         if(p.x < 0 || p.x >= WIDTH || p.y < 0 || p.y >=HEIGHT){
             return false;
         }
-
         return map[p.y][p.x] == 0;
     }
 }

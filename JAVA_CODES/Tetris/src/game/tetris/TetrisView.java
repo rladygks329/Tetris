@@ -12,6 +12,7 @@ public class TetrisView extends JPanel {
     private Board board;
     private ActionListener gameLoop;
     private Timer timer;
+
     int boxSize = 30;
 
     private Image bg;
@@ -35,7 +36,7 @@ public class TetrisView extends JPanel {
             tetris.down();
             repaint();
         };
-        timer = new Timer(1000, gameLoop);
+        timer = new Timer(200, gameLoop);
         timer.setInitialDelay(1000);
         timer.start();
     };
@@ -45,8 +46,8 @@ public class TetrisView extends JPanel {
         super.paint(g);
         g.drawImage(bg, 0, 0, 12 * boxSize, 22 * boxSize,this);
 
-        for(int i=0; i<Board.HEIGHT;i++){
-            for(int j=0; j<Board.WIDTH;j++){
+        for(int i=0; i < Board.HEIGHT;i++){
+            for(int j=0; j < Board.WIDTH;j++){
                 int type = board.map[i][j];
                 g.drawImage(blockImg[type], (j+1) * boxSize, (i+1) * boxSize,  this);
             }
@@ -59,28 +60,3 @@ public class TetrisView extends JPanel {
                 .getScaledInstance(width, height, java.awt.Image.SCALE_SMOOTH);
     }
 }
-
-//tetris
-//    int[][] map = new int[Board.HEIGHT][Board.WIDTH];
-//    blocks = new JLabel[Board.HEIGHT][Board.WIDTH];
-//    blueImgIcon = new ImageIcon();
-//    greenImgIcon = new ImageIcon("res"+File.separator+"Tetriminos"+File.separator+"Single Blocks"+File.separator+"Green.png");
-//
-//    for (int i = 0; i < map.length; i++) {
-//      for (int j = 0; j < map[i].length; j++) {
-//        JLabel block = new JLabel();
-//        block.setBounds((j + 1) * boxSize, (i + 1) * boxSize, boxSize - 1, boxSize - 1);
-//        LineBorder b2 = new LineBorder(Color.orange, 1);
-//        block.setBorder(b2);
-//        block.setHorizontalAlignment(JLabel.CENTER);
-//        // wall
-//        if (map[i][j] == 1) {
-//          block.setIcon(blueImgIcon);
-//        } else {
-//          block.setIcon(greenImgIcon);
-//        }
-//        blocks[i][j] = block;
-//        layeredPane.add(block, 0);
-//      }
-//    }
-//
