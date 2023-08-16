@@ -1,5 +1,6 @@
 package game.tetris;
 
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -21,6 +22,7 @@ public class TetrisView extends JPanel {
   private final int KEY_CODE_DOWN = 40;
   private final int KEY_CODE_ROTATE_LEFT = 90;
   private final int KEY_CODE_ROTATE_RIGHT = 88;
+  private final int KEY_CODE_HARDDROP = 32;
   private final int BOX_SIZE = 30;
 
   // member 변수
@@ -32,13 +34,14 @@ public class TetrisView extends JPanel {
   private Image[] blockImg;
 
   public TetrisView() {
+    setLayout(new BorderLayout(0, 0));
     tetris = new Tetris();
     board = tetris.board;
 
     // init images
     bg = getBlockImg(BACKGROUD_IMG_PATH + "Board.png", 12 * BOX_SIZE, 22 * BOX_SIZE);
     blockImg = new Image[8];
-    blockImg[0] = getBlockImg(BACKGROUD_IMG_PATH + "BG_2.png", BOX_SIZE, BOX_SIZE);
+    blockImg[0] = getBlockImg(BACKGROUD_IMG_PATH + "BG_1.png", BOX_SIZE, BOX_SIZE);
     blockImg[1] = getBlockImg(BLOCK_IMG_PATH + "Blue.png", BOX_SIZE, BOX_SIZE);
     blockImg[2] = getBlockImg(BLOCK_IMG_PATH + "Green.png", BOX_SIZE, BOX_SIZE);
     blockImg[3] = getBlockImg(BLOCK_IMG_PATH + "LightBlue.png", BOX_SIZE, BOX_SIZE);
@@ -86,6 +89,9 @@ public class TetrisView extends JPanel {
       case KEY_CODE_ROTATE_RIGHT:
         tetris.rotateRight();
         break;
+      case KEY_CODE_HARDDROP:
+        tetris.hardDrop();
+        break;
       default:
         break;
     }
@@ -96,6 +102,8 @@ public class TetrisView extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     g.drawImage(bg, 0, 0, 12 * BOX_SIZE, 22 * BOX_SIZE, this);
+
+    // 블록 생성을 위한 보이지않는 두 줄이 존재함
     for (int i = 2; i < Board.HEIGHT + 2; i++) {
       for (int j = 0; j < Board.WIDTH; j++) {
         int type = board.map[i][j];
