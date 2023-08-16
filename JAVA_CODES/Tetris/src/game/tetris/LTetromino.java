@@ -17,5 +17,6 @@ public class LTetromino extends Tetromino {
     length = map.length;
     index = 2;
     center = points[1];
+    color = 4;
   }
 } // end LTetromino

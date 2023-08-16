@@ -17,5 +17,6 @@ public class JTetromino extends Tetromino {
     length = map.length;
     index = 2;
     center = points[1];
+    color = 1;
   }
 }// end JTetromino

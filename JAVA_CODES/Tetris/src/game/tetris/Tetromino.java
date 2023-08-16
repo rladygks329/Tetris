@@ -3,6 +3,7 @@ package game.tetris;
 abstract class Tetromino {
   public final Point[] points = new Point[4];
   protected Point center;
+  public int color;
   protected int length;
   protected int index;
   // based on - project/tetris_rotation_Nintendo.png
