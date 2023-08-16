@@ -14,12 +14,7 @@ public class Board {
   public void mark(Point p, int value) {
     int x = p.x;
     int y = p.y;
-    try {
-      map[y][x] = value;
-    } catch (Exception e) {
-      System.out.println(p);
-      System.out.printf("p.x : %d, p.y : %d, value: %d\n", p.x, p.y, value);
-    }
+    map[y][x] = value;
   }
 
   public boolean isValid(Point p) {

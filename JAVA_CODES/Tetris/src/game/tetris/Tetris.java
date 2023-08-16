@@ -83,6 +83,21 @@ public class Tetris {
     markOn(tetromino);
   }
 
+  public void hardDrop() {
+    markOff(tetromino);
+    while (isValid(tetromino)) {
+      tetromino.down();
+    }
+    tetromino.up();
+    markOn(tetromino);
+    board.hanldeClear();
+    tetromino = tetrominoFactory.get();
+    if (!isValid(tetromino)) {
+      state = -1;
+    }
+    markOn(tetromino);
+  }
+
   private boolean isValid(Tetromino t) {
     for (Point p : t.points) {
       if (!board.isValid(p)) {
