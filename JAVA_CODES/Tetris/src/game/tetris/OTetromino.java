@@ -7,6 +7,7 @@ public class OTetromino extends Tetromino {
     points[1] = new Point(x, y + 1);
     points[2] = new Point(x - 1, y);
     points[3] = new Point(x - 1, y + 1);
+    color = 7;
   }
 
   @Override

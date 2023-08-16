@@ -12,8 +12,8 @@ import javax.swing.Timer;
 
 public class TetrisView extends JPanel {
   // constants
-  private final String BACKGROUD_IMG_PATH = "res" + File.separator + "Tetriminos" + File.separator
-      + "Board" + File.separator + "Board.png";
+  private final String BACKGROUD_IMG_PATH =
+      "res" + File.separator + "Tetriminos" + File.separator + "Board" + File.separator;
   private final String BLOCK_IMG_PATH =
       "res" + File.separator + "Tetriminos" + File.separator + "Single Blocks" + File.separator;
   private final int KEY_CODE_LEFT = 37;
@@ -36,20 +36,24 @@ public class TetrisView extends JPanel {
     board = tetris.board;
 
     // init images
-    bg = getBlockImg(BACKGROUD_IMG_PATH, 12 * BOX_SIZE, 22 * BOX_SIZE);
-    blockImg = new Image[7];
-    blockImg[0] = getBlockImg(BLOCK_IMG_PATH + "Blue.png", BOX_SIZE, BOX_SIZE);
-    blockImg[1] = getBlockImg(BLOCK_IMG_PATH + "Green.png", BOX_SIZE, BOX_SIZE);
-    blockImg[2] = getBlockImg(BLOCK_IMG_PATH + "LightBlue.png", BOX_SIZE, BOX_SIZE);
-    blockImg[3] = getBlockImg(BLOCK_IMG_PATH + "Orange.png", BOX_SIZE, BOX_SIZE);
-    blockImg[4] = getBlockImg(BLOCK_IMG_PATH + "Purple.png", BOX_SIZE, BOX_SIZE);
-    blockImg[5] = getBlockImg(BLOCK_IMG_PATH + "Red.png", BOX_SIZE, BOX_SIZE);
-    blockImg[6] = getBlockImg(BLOCK_IMG_PATH + "Yellow.png", BOX_SIZE, BOX_SIZE);
+    bg = getBlockImg(BACKGROUD_IMG_PATH + "Board.png", 12 * BOX_SIZE, 22 * BOX_SIZE);
+    blockImg = new Image[8];
+    blockImg[0] = getBlockImg(BACKGROUD_IMG_PATH + "BG_2.png", BOX_SIZE, BOX_SIZE);
+    blockImg[1] = getBlockImg(BLOCK_IMG_PATH + "Blue.png", BOX_SIZE, BOX_SIZE);
+    blockImg[2] = getBlockImg(BLOCK_IMG_PATH + "Green.png", BOX_SIZE, BOX_SIZE);
+    blockImg[3] = getBlockImg(BLOCK_IMG_PATH + "LightBlue.png", BOX_SIZE, BOX_SIZE);
+    blockImg[4] = getBlockImg(BLOCK_IMG_PATH + "Orange.png", BOX_SIZE, BOX_SIZE);
+    blockImg[5] = getBlockImg(BLOCK_IMG_PATH + "Purple.png", BOX_SIZE, BOX_SIZE);
+    blockImg[6] = getBlockImg(BLOCK_IMG_PATH + "Red.png", BOX_SIZE, BOX_SIZE);
+    blockImg[7] = getBlockImg(BLOCK_IMG_PATH + "Yellow.png", BOX_SIZE, BOX_SIZE);
 
     // init game loop(thread)
     gameLoop = actionEvent -> {
       tetris.down();
       repaint();
+      if (tetris.state == -1) {
+        timer.stop();
+      }
     };
 
     timer = new Timer(500, gameLoop);

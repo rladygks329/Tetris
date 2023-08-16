@@ -15,5 +15,6 @@ public class ZTetromino extends Tetromino {
     length = map.length;
     index = 0;
     center = points[1];
+    color = 6;
   }
 }

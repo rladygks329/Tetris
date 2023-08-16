@@ -1,7 +1,7 @@
 package game.tetris;
 
 public class Tetris {
-  public int gameState; // pause, normal, over,
+  public int state; // pause, normal, over,
   public int score;
   private Tetromino tetromino;
   private TetrominoFactory tetrominoFactory;
@@ -15,6 +15,9 @@ public class Tetris {
   }
 
   public void down() {
+    if (state == -1) {
+      return;
+    }
     markOff(tetromino);
     tetromino.down();
 
@@ -26,10 +29,16 @@ public class Tetris {
       markOn(tetromino);
       board.hanldeClear();
       tetromino = tetrominoFactory.get();
+      if (!isValid(tetromino)) {
+        state = -1;
+      }
     }
   }
 
   public void left() {
+    if (state == -1) {
+      return;
+    }
     markOff(tetromino);
     tetromino.left();
     if (!isValid(tetromino)) {
@@ -39,6 +48,9 @@ public class Tetris {
   }
 
   public void right() {
+    if (state == -1) {
+      return;
+    }
     markOff(tetromino);
     tetromino.right();
     if (!isValid(tetromino)) {
@@ -48,6 +60,9 @@ public class Tetris {
   }
 
   public void rotateLeft() {
+    if (state == -1) {
+      return;
+    }
     markOff(tetromino);
     tetromino.rotateLeft();
     if (!isValid(tetromino)) {
@@ -57,6 +72,9 @@ public class Tetris {
   }
 
   public void rotateRight() {
+    if (state == -1) {
+      return;
+    }
     markOff(tetromino);
     tetromino.rotateRight();
     if (!isValid(tetromino)) {
@@ -64,9 +82,6 @@ public class Tetris {
     }
     markOn(tetromino);
   }
-
-
-  private void reStrat() {}
 
   private boolean isValid(Tetromino t) {
     for (Point p : t.points) {
@@ -80,7 +95,7 @@ public class Tetris {
   // board에 tetromino를 표시한다.
   private void markOn(Tetromino t) {
     for (Point p : t.points) {
-      board.mark(p, 1);
+      board.mark(p, t.color);
     }
   } // end markOn()
 
