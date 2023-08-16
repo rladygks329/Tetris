@@ -6,21 +6,9 @@ abstract class Tetromino {
 
   protected Tetromino() {}
 
-  public void rotateLeft() {
-    for (Point point : points) {
-      if (point != center) {
-        point.setPoint(-point.y, point.x);
-      }
-    }
-  }
+  public abstract void rotateLeft();
 
-  public void rotateRight() {
-    for (Point point : points) {
-      if (point != center) {
-        point.setPoint(point.y, point.x);
-      }
-    }
-  }
+  public abstract void rotateRight();
 
   public void down() {
     for (Point point : points) {
