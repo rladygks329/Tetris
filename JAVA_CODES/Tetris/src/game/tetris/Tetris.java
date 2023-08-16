@@ -6,35 +6,53 @@ public class Tetris {
   private Tetromino tetromino;
   public Board board;
 
-  public Tetris(){
+  public Tetris() {
     this.board = new Board();
     tetromino = tmpFactory();
     markOn(tetromino);
   }
-  public void down(){
-  }
-  public void handleUserInput(int userInput) {
+
+  public void down() {
+    markOff(tetromino);
+    tetromino.down();
+    if (isValid(tetromino)) {
+      markOn(tetromino);
+    } else {
+      tetromino.up();
+      markOn(tetromino);
+      tetromino = tmpFactory();
+    }
   }
 
-  private void hanldeClear(){
+  public void handleUserInput(int userInput) {}
 
-  }
-  private void reStrat(){
+  private void hanldeClear() {}
 
-  }
+  private void reStrat() {}
 
   private boolean isValid(Tetromino t) {
+    for (Point p : t.points) {
+      if (!board.isValid(p)) {
+        return false;
+      }
+    }
     return true;
   }
 
-  private void markOn(Tetromino t){
+  private void markOn(Tetromino t) {
+    for (Point p : t.points) {
+      board.mark(p, 1);
+    }
   }
 
-  private void markOff(Tetromino t){
+  private void markOff(Tetromino t) {
+    for (Point p : t.points) {
+      board.mark(p, 0);
+    }
   }
 
-  private OTetromino tmpFactory(){
+  private OTetromino tmpFactory() {
     return new OTetromino(5, 1);
   }
-  
+
 }

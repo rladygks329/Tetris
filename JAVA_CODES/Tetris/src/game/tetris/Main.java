@@ -1,10 +1,12 @@
 package game.tetris;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import java.awt.*;
 
-public class Main extends JPanel{
+public class Main extends JPanel {
   private JFrame frame;
   int boxSize = 30;
 
@@ -24,16 +26,17 @@ public class Main extends JPanel{
   public Main() {
     initialize();
   }
+
   private void initialize() {
 
     frame = new JFrame();
     frame.setFocusable(true);
-    frame.setBounds(100, 100, 720, 720);
+    frame.setBounds(100, 100, 720, 699);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     TetrisView tv = new TetrisView();
     tv.setBounds(0, 0, 12 * boxSize, 22 * boxSize);
-    tv.setBorder(new LineBorder(Color.ORANGE, 5));
+    tv.setBorder(new LineBorder(Color.BLACK, 1));
     frame.getContentPane().add(tv);
   }
 
