@@ -92,10 +92,10 @@ public class TetrisView extends JPanel {
   public void paint(Graphics g) {
     super.paint(g);
     g.drawImage(bg, 0, 0, 12 * BOX_SIZE, 22 * BOX_SIZE, this);
-    for (int i = 0; i < Board.HEIGHT; i++) {
+    for (int i = 2; i < Board.HEIGHT + 2; i++) {
       for (int j = 0; j < Board.WIDTH; j++) {
         int type = board.map[i][j];
-        g.drawImage(blockImg[type], (j + 1) * BOX_SIZE, (i + 1) * BOX_SIZE, this);
+        g.drawImage(blockImg[type], (j + 1) * BOX_SIZE, (i - 1) * BOX_SIZE, this);
       }
     }
   }// end paint()
