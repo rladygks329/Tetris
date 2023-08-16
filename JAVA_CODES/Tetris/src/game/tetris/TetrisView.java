@@ -63,7 +63,6 @@ public class TetrisView extends JPanel {
         handleUserInput(e.getKeyCode());
       }
     });
-
   }
 
   private void handleUserInput(int keyCode) {
