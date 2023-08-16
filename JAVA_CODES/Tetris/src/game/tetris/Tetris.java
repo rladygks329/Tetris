@@ -9,7 +9,7 @@ public class Tetris {
 
   public Tetris() {
     board = new Board();
-    tetrominoFactory = new TetrominoFactory(5, 1);
+    tetrominoFactory = new TetrominoFactory(5, -2);
     tetromino = tetrominoFactory.get();
     markOn(tetromino);
   }

@@ -14,12 +14,20 @@ public class Board {
   public void mark(Point p, int value) {
     int x = p.x;
     int y = p.y;
+    if (y < 0) {
+      return;
+    }
     map[y][x] = value;
   }
 
   public boolean isValid(Point p) {
-    if (p.x < 0 || p.x >= WIDTH || p.y < 0 || p.y >= HEIGHT) {
+    if (p.x < 0 || p.x >= WIDTH || p.y >= HEIGHT) {
       return false;
+    }
+
+    // 아직 화면에 나오지 않은 좌표이므로 검사할 필요가 없다.
+    if (p.y < 0) {
+      return true;
     }
     return map[p.y][p.x] == 0;
   }
