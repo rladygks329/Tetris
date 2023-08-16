@@ -4,11 +4,13 @@ public class Tetris {
   public int gameState; // pause, normal, over,
   public int score;
   private Tetromino tetromino;
+  private TetrominoFactory tetrominoFactory;
   public Board board;
 
   public Tetris() {
-    this.board = new Board();
-    tetromino = tmpFactory();
+    board = new Board();
+    tetrominoFactory = new TetrominoFactory(5, 1);
+    tetromino = tetrominoFactory.get();
     markOn(tetromino);
   }
 
@@ -23,7 +25,7 @@ public class Tetris {
       tetromino.up();
       markOn(tetromino);
       hanldeClear();
-      tetromino = tmpFactory();
+      tetromino = tetrominoFactory.get();
     }
 
   }
@@ -116,8 +118,4 @@ public class Tetris {
       board.mark(p, 0);
     }
   } // end markOff()
-
-  private Tetromino tmpFactory() {
-    return new ZTetromino(5, 1);
-  }
 }
