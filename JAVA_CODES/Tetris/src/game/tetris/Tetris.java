@@ -24,10 +24,9 @@ public class Tetris {
     } else {
       tetromino.up();
       markOn(tetromino);
-      hanldeClear();
+      board.hanldeClear();
       tetromino = tetrominoFactory.get();
     }
-
   }
 
   public void left() {
@@ -66,33 +65,6 @@ public class Tetris {
     markOn(tetromino);
   }
 
-  private void hanldeClear() {
-    int[][] map = board.map;
-    int line = 0;
-
-    for (int i = 0; i < Board.HEIGHT; i++) {
-      boolean isFull = true;
-
-      // 가로 라인 검사
-      for (int j = 0; j < Board.WIDTH; j++) {
-        if (map[i][j] == 0) {
-          isFull = false;
-          break;
-        }
-      }
-
-      if (!isFull) {
-        continue;
-      }
-
-      // 가로 라인 지우기
-      line += 1;
-      for (int j = 0; j < Board.WIDTH; j++) {
-        map[i][j] = 0;
-      }
-    }
-    score += line * 1000;
-  }
 
   private void reStrat() {}
 
