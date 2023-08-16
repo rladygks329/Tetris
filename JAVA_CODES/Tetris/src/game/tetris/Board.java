@@ -8,26 +8,23 @@ public class Board {
   public int[][] map;
 
   public Board() {
-    map = new int[HEIGHT][WIDTH];
+    map = new int[HEIGHT + 2][WIDTH];
   }
 
   public void mark(Point p, int value) {
     int x = p.x;
     int y = p.y;
-    if (y < 0) {
-      return;
+    try {
+      map[y][x] = value;
+    } catch (Exception e) {
+      System.out.println(p);
+      System.out.printf("p.x : %d, p.y : %d, value: %d\n", p.x, p.y, value);
     }
-    map[y][x] = value;
   }
 
   public boolean isValid(Point p) {
-    if (p.x < 0 || p.x >= WIDTH || p.y >= HEIGHT) {
+    if (p.x < 0 || p.x >= WIDTH || p.y < 0 || p.y >= HEIGHT + 2) {
       return false;
-    }
-
-    // 아직 화면에 나오지 않은 좌표이므로 검사할 필요가 없다.
-    if (p.y < 0) {
-      return true;
     }
     return map[p.y][p.x] == 0;
   }
@@ -35,7 +32,7 @@ public class Board {
   public int hanldeClear() {
     int line = 0;
 
-    for (int i = 0; i < Board.HEIGHT; i++) {
+    for (int i = 2; i < Board.HEIGHT + 2; i++) {
       boolean isFull = isLineFull(i);
       if (isFull) {
         line += 1;
@@ -57,6 +54,7 @@ public class Board {
     return result;
   }// end isLineFull()
 
+  // 라인이 지워졌을 때 map을 한칸씩 앞으로 당기는 함수
   private void pullLine(int height) {
     for (int i = height; i > 0; i--) {
       map[i] = Arrays.copyOf(map[i - 1], WIDTH);
