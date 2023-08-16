@@ -12,6 +12,7 @@ public class ITetromino extends Tetromino {
     length = map.length;
     index = 0;
     center = points[2];
+    color = 3;
   }
 
 }// end ITetromino
