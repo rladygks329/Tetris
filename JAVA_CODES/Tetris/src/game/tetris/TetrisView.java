@@ -48,10 +48,14 @@ public class TetrisView extends JPanel {
 
     // init game loop(thread)
     gameLoop = actionEvent -> {
-      tetris.down();
-      repaint();
+      // tetris.down();
+      // repaint();
     };
 
+    tetris.down();
+    tetris.down();
+    tetris.down();
+    repaint();
     timer = new Timer(500, gameLoop);
     timer.setInitialDelay(1000);
     timer.start();
