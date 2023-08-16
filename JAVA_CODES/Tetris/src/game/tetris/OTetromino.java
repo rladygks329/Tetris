@@ -18,5 +18,4 @@ public class OTetromino extends Tetromino {
   public void rotateRight() {
     return;
   }
-
 }

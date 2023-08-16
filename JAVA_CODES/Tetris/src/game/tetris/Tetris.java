@@ -118,6 +118,6 @@ public class Tetris {
   } // end markOff()
 
   private Tetromino tmpFactory() {
-    return new ITetromino(5, 1);
+    return new ZTetromino(5, 1);
   }
 }
