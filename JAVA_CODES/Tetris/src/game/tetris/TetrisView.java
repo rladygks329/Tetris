@@ -73,6 +73,10 @@ public class TetrisView extends JPanel {
   }
 
   private void handleUserInput(int keyCode) {
+    if (tetris.state == -1) {
+      return;
+    }
+
     switch (keyCode) {
       case KEY_CODE_LEFT:
         tetris.left();
