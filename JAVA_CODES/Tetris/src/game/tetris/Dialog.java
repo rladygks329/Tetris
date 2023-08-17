@@ -17,7 +17,8 @@ public class Dialog extends JDialog {
   private final JPanel contentPanel = new JPanel();
 
   public Dialog(String msg) {
-
+    setModal(true);
+    setTitle("Warning");
     setBounds(100, 100, 456, 193);
     getContentPane().setLayout(new BorderLayout());
     contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
