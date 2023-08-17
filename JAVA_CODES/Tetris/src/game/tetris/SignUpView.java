@@ -30,7 +30,7 @@ public class SignUpView extends JPanel {
   }
 
   private void initialize() {
-    setBounds(100, 100, 450, 350);
+    setBounds(100, 100, 470, 400);
     setLayout(null);
 
     // <-- init Lables -->
