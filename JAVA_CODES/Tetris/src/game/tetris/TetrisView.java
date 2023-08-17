@@ -1,14 +1,18 @@
 package game.tetris;
 
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 public class TetrisView extends JPanel {
@@ -26,15 +30,61 @@ public class TetrisView extends JPanel {
   private final int BOX_SIZE = 30;
 
   // member 변수
+  private Main main;
   private Tetris tetris;
   private Board board;
   private ActionListener gameLoop;
   private Timer timer;
   private Image bg;
   private Image[] blockImg;
+  private JLabel scoreBoard;
 
-  public TetrisView() {
-    setLayout(new BorderLayout(0, 0));
+  public TetrisView(Main main) {
+    this.main = main;
+    initTetris();
+    setBounds(0, 0, 700, 699);
+    setLayout(null);
+
+    JLabel lblTitle = new JLabel("Tetris");
+    lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
+    lblTitle.setBounds(370, 50, 161, 53);
+    add(lblTitle);
+
+    JLabel lblScore = new JLabel("Score");
+    lblScore.setBounds(370, 98, 56, 53);
+    add(lblScore);
+
+    scoreBoard = new JLabel("0");
+    scoreBoard.setHorizontalAlignment(SwingConstants.CENTER);
+    scoreBoard.setBounds(484, 117, 131, 15);
+    add(scoreBoard);
+
+    String HOME_IMG_PATH =
+        "res" + File.separator + "Tetriminos" + File.separator + "bg_btn_home.png";
+    Image img = Toolkit.getDefaultToolkit().getImage(HOME_IMG_PATH).getScaledInstance(50, 50,
+        java.awt.Image.SCALE_SMOOTH);
+
+    JLabel homeLabel = new JLabel(new ImageIcon(img));
+    homeLabel.setBounds(624, 10, 50, 50);
+    homeLabel.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        timer.stop();
+        main.navigate(new HomeView(main));
+      }
+    });
+    add(homeLabel);
+
+    // init keyListener
+    addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        handleUserInput(e.getKeyCode());
+      }
+    });
+  }
+
+  private void initTetris() {
     tetris = new Tetris();
     board = tetris.board;
 
@@ -54,6 +104,7 @@ public class TetrisView extends JPanel {
     gameLoop = actionEvent -> {
       tetris.down();
       repaint();
+      scoreBoard.setText(Integer.toString(tetris.score));
       if (tetris.state == -1) {
         timer.stop();
       }
@@ -62,14 +113,6 @@ public class TetrisView extends JPanel {
     timer = new Timer(500, gameLoop);
     timer.setInitialDelay(1000);
     timer.start();
-
-    // init keyListener
-    addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        handleUserInput(e.getKeyCode());
-      }
-    });
   }
 
   private void handleUserInput(int keyCode) {

@@ -32,7 +32,7 @@ public class SignInView extends JPanel {
   }
 
   private void initialize() {
-    setBounds(100, 100, 450, 300);
+    setBounds(100, 100, 470, 350);
     setLayout(null);
 
     // <-- init Lables -->
@@ -138,7 +138,8 @@ public class SignInView extends JPanel {
       return;
     }
     System.out.println("handleSubmit");
-    main.navigate(new TetrisView());
+    // main.navigate(new TetrisView());
+    main.navigate(new HomeView(main));
   }
 
   private void navigateSignUp() {
