@@ -3,6 +3,8 @@ package game.tetris;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
@@ -111,6 +113,14 @@ public class SignUpView extends JPanel {
     btnSubmit.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
     btnSubmit.setBounds(114, 301, 216, 41);
     add(btnSubmit);
+
+    // panel에 focus를 받으면 input에 적용
+    addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        textFieldId.requestFocus();
+      }
+    });
   }
 
   private void handleSubmit() {
