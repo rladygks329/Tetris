@@ -49,13 +49,7 @@ public class Main extends JPanel {
     frame.repaint();
 
     contentPanel = panel;
-    if (panel instanceof TetrisView) {
-      frame.setBounds(0, 0, 700, 699);
-    } else if (panel instanceof SignUpView) {
-      frame.setBounds(100, 100, 470, 400);
-    } else if (panel instanceof SignInView) {
-      frame.setBounds(100, 100, 470, 350);
-    }
+    frame.setBounds(panel.getBounds());
 
     // panel 추가하고 다시 그리기
     frame.getContentPane().add(panel);

@@ -6,7 +6,6 @@ public class Tetris {
   private Tetromino tetromino;
   private TetrominoFactory tetrominoFactory;
   public Board board;
-  private int downCalll;
 
   public Tetris() {
     board = new Board();
@@ -16,7 +15,6 @@ public class Tetris {
   }
 
   public void down() {
-    System.out.printf("downCall: %d\n", downCalll++);
     markOff(tetromino);
     tetromino.down();
 
