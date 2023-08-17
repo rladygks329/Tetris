@@ -1,17 +1,26 @@
 package game.tetris;
 
 public class UserDTO {
+  private int no;
   private String id;
   private String password;
   private String nickName;
 
   public UserDTO() {}
 
-  public UserDTO(String id, String password, String nickName) {
-    super();
+  public UserDTO(int no, String id, String password, String nickName) {
+    this.no = no;
     this.id = id;
     this.password = password;
     this.nickName = nickName;
+  }
+
+  public final int getNo() {
+    return no;
+  }
+
+  public final void setNo(int no) {
+    this.no = no;
   }
 
   public final String getId() {
@@ -40,6 +49,7 @@ public class UserDTO {
 
   @Override
   public String toString() {
-    return "UserDTO [id=" + id + ", password=" + password + ", nickName=" + nickName + "]";
+    return "UserDTO [no=" + no + ", id=" + id + ", password=" + password + ", nickName=" + nickName
+        + "]";
   }
 }
