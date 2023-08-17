@@ -6,6 +6,7 @@ public class Tetris {
   private Tetromino tetromino;
   private TetrominoFactory tetrominoFactory;
   public Board board;
+  private int downCalll;
 
   public Tetris() {
     board = new Board();
@@ -15,9 +16,7 @@ public class Tetris {
   }
 
   public void down() {
-    if (state == -1) {
-      return;
-    }
+    System.out.printf("downCall: %d\n", downCalll++);
     markOff(tetromino);
     tetromino.down();
 
@@ -36,9 +35,6 @@ public class Tetris {
   }
 
   public void left() {
-    if (state == -1) {
-      return;
-    }
     markOff(tetromino);
     tetromino.left();
     if (!isValid(tetromino)) {
@@ -48,9 +44,6 @@ public class Tetris {
   }
 
   public void right() {
-    if (state == -1) {
-      return;
-    }
     markOff(tetromino);
     tetromino.right();
     if (!isValid(tetromino)) {
@@ -60,9 +53,6 @@ public class Tetris {
   }
 
   public void rotateLeft() {
-    if (state == -1) {
-      return;
-    }
     markOff(tetromino);
     tetromino.rotateLeft();
     if (!isValid(tetromino)) {
@@ -72,9 +62,6 @@ public class Tetris {
   }
 
   public void rotateRight() {
-    if (state == -1) {
-      return;
-    }
     markOff(tetromino);
     tetromino.rotateRight();
     if (!isValid(tetromino)) {
