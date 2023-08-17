@@ -30,6 +30,7 @@ public class Main extends JPanel {
 
   private void initialize() {
     frame = new JFrame();
+    frame.setTitle("TETRIS");
     frame.setBounds(100, 100, 470, 350);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -39,14 +40,6 @@ public class Main extends JPanel {
     l.setBorder(new LineBorder(Color.BLACK, 1));
     contentPanel = l;
     frame.getContentPane().add(l);
-
-    // frame.setBounds(100, 100, 720, 699);
-    // TetrisView tv = new TetrisView();
-    // tv.setBounds(0, 0, 12 * boxSize, 22 * boxSize);
-    // tv.setBorder(new LineBorder(Color.BLACK, 1));
-    // tv.setFocusable(true);
-    // tv.requestFocusInWindow();
-    // frame.getContentPane().add(tv);
   }
 
   public void navigate(JPanel panel) {

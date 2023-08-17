@@ -1,8 +1,11 @@
 package game.tetris;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -51,6 +54,8 @@ public class SignInView extends JPanel {
     add(lblPassword);
 
     JLabel lblSignUp = new JLabel("Sign Up");
+    lblSignUp.setHorizontalAlignment(SwingConstants.CENTER);
+    lblSignUp.setForeground(new Color(0, 153, 255));
     lblSignUp.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -58,7 +63,7 @@ public class SignInView extends JPanel {
       }
     });
     lblSignUp.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
-    lblSignUp.setBounds(12, 213, 64, 15);
+    lblSignUp.setBounds(12, 205, 50, 19);
     add(lblSignUp);
 
 
@@ -104,8 +109,16 @@ public class SignInView extends JPanel {
       }
     });
     btnSubmit.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
-    btnSubmit.setBounds(114, 238, 216, 41);
+    btnSubmit.setBounds(117, 235, 216, 41);
     add(btnSubmit);
+
+    // panel에 focus를 받으면 input에 적용
+    addFocusListener(new FocusAdapter() {
+      @Override
+      public void focusGained(FocusEvent e) {
+        textField.requestFocus();
+      }
+    });
   }
 
   private void handleSubmit() {
