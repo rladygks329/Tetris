@@ -13,13 +13,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class LoginView extends JPanel {
+  private Main main;
   private JPasswordField passwordField;
   private JTextField textField;
   private JButton btnSubmit;
 
   private int KEY_CODE_ENTER = 10;
 
-  public LoginView() {
+  public LoginView(Main main) {
+    this.main = main;
     initialize();
   }
 
@@ -65,7 +67,9 @@ public class LoginView extends JPanel {
     passwordField.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
-        btnSubmit.requestFocus();
+        if (e.getKeyCode() == KEY_CODE_ENTER) {
+          btnSubmit.requestFocus();
+        }
       }
     });
     passwordField.setBounds(12, 169, 426, 34);
@@ -106,5 +110,6 @@ public class LoginView extends JPanel {
       return;
     }
     System.out.println("handleSubmit");
+    main.navigate(new TetrisView());
   }
 }
