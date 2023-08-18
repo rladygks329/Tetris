@@ -9,6 +9,7 @@ import javax.swing.border.LineBorder;
 public class Main extends JPanel {
   private JPanel contentPanel;
   private JFrame frame;
+  public UserDTO user;
   int boxSize = 30;
 
   public static void main(String[] args) {
@@ -48,6 +49,7 @@ public class Main extends JPanel {
     frame.revalidate();
     frame.repaint();
 
+    // 판넬을 다시 할당하고 크기 조정하기
     contentPanel = panel;
     frame.setBounds(panel.getBounds());
 
