@@ -6,6 +6,7 @@ public class Tetris {
   private Tetromino tetromino;
   private TetrominoFactory tetrominoFactory;
   private Point[] shadows;
+  public int savedTetrominoCode = 0;
   public Board board;
 
   public Tetris() {
@@ -35,6 +36,7 @@ public class Tetris {
       tetromino = tetrominoFactory.get();
       if (!isValid(tetromino)) {
         state = -1;
+        return;
       }
       markOn(tetromino);
     }
@@ -90,6 +92,7 @@ public class Tetris {
     tetromino = tetrominoFactory.get();
     if (!isValid(tetromino)) {
       state = -1;
+      return;
     }
     markOn(tetromino);
   }
@@ -97,6 +100,7 @@ public class Tetris {
   public void restart() {
     state = 0;
     score = 0;
+    savedTetrominoCode = 0;
     board.clear();
     tetrominoFactory.init();
     tetromino = tetrominoFactory.get();
@@ -137,6 +141,37 @@ public class Tetris {
       tetromino.up();
       count -= 1;
     }
+  }
+
+  public void switchBlock() {
+    // 무한히 사용하는 것을 방지
+    if (score >= 3000) {
+      score -= 3000;
+    }
+
+    // 저장된게 없을 때, 저장만 하기
+    if (savedTetrominoCode == 0) {
+      savedTetrominoCode = tetromino.color;
+      markOff(tetromino);
+      tetromino = tetrominoFactory.get();
+      if (!isValid(tetromino)) {
+        state = -1;
+        return;
+      }
+      markOn(tetromino);
+      return;
+    }
+
+    // 지우고 새로 가져와서 칠한다.
+    int curCode = tetromino.color;
+    markOff(tetromino);
+    tetromino = tetrominoFactory.getTetrominoByCode(savedTetrominoCode);
+    if (!isValid(tetromino)) {
+      state = -1;
+      return;
+    }
+    markOn(tetromino);
+    savedTetrominoCode = curCode;
   }
 
   // board에 tetromino를 표시한다.
