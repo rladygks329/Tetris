@@ -2,8 +2,6 @@ package game.tetris;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -12,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -25,6 +24,7 @@ public class SignInView extends JPanel {
   private JPasswordField passwordField;
   private JTextField textField;
   private JButton btnSubmit;
+  private TetrisDAO dao;
 
   public SignInView(Main main) {
     this.main = main;
@@ -32,6 +32,7 @@ public class SignInView extends JPanel {
   }
 
   private void initialize() {
+    dao = TetrisDAOImpl.getInstance();
     setBounds(100, 100, 470, 350);
     setLayout(null);
 
@@ -95,11 +96,7 @@ public class SignInView extends JPanel {
 
     // <-- init buttton -->
     btnSubmit = new JButton("Log In");
-    btnSubmit.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handleSubmit();
-      }
-    });
+    btnSubmit.addActionListener(e -> handleSubmit());
     btnSubmit.addKeyListener(new KeyAdapter() {
       @Override
       public void keyPressed(KeyEvent e) {
@@ -122,23 +119,27 @@ public class SignInView extends JPanel {
   }
 
   private void handleSubmit() {
-    System.out.println("SignInView: handleSubmit");
     String id = textField.getText();
     String password = new String(passwordField.getPassword());
 
     if (id.isBlank()) {
-      Dialog dialog = new Dialog("ID를 입력해주세요.");
-      dialog.setVisible(true);
+      JOptionPane.showMessageDialog(this, "ID를 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
       return;
     }
 
     if (password.isBlank()) {
-      Dialog dialog = new Dialog("비밀번호를 입력해주세요.");
-      dialog.setVisible(true);
+      JOptionPane.showMessageDialog(this, "PASSWORD를 입력해주세요.", "정보",
+          JOptionPane.INFORMATION_MESSAGE);
       return;
     }
-    System.out.println("handleSubmit");
-    // main.navigate(new TetrisView());
+
+    UserDTO user = dao.select(id, password);
+    if (user == null) {
+      JOptionPane.showMessageDialog(this, "ID와 비밀번호가 일치하는 유저를 찾을 수 없습니다.", "정보",
+          JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+    main.user = user;
     main.navigate(new HomeView(main));
   }
 
