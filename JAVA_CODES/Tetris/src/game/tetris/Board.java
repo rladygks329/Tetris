@@ -38,8 +38,7 @@ public class Board {
     int line = 0;
 
     for (int i = 2; i < Board.HEIGHT + 2; i++) {
-      boolean isFull = isLineFull(i);
-      if (isFull) {
+      if (isLineFull(i)) {
         line += 1;
         pullLine(i);
       }
@@ -64,7 +63,7 @@ public class Board {
     for (int i = height; i > 0; i--) {
       map[i] = Arrays.copyOf(map[i - 1], WIDTH);
     }
-
+    // 맨 위에 칸 초기화
     for (int i = 0; i < WIDTH; i++) {
       map[0][i] = 0;
     }
