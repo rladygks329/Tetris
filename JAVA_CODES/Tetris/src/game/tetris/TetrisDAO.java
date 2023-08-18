@@ -5,7 +5,7 @@ import java.util.List;
 public interface TetrisDAO {
   public abstract int insert(UserDTO dto);
 
-  public abstract int insert(int userNo, ScoreDTO dto);
+  int insert(int userNo, int score);
 
   public abstract int update(UserDTO dto);
 
@@ -18,4 +18,5 @@ public interface TetrisDAO {
   public abstract List<ScoreDTO> selectAll();
 
   public abstract List<ScoreDTO> selectAll(int userNo);
+
 }
