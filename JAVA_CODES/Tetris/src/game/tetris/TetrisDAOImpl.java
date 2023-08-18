@@ -69,6 +69,9 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
       pstmt.setString(2, dto.getNickName());
       pstmt.setInt(3, dto.getNo());
       result = pstmt.executeUpdate();
+
+    } catch (SQLIntegrityConstraintViolationException e1) {
+      System.out.println("오류: 이미 존재하는 닉네임입니다.");
     } catch (Exception e) {
       e.printStackTrace();
     }

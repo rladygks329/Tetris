@@ -16,10 +16,7 @@ import javax.swing.SwingConstants;
 public class RankingView extends JPanel {
   private Main main;
   private JTable table;
-
-  public void main() {
-    new RankingView(null);
-  }
+  private TetrisDAO dao;
 
   public RankingView(Main main) {
     this.main = main;
@@ -27,6 +24,7 @@ public class RankingView extends JPanel {
   }
 
   private void initialize() {
+    dao = TetrisDAOImpl.getInstance();
     setLayout(null);
     setBounds(100, 100, 470, 421);
 
@@ -42,6 +40,9 @@ public class RankingView extends JPanel {
 
     table = new JTable();
     scrollPane.setViewportView(table);
+
+    ScoreTableModel m = new ScoreTableModel(dao.selectAll());
+    table.setModel(m);
 
     String HOME_IMG_PATH =
         "res" + File.separator + "Tetrominos" + File.separator + "bg_btn_home.png";
