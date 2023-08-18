@@ -53,7 +53,7 @@ public class TetrisView extends JPanel {
 
     // init images
     bg = getResizeImg(BACKGROUD_IMG_PATH + "Board.png", 12 * BOX_SIZE, 22 * BOX_SIZE);
-    blockImg = new Image[8];
+    blockImg = new Image[9];
     blockImg[0] = getResizeImg(BACKGROUD_IMG_PATH + "BG_1.png", BOX_SIZE, BOX_SIZE);
     blockImg[1] = getResizeImg(BLOCK_IMG_PATH + "Blue.png", BOX_SIZE, BOX_SIZE);
     blockImg[2] = getResizeImg(BLOCK_IMG_PATH + "Green.png", BOX_SIZE, BOX_SIZE);
@@ -62,6 +62,7 @@ public class TetrisView extends JPanel {
     blockImg[5] = getResizeImg(BLOCK_IMG_PATH + "Purple.png", BOX_SIZE, BOX_SIZE);
     blockImg[6] = getResizeImg(BLOCK_IMG_PATH + "Red.png", BOX_SIZE, BOX_SIZE);
     blockImg[7] = getResizeImg(BLOCK_IMG_PATH + "Yellow.png", BOX_SIZE, BOX_SIZE);
+    blockImg[8] = getResizeImg(BLOCK_IMG_PATH + "Single.png", BOX_SIZE, BOX_SIZE);
 
     shapeImg = new Image[8];
     shapeImg[0] = getResizeImg(SHAPE_IMG_PATH + "J.png", BOX_SIZE * 3, BOX_SIZE * 2);
