@@ -1,7 +1,12 @@
 package game.tetris;
 
 public class Tetris {
-  public int state; // pause, normal, over,
+  public static final int GAME_OVER = -1;
+  public static final int GAME_NORMAL = 0;
+
+  private static final int BASIC_BLOCK_POINT_X = 5;
+  private static final int BASIC_BLOCK_POINT_y = 0;
+  public int state;
   public int score;
   private Tetromino tetromino;
   private TetrominoFactory tetrominoFactory;
@@ -15,10 +20,8 @@ public class Tetris {
     for (int i = 0; i < 4; i++) {
       shadows[i] = new Point();
     }
-    tetrominoFactory = new TetrominoFactory(5, 0);
+    tetrominoFactory = new TetrominoFactory(BASIC_BLOCK_POINT_X, BASIC_BLOCK_POINT_y);
     tetromino = tetrominoFactory.get();
-
-    tetromino.points.clone();
     markOn(tetromino);
   }
 
@@ -35,7 +38,7 @@ public class Tetris {
       board.hanldeClear();
       tetromino = tetrominoFactory.get();
       if (!isValid(tetromino)) {
-        state = -1;
+        state = GAME_OVER;
         return;
       }
       markOn(tetromino);
@@ -91,7 +94,7 @@ public class Tetris {
     board.hanldeClear();
     tetromino = tetrominoFactory.get();
     if (!isValid(tetromino)) {
-      state = -1;
+      state = GAME_OVER;
       return;
     }
     markOn(tetromino);
@@ -122,12 +125,11 @@ public class Tetris {
 
   private void updateShadow() {
     // 내려간 위치 구하기
-    int count = 0;
+    int count = -1;
     while (isValid(tetromino)) {
       count += 1;
       tetromino.down();
     }
-    count--;
     tetromino.up();
 
     // shadow 배열에 넣기
@@ -155,7 +157,7 @@ public class Tetris {
       markOff(tetromino);
       tetromino = tetrominoFactory.get();
       if (!isValid(tetromino)) {
-        state = -1;
+        state = GAME_OVER;
         return;
       }
       markOn(tetromino);
@@ -167,7 +169,7 @@ public class Tetris {
     markOff(tetromino);
     tetromino = tetrominoFactory.getTetrominoByCode(savedTetrominoCode);
     if (!isValid(tetromino)) {
-      state = -1;
+      state = GAME_OVER;
       return;
     }
     markOn(tetromino);
