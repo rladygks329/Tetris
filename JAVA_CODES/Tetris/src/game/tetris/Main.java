@@ -35,7 +35,6 @@ public class Main extends JPanel {
     frame.setBounds(100, 100, 470, 350);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    System.out.println(this);
     SignInView l = new SignInView(this);
     l.setBounds(0, 0, 500, 500);
     l.setBorder(new LineBorder(Color.BLACK, 1));

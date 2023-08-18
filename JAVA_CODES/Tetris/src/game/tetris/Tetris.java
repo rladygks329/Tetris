@@ -70,9 +70,12 @@ public class Tetris {
 
   public void hardDrop() {
     markOff(tetromino);
+    int count = -1;
     while (isValid(tetromino)) {
       tetromino.down();
+      count += 1;
     }
+    score += count * 100;
     tetromino.up();
     markOn(tetromino);
     board.hanldeClear();
@@ -81,6 +84,19 @@ public class Tetris {
       state = -1;
     }
     markOn(tetromino);
+  }
+
+  public void restart() {
+    state = 0;
+    score = 0;
+    board.clear();
+    tetrominoFactory.init();
+    tetromino = tetrominoFactory.get();
+    markOn(tetromino);
+  }
+
+  public int getNextBlock() {
+    return tetrominoFactory.next().color;
   }
 
   private boolean isValid(Tetromino t) {
