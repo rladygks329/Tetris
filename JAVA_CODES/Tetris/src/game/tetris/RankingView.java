@@ -1,12 +1,8 @@
 package game.tetris;
 
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -44,12 +40,7 @@ public class RankingView extends JPanel {
     ScoreTableModel m = new ScoreTableModel(dao.selectAll());
     table.setModel(m);
 
-    String HOME_IMG_PATH =
-        "res" + File.separator + "Tetrominos" + File.separator + "bg_btn_home.png";
-    Image img = Toolkit.getDefaultToolkit().getImage(HOME_IMG_PATH).getScaledInstance(50, 50,
-        java.awt.Image.SCALE_SMOOTH);
-
-    JLabel homeLabel = new JLabel(new ImageIcon(img));
+    JLabel homeLabel = new HomeLabel(50, 50);
     homeLabel.setBounds(388, 27, 50, 50);
     homeLabel.addMouseListener(new MouseAdapter() {
       @Override
