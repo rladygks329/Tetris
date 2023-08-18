@@ -5,12 +5,19 @@ public class Tetris {
   public int score;
   private Tetromino tetromino;
   private TetrominoFactory tetrominoFactory;
+  private Point[] shadows;
   public Board board;
 
   public Tetris() {
     board = new Board();
+    shadows = new Point[4];
+    for (int i = 0; i < 4; i++) {
+      shadows[i] = new Point();
+    }
     tetrominoFactory = new TetrominoFactory(5, 0);
     tetromino = tetrominoFactory.get();
+
+    tetromino.points.clone();
     markOn(tetromino);
   }
 
@@ -29,6 +36,7 @@ public class Tetris {
       if (!isValid(tetromino)) {
         state = -1;
       }
+      markOn(tetromino);
     }
   }
 
@@ -108,8 +116,35 @@ public class Tetris {
     return true;
   }
 
+  private void updateShadow() {
+    // 내려간 위치 구하기
+    int count = 0;
+    while (isValid(tetromino)) {
+      count += 1;
+      tetromino.down();
+    }
+    count--;
+    tetromino.up();
+
+    // shadow 배열에 넣기
+    for (int i = 0; i < 4; i++) {
+      Point p = tetromino.points[i];
+      shadows[i].setPoint(p.x, p.y);
+    }
+
+    // 다시 되돌리기
+    while (count > 0) {
+      tetromino.up();
+      count -= 1;
+    }
+  }
+
   // board에 tetromino를 표시한다.
   private void markOn(Tetromino t) {
+    updateShadow();
+    for (Point p : shadows) {
+      board.mark(p, Board.SHADOW);
+    }
     for (Point p : t.points) {
       board.mark(p, t.color);
     }
@@ -117,8 +152,12 @@ public class Tetris {
 
   // board에 tetromino를 제거한다.
   private void markOff(Tetromino t) {
+    for (Point p : shadows) {
+      board.mark(p, Board.EMPTY);
+    }
+
     for (Point p : t.points) {
-      board.mark(p, 0);
+      board.mark(p, Board.EMPTY);
     }
   } // end markOff()
 }

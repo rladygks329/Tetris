@@ -3,6 +3,8 @@ package game.tetris;
 import java.util.Arrays;
 
 public class Board {
+  public static final int EMPTY = 0;
+  public static final int SHADOW = 8;
   public static final int WIDTH = 10;
   public static final int HEIGHT = 20;
   public int[][] map;
@@ -29,7 +31,7 @@ public class Board {
     if (p.x < 0 || p.x >= WIDTH || p.y < 0 || p.y >= HEIGHT + 2) {
       return false;
     }
-    return map[p.y][p.x] == 0;
+    return map[p.y][p.x] == EMPTY || map[p.y][p.x] == SHADOW;
   }
 
   public int hanldeClear() {
