@@ -1,13 +1,9 @@
 package game.tetris;
 
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,38 +33,33 @@ public class MyPageView extends JPanel {
   private void initialize() {
     dao = TetrisDAOImpl.getInstance();
     setLayout(null);
-    setBounds(100, 100, 480, 400);
+    setBounds(100, 100, 590, 459);
 
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(31, 120, 220, 231);
+    scrollPane.setBounds(31, 120, 336, 281);
     add(scrollPane);
 
     // <-intit label->
     JLabel lblTitle = new JLabel("MyPage");
     lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 30));
     lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-    lblTitle.setBounds(132, 20, 171, 57);
+    lblTitle.setBounds(182, 20, 171, 57);
     add(lblTitle);
 
     JLabel lblNickName = new JLabel("NickName");
-    lblNickName.setBounds(276, 94, 75, 15);
+    lblNickName.setBounds(398, 94, 75, 15);
     add(lblNickName);
 
     JLabel lblPassword = new JLabel("password");
-    lblPassword.setBounds(276, 214, 57, 15);
+    lblPassword.setBounds(398, 214, 57, 15);
     add(lblPassword);
 
-    lblTableName = new JLabel(user.getNickName() + " 님의 기록");
-    lblTableName.setBounds(31, 87, 111, 29);
+    lblTableName = new JLabel(user.getNickName() + " 님의 개인 기록");
+    lblTableName.setBounds(31, 87, 220, 29);
     add(lblTableName);
 
-    String HOME_IMG_PATH =
-        "res" + File.separator + "Tetrominos" + File.separator + "bg_btn_home.png";
-    Image img = Toolkit.getDefaultToolkit().getImage(HOME_IMG_PATH).getScaledInstance(50, 50,
-        java.awt.Image.SCALE_SMOOTH);
-
-    JLabel homeLabel = new JLabel(new ImageIcon(img));
-    homeLabel.setBounds(388, 27, 50, 50);
+    JLabel homeLabel = new HomeLabel(50, 50);
+    homeLabel.setBounds(510, 20, 50, 50);
     homeLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -81,13 +72,13 @@ public class MyPageView extends JPanel {
     JButton btnUpdateNickName = new JButton("닉네임 변경");
     btnUpdateNickName.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
     btnUpdateNickName.addActionListener(e -> updateNickName());
-    btnUpdateNickName.setBounds(313, 164, 125, 29);
+    btnUpdateNickName.setBounds(435, 164, 125, 29);
     add(btnUpdateNickName);
 
     JButton btnUpdatePassword = new JButton("비밀번호 변경");
     btnUpdatePassword.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
     btnUpdatePassword.addActionListener(e -> updatePassword());
-    btnUpdatePassword.setBounds(313, 283, 125, 29);
+    btnUpdatePassword.setBounds(435, 283, 125, 29);
     add(btnUpdatePassword);
 
     // <- init table ->
@@ -100,13 +91,13 @@ public class MyPageView extends JPanel {
 
     // <-init text field->
     textFieldNickName = new JTextField();
-    textFieldNickName.setBounds(276, 120, 162, 34);
+    textFieldNickName.setBounds(398, 120, 162, 34);
     add(textFieldNickName);
     textFieldNickName.setColumns(10);
 
     textFieldPassword = new JTextField();
     textFieldPassword.setColumns(10);
-    textFieldPassword.setBounds(276, 239, 162, 34);
+    textFieldPassword.setBounds(398, 239, 162, 34);
     add(textFieldPassword);
   }
 
