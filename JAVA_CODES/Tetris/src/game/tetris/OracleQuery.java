@@ -10,6 +10,7 @@ public interface OracleQuery {
   public static final String USER_COL_USER_ID = "USER_ID";
   public static final String USER_COL_PASSWORD = "PASSWORD";
   public static final String USER_COL_NICKNAME = "NICKNAME";
+  public static final String USER_ALIAS_RECORDCOUNT = "RECORDCOUNT";
 
   public static final String SCORE_TABLE_NAME = "TETRIS_SCORE";
   public static final String SCORE_COL_SCORE_NO = "SCORE_NO";
@@ -22,29 +23,30 @@ public interface OracleQuery {
       "INSERT INTO " + USER_TABLE_NAME + " VALUES(TETRIS_USER_SEQ.NEXTVAL, ?, ?, ?)";
 
   // 해당 유저의 비밀번호, 닉네임 업데이트
-  public static final String SQL_USER_UPDATE = "UPDATE " + USER_TABLE_NAME + " SET "
-      + USER_COL_PASSWORD + " = ?, " + USER_COL_NICKNAME + " = ? " + "WHERE USER_NO = ?";
+  public static final String SQL_USER_UPDATE =
+      "UPDATE " + USER_TABLE_NAME + " SET " + USER_COL_PASSWORD + " = ?, " + USER_COL_NICKNAME
+          + " = ? " + "WHERE " + USER_COL_USER_NO + " = ?";
 
   // 비밀번호와 아이디를 가진 사람 찾기
-  public static final String SQL_SIGN_IN =
-      "SELECT " + USER_COL_USER_NO + ", " + USER_COL_PASSWORD + ", " + USER_COL_NICKNAME //
-          + " FROM " + USER_TABLE_NAME //
-          + " WHERE " + USER_COL_USER_ID + " = ? AND " + USER_COL_PASSWORD + " = ?";
+  public static final String SQL_SIGN_IN = "SELECT * FROM " + USER_TABLE_NAME //
+      + " WHERE " + USER_COL_USER_ID + " = ? AND " + USER_COL_PASSWORD + " = ?";
 
   // 같은 아이디를 가진 사람 수 세기
-  public static final String SQL_SELECT_USER_BY_ID =
-      "SELECT COUNT(*) FROM " + USER_TABLE_NAME + " WHERE " + USER_COL_USER_ID + " = ?";
+  public static final String SQL_SELECT_USER_BY_ID = "SELECT COUNT(*) " + USER_ALIAS_RECORDCOUNT
+      + " FROM " + USER_TABLE_NAME + " WHERE " + USER_COL_USER_ID + " = ?";
 
   // 같은 닉네임을 가진 사람 수 세기
   public static final String SQL_SELECT_USER_BY_NICKNAME =
-      "SELECT COUNT(*) FROM " + USER_TABLE_NAME + " WHERE " + USER_COL_NICKNAME + " = ?";
+      "SELECT COUNT(*) " + USER_ALIAS_RECORDCOUNT + " FROM " + USER_TABLE_NAME + " WHERE "
+          + USER_COL_NICKNAME + " = ?";
 
   // 유저 삭제
   public static final String SQL_USER_DELETE = "DELETE " + USER_TABLE_NAME + " WHERE USER_NO = ?";
 
   // 기록 추가 (USER_NO, SCORE)
   public static final String SQL_SCORE_INSERT =
-      "INSERT INTO " + SCORE_TABLE_NAME + " VALUES(TETRIS_SCORE_SEQ.NEXTVAL, ?, ?)";
+      "INSERT INTO " + SCORE_TABLE_NAME + "(" + SCORE_COL_SCORE_NO + ", " + SCORE_COL_USER_NO + ", "
+          + SCORE_COL_SCORE + ") VALUES(TETRIS_SCORE_SEQ.NEXTVAL, ?, ?)";
 
   // 모든 기록 보기
   public static final String SQL_SCORE_SELECT_ALL = //
