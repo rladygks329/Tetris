@@ -122,6 +122,13 @@ public class TetrisView extends JPanel {
     g.setColor(Color.white);
     g.drawString("NEXT BLOCK", width + 20, 80);
 
+    // Saved Block
+    g.drawString("SAVED BLOCK", width + 20, 200);
+    if (tetris.savedTetrominoCode != 0) {
+      g.drawImage(shapeImg[tetris.savedTetrominoCode], width + 30, 250, this);
+      g.setColor(Color.white);
+    }
+
     // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
     for (int i = 2; i < Board.HEIGHT + 2; i++) {
