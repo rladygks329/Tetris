@@ -44,7 +44,7 @@ public class RankingView extends JPanel {
     scrollPane.setViewportView(table);
 
     String HOME_IMG_PATH =
-        "res" + File.separator + "Tetriminos" + File.separator + "bg_btn_home.png";
+        "res" + File.separator + "Tetrominos" + File.separator + "bg_btn_home.png";
     Image img = Toolkit.getDefaultToolkit().getImage(HOME_IMG_PATH).getScaledInstance(50, 50,
         java.awt.Image.SCALE_SMOOTH);
 
