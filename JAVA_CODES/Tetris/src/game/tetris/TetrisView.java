@@ -18,9 +18,9 @@ import javax.swing.Timer;
 public class TetrisView extends JPanel {
   // constants
   private final String BACKGROUD_IMG_PATH =
-      "res" + File.separator + "Tetriminos" + File.separator + "Board" + File.separator;
+      "res" + File.separator + "Tetrominos" + File.separator + "Board" + File.separator;
   private final String BLOCK_IMG_PATH =
-      "res" + File.separator + "Tetriminos" + File.separator + "Single Blocks" + File.separator;
+      "res" + File.separator + "Tetrominos" + File.separator + "Single Blocks" + File.separator;
   private final int KEY_CODE_LEFT = 37;
   private final int KEY_CODE_RIGHT = 39;
   private final int KEY_CODE_DOWN = 40;
@@ -60,7 +60,7 @@ public class TetrisView extends JPanel {
     add(scoreBoard);
 
     String HOME_IMG_PATH =
-        "res" + File.separator + "Tetriminos" + File.separator + "bg_btn_home.png";
+        "res" + File.separator + "Tetrominos" + File.separator + "bg_btn_home.png";
     Image img = Toolkit.getDefaultToolkit().getImage(HOME_IMG_PATH).getScaledInstance(50, 50,
         java.awt.Image.SCALE_SMOOTH);
 
