@@ -21,6 +21,7 @@ public class MyPageView extends JPanel {
   private Main main;
   private UserDTO user;
   private JTable table;
+  private ScoreTableModel model;
   private JTextField textFieldNickName;
   private JTextField textFieldPassword;
   private JLabel lblTableName;
@@ -94,8 +95,8 @@ public class MyPageView extends JPanel {
     scrollPane.setViewportView(table);
 
     List<ScoreDTO> myRecods = dao.selectAll(user.getNo());
-    ScoreTableModel m = new ScoreTableModel(myRecods);
-    table.setModel(m);
+    model = new ScoreTableModel(myRecods);
+    table.setModel(model);
 
     // <-init text field->
     textFieldNickName = new JTextField();
@@ -127,6 +128,8 @@ public class MyPageView extends JPanel {
       JOptionPane.showMessageDialog(this, "이미 존재하는 닉네임입니다.", "정보", JOptionPane.INFORMATION_MESSAGE);
       user.setNickName(prevNickName);
     } else {
+      model = new ScoreTableModel(dao.selectAll(user.getNo()));
+      table.setModel(model);
       lblTableName.setText(newNickName + "님의 기록");
     }
   }

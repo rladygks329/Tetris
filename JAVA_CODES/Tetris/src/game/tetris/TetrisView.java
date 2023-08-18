@@ -1,5 +1,7 @@
 package game.tetris;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -11,8 +13,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 public class TetrisView extends JPanel {
@@ -21,43 +23,88 @@ public class TetrisView extends JPanel {
       "res" + File.separator + "Tetrominos" + File.separator + "Board" + File.separator;
   private final String BLOCK_IMG_PATH =
       "res" + File.separator + "Tetrominos" + File.separator + "Single Blocks" + File.separator;
+  private final String SHAPE_IMG_PATH =
+      "res" + File.separator + "Tetrominos" + File.separator + "Shape Blocks" + File.separator;
+  private final int BOX_SIZE = 30;
+  private final int SHAPE_SIZE = 120;
+
   private final int KEY_CODE_LEFT = 37;
   private final int KEY_CODE_RIGHT = 39;
   private final int KEY_CODE_DOWN = 40;
   private final int KEY_CODE_ROTATE_LEFT = 90;
   private final int KEY_CODE_ROTATE_RIGHT = 88;
   private final int KEY_CODE_HARDDROP = 32;
-  private final int BOX_SIZE = 30;
 
   // member 변수
   private Main main;
+  private UserDTO user;
+  private TetrisDAO dao;
   private Tetris tetris;
   private Board board;
   private ActionListener gameLoop;
   private Timer timer;
   private Image bg;
   private Image[] blockImg;
-  private JLabel scoreBoard;
+  private Image[] shapeImg;
 
   public TetrisView(Main main) {
     this.main = main;
-    initTetris();
+    user = main.user;
+    initialize();
+  }
+
+  private void initialize() {
+    dao = TetrisDAOImpl.getInstance();
     setBounds(0, 0, 700, 699);
     setLayout(null);
 
-    JLabel lblTitle = new JLabel("Tetris");
-    lblTitle.setHorizontalAlignment(SwingConstants.LEFT);
-    lblTitle.setBounds(370, 50, 161, 53);
-    add(lblTitle);
+    tetris = new Tetris();
+    board = tetris.board;
 
-    JLabel lblScore = new JLabel("Score");
-    lblScore.setBounds(370, 98, 56, 53);
-    add(lblScore);
+    // init images
+    bg = getResizeImg(BACKGROUD_IMG_PATH + "Board.png", 12 * BOX_SIZE, 22 * BOX_SIZE);
+    blockImg = new Image[8];
+    blockImg[0] = getResizeImg(BACKGROUD_IMG_PATH + "BG_1.png", BOX_SIZE, BOX_SIZE);
+    blockImg[1] = getResizeImg(BLOCK_IMG_PATH + "Blue.png", BOX_SIZE, BOX_SIZE);
+    blockImg[2] = getResizeImg(BLOCK_IMG_PATH + "Green.png", BOX_SIZE, BOX_SIZE);
+    blockImg[3] = getResizeImg(BLOCK_IMG_PATH + "LightBlue.png", BOX_SIZE, BOX_SIZE);
+    blockImg[4] = getResizeImg(BLOCK_IMG_PATH + "Orange.png", BOX_SIZE, BOX_SIZE);
+    blockImg[5] = getResizeImg(BLOCK_IMG_PATH + "Purple.png", BOX_SIZE, BOX_SIZE);
+    blockImg[6] = getResizeImg(BLOCK_IMG_PATH + "Red.png", BOX_SIZE, BOX_SIZE);
+    blockImg[7] = getResizeImg(BLOCK_IMG_PATH + "Yellow.png", BOX_SIZE, BOX_SIZE);
 
-    scoreBoard = new JLabel("0");
-    scoreBoard.setHorizontalAlignment(SwingConstants.CENTER);
-    scoreBoard.setBounds(484, 117, 131, 15);
-    add(scoreBoard);
+    shapeImg = new Image[8];
+    shapeImg[0] = getResizeImg(SHAPE_IMG_PATH + "I.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[1] = getResizeImg(SHAPE_IMG_PATH + "J.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[2] = getResizeImg(SHAPE_IMG_PATH + "S.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[3] = getResizeImg(SHAPE_IMG_PATH + "I.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[4] = getResizeImg(SHAPE_IMG_PATH + "L.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[5] = getResizeImg(SHAPE_IMG_PATH + "T.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[6] = getResizeImg(SHAPE_IMG_PATH + "Z.png", SHAPE_SIZE, SHAPE_SIZE);
+    shapeImg[7] = getResizeImg(SHAPE_IMG_PATH + "O.png", SHAPE_SIZE, SHAPE_SIZE);
+
+    // init game loop(thread)
+    gameLoop = actionEvent -> {
+      tetris.down();
+      repaint();
+      if (tetris.state == -1) {
+        timer.stop();
+        dao.insert(user.getNo(), tetris.score);
+        int result = JOptionPane.showConfirmDialog(this,
+            "게임 오버\n Score " + tetris.score + "\n 다시 시작하시겠습니까?", "정보", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+          tetris.restart();
+          repaint();
+          timer.restart();
+        } else {
+          main.navigate(new HomeView(main));
+        }
+      }
+    };
+
+    timer = new Timer(500, gameLoop);
+    timer.setInitialDelay(1000);
+    timer.start();
 
     String HOME_IMG_PATH =
         "res" + File.separator + "Tetrominos" + File.separator + "bg_btn_home.png";
@@ -82,37 +129,7 @@ public class TetrisView extends JPanel {
         handleUserInput(e.getKeyCode());
       }
     });
-  }
 
-  private void initTetris() {
-    tetris = new Tetris();
-    board = tetris.board;
-
-    // init images
-    bg = getBlockImg(BACKGROUD_IMG_PATH + "Board.png", 12 * BOX_SIZE, 22 * BOX_SIZE);
-    blockImg = new Image[8];
-    blockImg[0] = getBlockImg(BACKGROUD_IMG_PATH + "BG_1.png", BOX_SIZE, BOX_SIZE);
-    blockImg[1] = getBlockImg(BLOCK_IMG_PATH + "Blue.png", BOX_SIZE, BOX_SIZE);
-    blockImg[2] = getBlockImg(BLOCK_IMG_PATH + "Green.png", BOX_SIZE, BOX_SIZE);
-    blockImg[3] = getBlockImg(BLOCK_IMG_PATH + "LightBlue.png", BOX_SIZE, BOX_SIZE);
-    blockImg[4] = getBlockImg(BLOCK_IMG_PATH + "Orange.png", BOX_SIZE, BOX_SIZE);
-    blockImg[5] = getBlockImg(BLOCK_IMG_PATH + "Purple.png", BOX_SIZE, BOX_SIZE);
-    blockImg[6] = getBlockImg(BLOCK_IMG_PATH + "Red.png", BOX_SIZE, BOX_SIZE);
-    blockImg[7] = getBlockImg(BLOCK_IMG_PATH + "Yellow.png", BOX_SIZE, BOX_SIZE);
-
-    // init game loop(thread)
-    gameLoop = actionEvent -> {
-      tetris.down();
-      repaint();
-      scoreBoard.setText(Integer.toString(tetris.score));
-      if (tetris.state == -1) {
-        timer.stop();
-      }
-    };
-
-    timer = new Timer(500, gameLoop);
-    timer.setInitialDelay(1000);
-    timer.start();
   }
 
   private void handleUserInput(int keyCode) {
@@ -148,8 +165,28 @@ public class TetrisView extends JPanel {
   @Override
   public void paint(Graphics g) {
     super.paint(g);
-    g.drawImage(bg, 0, 0, 12 * BOX_SIZE, 22 * BOX_SIZE, this);
+    int width = 12 * BOX_SIZE;
+    int height = 22 * BOX_SIZE;
 
+    // background
+    g.drawImage(bg, 0, 0, width, height, this);
+
+    // Score Board
+    g.setColor(Color.black);
+    g.fillRect(width + 10, 25, 200, 50);
+    g.setColor(Color.white);
+    g.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+    g.drawString("SCORE : " + Integer.toString(tetris.score), width + 20, 55);
+
+    // Next Block
+    g.drawRect(width + 10, 75, 200, 175);
+    g.setColor(Color.black);
+    g.fillRect(width + 10, 75, 200, 175);
+    g.drawImage(shapeImg[tetris.getNextBlock()], width + 30, 100, this);
+    g.setColor(Color.white);
+    g.drawString("NEXT BLOCK", width + 20, 80);
+
+    // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
     for (int i = 2; i < Board.HEIGHT + 2; i++) {
       for (int j = 0; j < Board.WIDTH; j++) {
@@ -159,7 +196,7 @@ public class TetrisView extends JPanel {
     }
   }// end paint()
 
-  private Image getBlockImg(String imgPath, int width, int height) {
+  private Image getResizeImg(String imgPath, int width, int height) {
     return Toolkit.getDefaultToolkit().getImage(imgPath).getScaledInstance(width, height,
         java.awt.Image.SCALE_SMOOTH);
   }

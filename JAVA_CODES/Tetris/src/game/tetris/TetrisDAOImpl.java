@@ -47,12 +47,12 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
   }
 
   @Override
-  public int insert(int userNo, ScoreDTO dto) {
+  public int insert(int userNo, int score) {
     int result = 0;
     try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
         PreparedStatement pstmt = conn.prepareStatement(SQL_SCORE_INSERT)) {
       pstmt.setInt(1, userNo);
-      pstmt.setInt(2, dto.getScore());
+      pstmt.setInt(2, score);
       result = pstmt.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();

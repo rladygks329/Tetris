@@ -17,6 +17,14 @@ public class Board {
     map[y][x] = value;
   }
 
+  public void clear() {
+    for (int i = 0; i < map.length; i++) {
+      for (int j = 0; j < map[i].length; j++) {
+        map[i][j] = 0;
+      }
+    }
+  }
+
   public boolean isValid(Point p) {
     if (p.x < 0 || p.x >= WIDTH || p.y < 0 || p.y >= HEIGHT + 2) {
       return false;
