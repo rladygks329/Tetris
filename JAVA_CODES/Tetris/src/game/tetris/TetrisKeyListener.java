@@ -11,6 +11,7 @@ public class TetrisKeyListener implements KeyListener {
   private final int KEY_CODE_ROTATE_LEFT = 90;
   private final int KEY_CODE_ROTATE_RIGHT = 88;
   private final int KEY_CODE_HARDDROP = 32;
+  private final int KEY_CODE_SWITCH = 67;
   Tetris tetris;
   JPanel panel;
 
@@ -46,6 +47,9 @@ public class TetrisKeyListener implements KeyListener {
         break;
       case KEY_CODE_HARDDROP:
         tetris.hardDrop();
+        break;
+      case KEY_CODE_SWITCH:
+        tetris.switchBlock();
         break;
       default:
         break;

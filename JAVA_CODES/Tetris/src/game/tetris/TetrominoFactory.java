@@ -35,6 +35,37 @@ public class TetrominoFactory {
     return tetrominoList.get(next);
   }
 
+  public Tetromino getTetrominoByCode(int code) {
+    Tetromino result = null;
+    switch (code) {
+      case 1:
+        result = new JTetromino(x, y);
+        break;
+      case 2:
+        result = new STetromino(x, y);
+        break;
+      case 3:
+        result = new ITetromino(x, y);
+        break;
+      case 4:
+        result = new LTetromino(x, y);
+        break;
+      case 5:
+        result = new TTetromino(x, y);
+        break;
+      case 6:
+        result = new ZTetromino(x, y);
+        break;
+      case 7:
+        result = new OTetromino(x, y);
+        break;
+      default:
+        result = next();
+        break;
+    }
+    return result;
+  }
+
   public void init() {
     index = 0;
     tetrominoList = new ArrayList<>();
