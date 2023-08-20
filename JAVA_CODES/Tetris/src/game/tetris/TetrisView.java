@@ -35,6 +35,7 @@ public class TetrisView extends JPanel {
   private Image bg;
   private Image[] blockImg;
   private Image[] shapeImg;
+  private TetrisSoundManager sm;
 
   public TetrisView(Main main) {
     setBackground(Color.GRAY);
@@ -94,6 +95,7 @@ public class TetrisView extends JPanel {
       public void mouseClicked(MouseEvent e) {
         timer.stop();
         main.navigate(new HomeView(main));
+        sm.stop();
       }
     });
     add(homeLabel);
@@ -101,6 +103,8 @@ public class TetrisView extends JPanel {
     // init keyListener
     addKeyListener(new TetrisKeyListener(tetris, this));
 
+    sm = TetrisSoundManager.getInstance();
+    sm.reStart();
   }
 
   @Override
@@ -146,13 +150,15 @@ public class TetrisView extends JPanel {
 
   private void handleGameOver() {
     timer.stop();
+    sm.stop();
     dao.insert(user.getNo(), tetris.score);
     int result = JOptionPane.showConfirmDialog(this,
         "게임 오버\n Score " + tetris.score + "\n 다시 시작하시겠습니까?", "정보", JOptionPane.YES_NO_OPTION);
     if (result == JOptionPane.YES_OPTION) {
       tetris.restart();
-      repaint();
       timer.restart();
+      sm.reStart();
+      repaint();
     } else {
       main.navigate(new HomeView(main));
     }
