@@ -60,7 +60,7 @@ public class TetrominoFactory {
         result = new OTetromino(x, y);
         break;
       default:
-        result = next();
+        result = get();
         break;
     }
     return result;
