@@ -187,10 +187,11 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
       pstmt = conn.prepareStatement(SQL_SCORE_SELECT_ALL);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        int score = rs.getInt(1);
-        String nickName = rs.getString(2);
-        Timestamp time = rs.getTimestamp(3);
-        ScoreDTO dto = new ScoreDTO(score, nickName, time);
+        int scoreNo = rs.getInt(1);
+        int score = rs.getInt(2);
+        String nickName = rs.getString(3);
+        Timestamp time = rs.getTimestamp(4);
+        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time);
         list.add(dto);
       }
     } catch (Exception e) {
@@ -220,10 +221,11 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
       pstmt.setInt(1, userNo);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        int score = rs.getInt(1);
-        String nickName = rs.getString(2);
-        Timestamp time = rs.getTimestamp(3);
-        ScoreDTO dto = new ScoreDTO(score, nickName, time);
+        int scoreNo = rs.getInt(1);
+        int score = rs.getInt(2);
+        String nickName = rs.getString(3);
+        Timestamp time = rs.getTimestamp(4);
+        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time);
         list.add(dto);
       }
     } catch (Exception e) {
@@ -239,4 +241,17 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
     }
     return list;
   }
+
+  @Override
+  public int deleteScore(int scoreNo) {
+    int result = 0;
+    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+        PreparedStatement pstmt = conn.prepareStatement(SQL_SCORE_DELETE)) {
+      pstmt.setInt(1, scoreNo);
+      result = pstmt.executeUpdate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return result;
+  }// end deleteScore
 }
