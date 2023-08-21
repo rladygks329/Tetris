@@ -5,9 +5,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,6 +35,9 @@ public class TetrisView extends JPanel {
   private Board board;
   private Timer timer;
   private TetrisSoundManager sm;
+  private KeyListener tetrisKeyListener;
+  private List<int[][]> history;
+  public boolean gamePause = false;
 
   private Image bg;
   private Image[] blockImg;
@@ -45,7 +51,8 @@ public class TetrisView extends JPanel {
     sm = TetrisSoundManager.getInstance();
     tetris = new Tetris();
     board = tetris.board;
-
+    history = new ArrayList<>();
+    tetrisKeyListener = new TetrisKeyListener(tetris, this);
     timer = new Timer(500, actionEvent -> {
       tetris.down();
       repaint();
@@ -97,7 +104,7 @@ public class TetrisView extends JPanel {
     });
     add(homeLabel);
 
-    addKeyListener(new TetrisKeyListener(tetris, this));
+    addKeyListener(tetrisKeyListener);
     timer.start();
     sm.reStart();
   }
@@ -107,6 +114,15 @@ public class TetrisView extends JPanel {
     super.paint(g);
     int width = 12 * BOX_SIZE;
     int height = 22 * BOX_SIZE;
+
+    // 일시정지 판별
+    if (gamePause) {
+      g.setColor(Color.white);
+      g.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+      g.drawString("Press ESC to RESUME", this.getWidth() / 2 - 100, this.getHeight() / 2);
+      g.drawString("STOP", this.getWidth() / 2 - 20, this.getHeight() / 2 + 20);
+      return;
+    }
 
     // background
     g.drawImage(bg, 0, 0, width, height, this);
@@ -134,6 +150,7 @@ public class TetrisView extends JPanel {
     g.drawString("Rotate Right: X", width + 20, 490);
     g.drawString("Switch: C ", width + 20, 510);
     g.drawString("Hard Drop: SPACE ", width + 20, 530);
+    g.drawString("Pause/Resume: ESC", width + 20, 550);
 
     // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
@@ -165,4 +182,14 @@ public class TetrisView extends JPanel {
       main.navigate(new HomeView(main));
     }
   }
+
+  public void toggleGamePause() {
+    if (gamePause) {
+      timer.restart();
+    } else {
+      timer.stop();
+    }
+    gamePause = !gamePause;
+  }
+
 }

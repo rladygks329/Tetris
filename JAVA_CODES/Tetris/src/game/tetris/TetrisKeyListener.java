@@ -2,7 +2,6 @@ package game.tetris;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.JPanel;
 
 public class TetrisKeyListener implements KeyListener {
   private final int KEY_CODE_LEFT = 37;
@@ -12,12 +11,13 @@ public class TetrisKeyListener implements KeyListener {
   private final int KEY_CODE_ROTATE_RIGHT = 88;
   private final int KEY_CODE_HARD_DROP = 32;
   private final int KEY_CODE_SWITCH = 67;
+  private final int KEY_CODE_ESC = 27;
   Tetris tetris;
-  JPanel panel;
+  TetrisView tetrisView;
 
-  public TetrisKeyListener(Tetris tetris, JPanel panel) {
+  public TetrisKeyListener(Tetris tetris, TetrisView tetrisView) {
     this.tetris = tetris;
-    this.panel = panel;
+    this.tetrisView = tetrisView;
   }
 
   @Override
@@ -25,7 +25,14 @@ public class TetrisKeyListener implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent e) {
-    if (tetris.state == -1) {
+
+    if (e.getKeyCode() == KEY_CODE_ESC) {
+      tetrisView.toggleGamePause();
+      tetrisView.repaint();
+      return;
+    }
+
+    if (tetris.state == Tetris.GAME_OVER || tetrisView.gamePause) {
       return;
     }
 
@@ -54,7 +61,7 @@ public class TetrisKeyListener implements KeyListener {
       default:
         break;
     }
-    panel.repaint();
+    tetrisView.repaint();
   }
 
   @Override
