@@ -23,7 +23,6 @@ public class MyPageView extends JPanel {
   private JLabel lblTableName;
   private TetrisDAO dao;
 
-
   public MyPageView(Main main) {
     this.main = main;
     user = main.user;
@@ -99,6 +98,30 @@ public class MyPageView extends JPanel {
     textFieldPassword.setColumns(10);
     textFieldPassword.setBounds(398, 239, 162, 34);
     add(textFieldPassword);
+
+    JButton btnDelete = new JButton("삭제");
+    btnDelete.addActionListener(e -> deleteScore());
+    btnDelete.setBounds(270, 90, 97, 23);
+    add(btnDelete);
+  }
+
+  private void deleteScore() {
+    int[] selectedRows = table.getSelectedRows();
+
+    if (selectedRows.length == 0) {
+      JOptionPane.showMessageDialog(this, "삭제할 행을 선택해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+
+    for (int i = selectedRows.length - 1; i >= 0; i--) {
+      int index = selectedRows[i];
+      int scoreNo = model.getScoreNo(index);
+      int result = dao.deleteScore(scoreNo);
+      if (result == 1) {
+        model.removeRow(index);
+      }
+    }
+    model.fireTableDataChanged();
   }
 
   private void updateNickName() {

@@ -5,22 +5,15 @@ import javax.swing.table.AbstractTableModel;
 
 public class ScoreTableModel extends AbstractTableModel {
   private String[] columnNames = {"Ranking", "Score", "NickName", "Time"};
-  private Object[][] data;
+  private List<ScoreDTO> list;
 
   public ScoreTableModel(List<ScoreDTO> list) {
-    int w = getColumnCount();
-    int h = list.size();
-    data = new Object[h][w];
-
-    for (int i = 0; i < h; i++) {
-      ScoreDTO dto = list.get(i);
-      data[i] = new Object[] {i + 1, dto.getScore(), dto.getNickName(), dto.getTime()};
-    }
+    this.list = list;
   }
 
   @Override
   public int getRowCount() {
-    return data.length;
+    return list.size();
   }
 
   @Override
@@ -35,6 +28,32 @@ public class ScoreTableModel extends AbstractTableModel {
 
   @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    return data[rowIndex][columnIndex];
+    Object result = null;
+    ScoreDTO dto = list.get(rowIndex);
+    switch (columnIndex) {
+      case 0:
+        result = rowIndex + 1;
+        break;
+      case 1:
+        result = dto.getScore();
+        break;
+      case 2:
+        result = dto.getNickName();
+        break;
+      case 3:
+        result = dto.getTime();
+        break;
+      default:
+        break;
+    }
+    return result;
+  }
+
+  public void removeRow(int rowIndex) {
+    list.remove(rowIndex);
+  }
+
+  public int getScoreNo(int rowIndex) {
+    return list.get(rowIndex).getScoreNo();
   }
 }

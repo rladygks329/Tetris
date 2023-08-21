@@ -3,16 +3,26 @@ package game.tetris;
 import java.util.Date;
 
 public class ScoreDTO {
+  private int scoreNo;
   private int score;
   private String nickName;
   private Date time;
 
   public ScoreDTO() {}
 
-  public ScoreDTO(int score, String nickName, Date time) {
+  public ScoreDTO(int scoreNo, int score, String nickName, Date time) {
+    this.scoreNo = scoreNo;
     this.score = score;
     this.nickName = nickName;
     this.time = time;
+  }
+
+  public final int getScoreNo() {
+    return scoreNo;
+  }
+
+  public final void setScoreNo(int scoreNo) {
+    this.scoreNo = scoreNo;
   }
 
   public int getScore() {
