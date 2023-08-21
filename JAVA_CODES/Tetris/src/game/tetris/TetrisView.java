@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -28,29 +27,40 @@ public class TetrisView extends JPanel {
   private Main main;
   private UserDTO user;
   private TetrisDAO dao;
+
   private Tetris tetris;
   private Board board;
-  private ActionListener gameLoop;
   private Timer timer;
+  private TetrisSoundManager sm;
+
   private Image bg;
   private Image[] blockImg;
   private Image[] shapeImg;
-  private TetrisSoundManager sm;
 
   public TetrisView(Main main) {
-    setBackground(Color.GRAY);
+    // 멤버 변수 초기화
     this.main = main;
     user = main.user;
+    dao = TetrisDAOImpl.getInstance();
+    sm = TetrisSoundManager.getInstance();
+    tetris = new Tetris();
+    board = tetris.board;
+
+    timer = new Timer(500, actionEvent -> {
+      tetris.down();
+      repaint();
+      if (tetris.state == Tetris.GAME_OVER) {
+        handleGameOver();
+      }
+    });
+    timer.setInitialDelay(1000);
     initialize();
   }
 
   private void initialize() {
-    dao = TetrisDAOImpl.getInstance();
+    setBackground(Color.GRAY);
     setBounds(0, 0, 700, 699);
     setLayout(null);
-
-    tetris = new Tetris();
-    board = tetris.board;
 
     // init images
     bg = getResizeImg(BACKGROUD_IMG_PATH + "Board.png", 12 * BOX_SIZE, 22 * BOX_SIZE);
@@ -66,7 +76,7 @@ public class TetrisView extends JPanel {
     blockImg[8] = getResizeImg(BLOCK_IMG_PATH + "Single.png", BOX_SIZE, BOX_SIZE);
 
     shapeImg = new Image[8];
-    // shapeImg[0] = getResizeImg(SHAPE_IMG_PATH + "J.png", BOX_SIZE * 3, BOX_SIZE * 2);
+    shapeImg[0] = getResizeImg(BLOCK_IMG_PATH + "Single.png", BOX_SIZE, BOX_SIZE);
     shapeImg[1] = getResizeImg(SHAPE_IMG_PATH + "J.png", BOX_SIZE * 3, BOX_SIZE * 2);
     shapeImg[2] = getResizeImg(SHAPE_IMG_PATH + "S.png", BOX_SIZE * 3, BOX_SIZE * 2);
     shapeImg[3] = getResizeImg(SHAPE_IMG_PATH + "I.png", BOX_SIZE * 4, BOX_SIZE * 1);
@@ -74,19 +84,6 @@ public class TetrisView extends JPanel {
     shapeImg[5] = getResizeImg(SHAPE_IMG_PATH + "T.png", BOX_SIZE * 3, BOX_SIZE * 2);
     shapeImg[6] = getResizeImg(SHAPE_IMG_PATH + "Z.png", BOX_SIZE * 3, BOX_SIZE * 2);
     shapeImg[7] = getResizeImg(SHAPE_IMG_PATH + "O.png", BOX_SIZE * 2, BOX_SIZE * 2);
-
-    // init game loop(thread)
-    gameLoop = actionEvent -> {
-      tetris.down();
-      repaint();
-      if (tetris.state == -1) {
-        handleGameOver();
-      }
-    };
-
-    timer = new Timer(500, gameLoop);
-    timer.setInitialDelay(1000);
-    timer.start();
 
     JLabel homeLabel = new HomeLabel(50, 50);
     homeLabel.setBounds(624, 10, 50, 50);
@@ -100,10 +97,8 @@ public class TetrisView extends JPanel {
     });
     add(homeLabel);
 
-    // init keyListener
     addKeyListener(new TetrisKeyListener(tetris, this));
-
-    sm = TetrisSoundManager.getInstance();
+    timer.start();
     sm.reStart();
   }
 
@@ -128,9 +123,7 @@ public class TetrisView extends JPanel {
 
     // Saved Block
     g.drawString("SAVED BLOCK", width + 20, 200);
-    if (tetris.savedTetrominoCode != 0) {
-      g.drawImage(shapeImg[tetris.savedTetrominoCode], width + 30, 250, this);
-    }
+    g.drawImage(shapeImg[tetris.savedTetrominoCode], width + 30, 250, this);
 
     // Description
     g.setColor(Color.white);

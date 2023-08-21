@@ -1,18 +1,20 @@
 package game.tetris;
 
+import java.util.Arrays;
+
 public class Tetris {
   public static final int GAME_OVER = -1;
   public static final int GAME_NORMAL = 0;
-
   private static final int BASIC_BLOCK_POINT_X = 5;
   private static final int BASIC_BLOCK_POINT_y = 0;
+
+  private TetrominoFactory tetrominoFactory;
+  private Tetromino tetromino;
+  private Point[] shadows;
+  public Board board;
   public int state;
   public int score;
-  private Tetromino tetromino;
-  private TetrominoFactory tetrominoFactory;
-  private Point[] shadows;
   public int savedTetrominoCode = 0;
-  public Board board;
 
   public Tetris() {
     board = new Board();
@@ -32,17 +34,22 @@ public class Tetris {
     if (isValid(tetromino)) {
       markOn(tetromino);
       score += 100;
-    } else {
-      tetromino.up();
-      markOn(tetromino);
-      board.hanldeClear();
-      tetromino = tetrominoFactory.get();
-      if (!isValid(tetromino)) {
-        state = GAME_OVER;
-        return;
-      }
-      markOn(tetromino);
+      return;
     }
+
+    // 벽 또는 블록과 충돌 발생
+    tetromino.up();
+    markOn(tetromino);
+    int clearedLine = board.hanldeClear();
+    score += clearedLine * 1000;
+
+    // 새로운 블록을 가져온다.
+    tetromino = tetrominoFactory.get();
+    if (!isValid(tetromino)) {
+      state = GAME_OVER;
+      return;
+    }
+    markOn(tetromino);
   }
 
   public void left() {
@@ -88,16 +95,10 @@ public class Tetris {
       tetromino.down();
       count += 1;
     }
+
     score += count * 100;
     tetromino.up();
-    markOn(tetromino);
-    board.hanldeClear();
-    tetromino = tetrominoFactory.get();
-    if (!isValid(tetromino)) {
-      state = GAME_OVER;
-      return;
-    }
-    markOn(tetromino);
+    down();
   }
 
   public void restart() {
@@ -115,12 +116,24 @@ public class Tetris {
   }
 
   private boolean isValid(Tetromino t) {
-    for (Point p : t.points) {
-      if (!board.isValid(p)) {
-        return false;
-      }
+    return Arrays.stream(t.points).allMatch(p -> board.isValid(p));
+  }
+
+  public void switchBlock() {
+    // 무한히 사용하는 것을 방지
+    if (score >= 3000) {
+      score -= 3000;
     }
-    return true;
+
+    markOff(tetromino);
+    int curCode = tetromino.color;
+    tetromino = tetrominoFactory.getTetrominoByCode(savedTetrominoCode);
+    savedTetrominoCode = curCode;
+    if (!isValid(tetromino)) {
+      state = GAME_OVER;
+      return;
+    }
+    markOn(tetromino);
   }
 
   private void updateShadow() {
@@ -143,38 +156,7 @@ public class Tetris {
       tetromino.up();
       count -= 1;
     }
-  }
-
-  public void switchBlock() {
-    // 무한히 사용하는 것을 방지
-    if (score >= 3000) {
-      score -= 3000;
-    }
-
-    // 저장된게 없을 때, 저장만 하기
-    if (savedTetrominoCode == 0) {
-      savedTetrominoCode = tetromino.color;
-      markOff(tetromino);
-      tetromino = tetrominoFactory.get();
-      if (!isValid(tetromino)) {
-        state = GAME_OVER;
-        return;
-      }
-      markOn(tetromino);
-      return;
-    }
-
-    // 지우고 새로 가져와서 칠한다.
-    int curCode = tetromino.color;
-    markOff(tetromino);
-    tetromino = tetrominoFactory.getTetrominoByCode(savedTetrominoCode);
-    if (!isValid(tetromino)) {
-      state = GAME_OVER;
-      return;
-    }
-    markOn(tetromino);
-    savedTetrominoCode = curCode;
-  }
+  } // end UpdateShadow()
 
   // board에 tetromino를 표시한다.
   private void markOn(Tetromino t) {
@@ -182,6 +164,7 @@ public class Tetris {
     for (Point p : shadows) {
       board.mark(p, Board.SHADOW);
     }
+
     for (Point p : t.points) {
       board.mark(p, t.color);
     }
