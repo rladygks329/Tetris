@@ -130,8 +130,17 @@ public class TetrisView extends JPanel {
     g.drawString("SAVED BLOCK", width + 20, 200);
     if (tetris.savedTetrominoCode != 0) {
       g.drawImage(shapeImg[tetris.savedTetrominoCode], width + 30, 250, this);
-      g.setColor(Color.white);
     }
+
+    // Description
+    g.setColor(Color.white);
+    g.drawString("HOW TO PLAY", width + 20, 400);
+    g.drawString("Left: <- ", width + 20, 430);
+    g.drawString("Right: -> ", width + 20, 450);
+    g.drawString("Rotate Left: Z ", width + 20, 470);
+    g.drawString("Rotate Right: X", width + 20, 490);
+    g.drawString("Switch: C ", width + 20, 510);
+    g.drawString("Hard Drop: SPACE ", width + 20, 530);
 
     // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
