@@ -16,12 +16,12 @@ public class HomeView extends JPanel {
 
   private void initialize() {
     setLayout(null);
-    setBounds(100, 100, 470, 300);
+    setBounds(100, 100, 628, 252);
 
     JLabel lblHome = new JLabel("HOME");
     lblHome.setFont(new Font("맑은 고딕", Font.BOLD, 30));
     lblHome.setHorizontalAlignment(SwingConstants.CENTER);
-    lblHome.setBounds(132, 20, 171, 57);
+    lblHome.setBounds(236, 10, 171, 57);
     add(lblHome);
 
     JButton btnPlay = new JButton("Play");
@@ -41,5 +41,11 @@ public class HomeView extends JPanel {
     btnMyPage.addActionListener(e -> main.navigate(new MyPageView(main)));
     btnMyPage.setBounds(305, 107, 133, 84);
     add(btnMyPage);
+
+    JButton btnKeySetting = new JButton("Key Settings");
+    btnKeySetting.addActionListener(e -> main.navigate(new SettingsView(main)));
+    btnKeySetting.setFont(new Font("맑은 고딕", Font.BOLD, 20));
+    btnKeySetting.setBounds(450, 107, 151, 84);
+    add(btnKeySetting);
   }
 }

@@ -5,12 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,7 +35,6 @@ public class TetrisView extends JPanel {
   private Timer timer;
   private TetrisSoundManager sm;
   private KeyListener tetrisKeyListener;
-  private List<int[][]> history;
   public boolean gamePause = false;
 
   private Image bg;
@@ -51,7 +49,6 @@ public class TetrisView extends JPanel {
     sm = TetrisSoundManager.getInstance();
     tetris = new Tetris();
     board = tetris.board;
-    history = new ArrayList<>();
     tetrisKeyListener = new TetrisKeyListener(tetris, this);
     timer = new Timer(500, actionEvent -> {
       tetris.down();
@@ -144,13 +141,27 @@ public class TetrisView extends JPanel {
     // Description
     g.setColor(Color.white);
     g.drawString("HOW TO PLAY", width + 20, 400);
-    g.drawString("Left: <- ", width + 20, 430);
-    g.drawString("Right: -> ", width + 20, 450);
-    g.drawString("Rotate Left: Z ", width + 20, 470);
-    g.drawString("Rotate Right: X", width + 20, 490);
-    g.drawString("Switch: C ", width + 20, 510);
-    g.drawString("Hard Drop: SPACE ", width + 20, 530);
-    g.drawString("Pause/Resume: ESC", width + 20, 550);
+
+    g.drawString("Left:", width + 20, 430);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_LEFT), width + 200, 430);
+
+    g.drawString("Right:", width + 20, 450);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_RIGHT), width + 200, 450);
+
+    g.drawString("Rotate Left:", width + 20, 470);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ROTATE_LEFT), width + 200, 470);
+
+    g.drawString("Rotate Right:", width + 20, 490);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ROTATE_RIGHT), width + 200, 490);
+
+    g.drawString("Switch:", width + 20, 510);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_SWITCH), width + 200, 510);
+
+    g.drawString("Hard Drop:", width + 20, 530);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_HARD_DROP), width + 200, 530);
+
+    g.drawString("Pause/Resume:", width + 20, 550);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC), width + 200, 550);
 
     // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
@@ -160,6 +171,7 @@ public class TetrisView extends JPanel {
         g.drawImage(blockImg[type], (j + 1) * BOX_SIZE, (i - 1) * BOX_SIZE, this);
       }
     }
+
   }// end paint()
 
   private Image getResizeImg(String imgPath, int width, int height) {
