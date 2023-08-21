@@ -19,4 +19,6 @@ public interface TetrisDAO {
 
   public abstract List<ScoreDTO> selectAll(int userNo);
 
+  public abstract int deleteScore(int scoreNo);
+
 }
