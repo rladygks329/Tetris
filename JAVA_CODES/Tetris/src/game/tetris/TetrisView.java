@@ -116,7 +116,8 @@ public class TetrisView extends JPanel {
     if (gamePause) {
       g.setColor(Color.white);
       g.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-      g.drawString("Press ESC to RESUME", this.getWidth() / 2 - 100, this.getHeight() / 2);
+      g.drawString("Press " + KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC) + " to RESUME",
+          this.getWidth() / 2 - 100, this.getHeight() / 2);
       g.drawString("STOP", this.getWidth() / 2 - 20, this.getHeight() / 2 + 20);
       return;
     }
