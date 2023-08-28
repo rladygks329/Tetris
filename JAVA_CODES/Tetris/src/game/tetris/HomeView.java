@@ -16,7 +16,7 @@ public class HomeView extends JPanel {
 
   private void initialize() {
     setLayout(null);
-    setBounds(100, 100, 628, 252);
+    setBounds(100, 100, 654, 252);
 
     JLabel lblHome = new JLabel("HOME");
     lblHome.setFont(new Font("맑은 고딕", Font.BOLD, 30));
@@ -45,7 +45,7 @@ public class HomeView extends JPanel {
     JButton btnKeySetting = new JButton("Key Settings");
     btnKeySetting.addActionListener(e -> main.navigate(new SettingsView(main)));
     btnKeySetting.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-    btnKeySetting.setBounds(450, 107, 151, 84);
+    btnKeySetting.setBounds(450, 107, 171, 84);
     add(btnKeySetting);
   }
 }
