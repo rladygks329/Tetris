@@ -35,7 +35,6 @@ public class TetrisView extends JPanel {
   private Timer timer;
   private TetrisSoundManager sm;
   private KeyListener tetrisKeyListener;
-  public boolean gamePause = false;
 
   private Image bg;
   private Image[] blockImg;
@@ -113,7 +112,7 @@ public class TetrisView extends JPanel {
     int height = 22 * BOX_SIZE;
 
     // 일시정지 판별
-    if (gamePause) {
+    if (tetris.state == Tetris.GAME_PAUSE) {
       g.setColor(Color.white);
       g.setFont(new Font("맑은 고딕", Font.BOLD, 20));
       g.drawString("Press " + KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC) + " to RESUME",
@@ -197,12 +196,12 @@ public class TetrisView extends JPanel {
   }
 
   public void toggleGamePause() {
-    if (gamePause) {
+    if (tetris.state == Tetris.GAME_PAUSE) {
+      tetris.state = Tetris.GAME_NORMAL;
       timer.restart();
     } else {
+      tetris.state = Tetris.GAME_PAUSE;
       timer.stop();
     }
-    gamePause = !gamePause;
   }
-
 }

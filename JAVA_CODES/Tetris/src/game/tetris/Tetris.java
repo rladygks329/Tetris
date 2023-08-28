@@ -3,8 +3,10 @@ package game.tetris;
 import java.util.Arrays;
 
 public class Tetris {
-  public static final int GAME_OVER = -1;
+  public static final int GAME_OVER = -2;
+  public static final int GAME_PAUSE = -1;
   public static final int GAME_NORMAL = 0;
+
   private static final int BASIC_BLOCK_POINT_X = 5;
   private static final int BASIC_BLOCK_POINT_y = 0;
 
