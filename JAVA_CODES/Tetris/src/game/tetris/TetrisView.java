@@ -10,6 +10,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,6 +36,8 @@ public class TetrisView extends JPanel {
   private Board board;
   private Timer timer;
   private TetrisSoundManager sm;
+  private Date startTime;
+  private Date prevTime;
   private KeyListener tetrisKeyListener;
 
   private Image bg;
@@ -49,13 +53,10 @@ public class TetrisView extends JPanel {
     tetris = new Tetris();
     board = tetris.board;
     tetrisKeyListener = new TetrisKeyListener(tetris, this);
-    timer = new Timer(500, actionEvent -> {
-      tetris.down();
-      repaint();
-      if (tetris.state == Tetris.GAME_OVER) {
-        handleGameOver();
-      }
-    });
+    startTime = new Date();
+    prevTime = startTime;
+    replay = new LinkedList<>();
+    timer = new Timer(500, actionEvent -> update());
     timer.setInitialDelay(1000);
     initialize();
   }
@@ -103,6 +104,14 @@ public class TetrisView extends JPanel {
     addKeyListener(tetrisKeyListener);
     timer.start();
     sm.reStart();
+  }
+
+  private void update() {
+    tetris.down();
+    repaint();
+    if (tetris.state == Tetris.GAME_OVER) {
+      handleGameOver();
+    }
   }
 
   @Override
@@ -163,6 +172,9 @@ public class TetrisView extends JPanel {
     g.drawString("Pause/Resume:", width + 20, 550);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC), width + 200, 550);
 
+    g.drawString(getPlayTime(), width + 20, 600);
+    g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC), width + 200, 550);
+
     // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
     for (int i = 2; i < Board.HEIGHT + 2; i++) {
@@ -179,6 +191,16 @@ public class TetrisView extends JPanel {
         java.awt.Image.SCALE_SMOOTH);
   }// end getResizeImg()
 
+  private String getPlayTime() {
+    Calendar c = Calendar.getInstance();
+    c.setTime(startTime);
+    Long start = c.getTimeInMillis();
+    c.setTime(new Date());
+    Long cur = c.getTimeInMillis();
+
+    return "PlayTime : " + (cur - start) / 1000 + " seconds";
+  } // end getPlayTime()
+
   private void handleGameOver() {
     timer.stop();
     sm.stop();
@@ -193,7 +215,7 @@ public class TetrisView extends JPanel {
     } else {
       main.navigate(new HomeView(main));
     }
-  }
+  } // end handleGameOver()
 
   public void toggleGamePause() {
     if (tetris.state == Tetris.GAME_PAUSE) {
@@ -203,5 +225,5 @@ public class TetrisView extends JPanel {
       tetris.state = Tetris.GAME_PAUSE;
       timer.stop();
     }
-  }
+  } // end toggleGamePause()
 }
