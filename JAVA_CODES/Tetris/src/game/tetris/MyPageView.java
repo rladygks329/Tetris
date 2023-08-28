@@ -32,25 +32,25 @@ public class MyPageView extends JPanel {
   private void initialize() {
     dao = TetrisDAOImpl.getInstance();
     setLayout(null);
-    setBounds(100, 100, 590, 459);
+    setBounds(100, 100, 843, 536);
 
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(31, 120, 336, 281);
+    scrollPane.setBounds(31, 120, 789, 281);
     add(scrollPane);
 
     // <-intit label->
     JLabel lblTitle = new JLabel("MyPage");
     lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 30));
     lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-    lblTitle.setBounds(182, 20, 171, 57);
+    lblTitle.setBounds(350, 20, 171, 57);
     add(lblTitle);
 
     JLabel lblNickName = new JLabel("NickName");
-    lblNickName.setBounds(398, 94, 75, 15);
+    lblNickName.setBounds(41, 411, 85, 29);
     add(lblNickName);
 
     JLabel lblPassword = new JLabel("password");
-    lblPassword.setBounds(398, 214, 57, 15);
+    lblPassword.setBounds(503, 411, 69, 29);
     add(lblPassword);
 
     lblTableName = new JLabel(user.getNickName() + " 님의 개인 기록");
@@ -58,7 +58,7 @@ public class MyPageView extends JPanel {
     add(lblTableName);
 
     JLabel homeLabel = new HomeLabel(50, 50);
-    homeLabel.setBounds(510, 20, 50, 50);
+    homeLabel.setBounds(765, 20, 50, 50);
     homeLabel.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
@@ -71,14 +71,24 @@ public class MyPageView extends JPanel {
     JButton btnUpdateNickName = new JButton("닉네임 변경");
     btnUpdateNickName.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
     btnUpdateNickName.addActionListener(e -> updateNickName());
-    btnUpdateNickName.setBounds(435, 164, 125, 29);
+    btnUpdateNickName.setBounds(205, 451, 125, 34);
     add(btnUpdateNickName);
 
     JButton btnUpdatePassword = new JButton("비밀번호 변경");
     btnUpdatePassword.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
     btnUpdatePassword.addActionListener(e -> updatePassword());
-    btnUpdatePassword.setBounds(435, 283, 125, 29);
+    btnUpdatePassword.setBounds(677, 451, 125, 34);
     add(btnUpdatePassword);
+
+    JButton btnDelete = new JButton("삭제");
+    btnDelete.addActionListener(e -> deleteScore());
+    btnDelete.setBounds(723, 87, 97, 23);
+    add(btnDelete);
+
+    JButton btnPlayReplay = new JButton("리플레이 재생");
+    btnPlayReplay.setBounds(598, 87, 116, 23);
+    btnPlayReplay.addActionListener(e -> playReplay());
+    add(btnPlayReplay);
 
     // <- init table ->
     table = new JTable();
@@ -90,19 +100,14 @@ public class MyPageView extends JPanel {
 
     // <-init text field->
     textFieldNickName = new JTextField();
-    textFieldNickName.setBounds(398, 120, 162, 34);
+    textFieldNickName.setBounds(31, 451, 162, 34);
     add(textFieldNickName);
     textFieldNickName.setColumns(10);
 
     textFieldPassword = new JTextField();
     textFieldPassword.setColumns(10);
-    textFieldPassword.setBounds(398, 239, 162, 34);
+    textFieldPassword.setBounds(503, 451, 162, 34);
     add(textFieldPassword);
-
-    JButton btnDelete = new JButton("삭제");
-    btnDelete.addActionListener(e -> deleteScore());
-    btnDelete.setBounds(270, 90, 97, 23);
-    add(btnDelete);
   }
 
   private void deleteScore() {
@@ -166,5 +171,23 @@ public class MyPageView extends JPanel {
       JOptionPane.showMessageDialog(this, "오류 발생", "정보", JOptionPane.INFORMATION_MESSAGE);
       user.setPassword(prevPassword);
     }
+  }
+
+  private void playReplay() {
+    int[] selected = table.getSelectedRows();
+
+    if (selected.length == 0) {
+      JOptionPane.showMessageDialog(this, "리플레이를 선택해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+
+    if (selected.length > 1) {
+      JOptionPane.showMessageDialog(this, "하나만 선택해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
+      return;
+    }
+
+    int index = selected[0];
+    String filePath = model.getFilePath(index);
+    main.navigate(new TetrisView(main, TetrisView.REPLAY_MODE, filePath));
   }
 }

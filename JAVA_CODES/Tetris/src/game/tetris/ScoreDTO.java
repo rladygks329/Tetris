@@ -7,14 +7,16 @@ public class ScoreDTO {
   private int score;
   private String nickName;
   private Date time;
+  private String imgURL;
 
   public ScoreDTO() {}
 
-  public ScoreDTO(int scoreNo, int score, String nickName, Date time) {
+  public ScoreDTO(int scoreNo, int score, String nickName, Date time, String imgURL) {
     this.scoreNo = scoreNo;
     this.score = score;
     this.nickName = nickName;
     this.time = time;
+    this.imgURL = imgURL;
   }
 
   public final int getScoreNo() {
@@ -49,8 +51,17 @@ public class ScoreDTO {
     this.time = time;
   }
 
+  public final String getImgURL() {
+    return imgURL;
+  }
+
+  public final void setImgURL(String imgURL) {
+    this.imgURL = imgURL;
+  }
+
   @Override
   public String toString() {
-    return "ScoreDTO [score=" + score + ", nickName=" + nickName + ", time=" + time + "]";
+    return "ScoreDTO [scoreNo=" + scoreNo + ", score=" + score + ", nickName=" + nickName
+        + ", time=" + time + ", imgURL=" + imgURL + "]";
   }
 }

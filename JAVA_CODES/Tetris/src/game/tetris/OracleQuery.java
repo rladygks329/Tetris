@@ -16,6 +16,7 @@ public interface OracleQuery {
   public static final String SCORE_COL_SCORE_NO = "SCORE_NO";
   public static final String SCORE_COL_USER_NO = "USER_NO";
   public static final String SCORE_COL_SCORE = "SCORE";
+  public static final String SCORE_COL_IMG_URL = "IMG_URL";
   public static final String SCORE_COL_TIME = "TIME";
 
   // 유저 추가
@@ -45,25 +46,27 @@ public interface OracleQuery {
       "DELETE " + USER_TABLE_NAME + " WHERE " + USER_COL_USER_NO + " = ?";
 
   // 기록 추가 (USER_NO, SCORE)
-  public static final String SQL_SCORE_INSERT =
-      "INSERT INTO " + SCORE_TABLE_NAME + "(" + SCORE_COL_SCORE_NO + ", " + SCORE_COL_USER_NO + ", "
-          + SCORE_COL_SCORE + ") VALUES(TETRIS_SCORE_SEQ.NEXTVAL, ?, ?)";
+  public static final String SQL_SCORE_INSERT = "INSERT INTO " + SCORE_TABLE_NAME + "("
+      + SCORE_COL_SCORE_NO + ", " + SCORE_COL_USER_NO + ", " + SCORE_COL_SCORE + ", "
+      + SCORE_COL_IMG_URL + ") VALUES(TETRIS_SCORE_SEQ.NEXTVAL, ?, ?, ?)";
 
   // 기록 삭제
   public static final String SQL_SCORE_DELETE =
       "DELETE " + SCORE_TABLE_NAME + " WHERE " + SCORE_COL_SCORE_NO + " = ?";
+
   // 모든 기록 보기
   public static final String SQL_SCORE_SELECT_ALL = //
       "SELECT " + SCORE_COL_SCORE_NO + ", " + SCORE_COL_SCORE + ", U." + USER_COL_NICKNAME + ", "
-          + SCORE_COL_TIME + " "//
+          + SCORE_COL_TIME + ", " + SCORE_COL_IMG_URL + " "//
           + "FROM " + SCORE_TABLE_NAME + " S JOIN " + USER_TABLE_NAME
           + " U ON S.USER_NO = U.USER_NO "//
           + "ORDER BY " + SCORE_COL_SCORE + " DESC";//
 
   // 자신의 기록 보기
   public static final String SQL_SCORE_SELECT_BY_USER_NO = "SELECT " + SCORE_COL_SCORE_NO + ", "
-      + SCORE_COL_SCORE + ", U." + USER_COL_NICKNAME + ", " + SCORE_COL_TIME + " "//
-      + "FROM " + SCORE_TABLE_NAME + " S JOIN " + USER_TABLE_NAME + " U ON S.USER_NO = U.USER_NO "//
-      + " WHERE S." + SCORE_COL_USER_NO + " = ? "//
-      + "ORDER BY " + SCORE_COL_SCORE + " DESC";//
+      + SCORE_COL_SCORE + ", U." + USER_COL_NICKNAME + ", " + SCORE_COL_TIME + ", "
+      + SCORE_COL_IMG_URL//
+      + " FROM " + SCORE_TABLE_NAME + " S JOIN " + USER_TABLE_NAME + " U ON S.USER_NO = U.USER_NO"//
+      + " WHERE S." + SCORE_COL_USER_NO + " = ?"//
+      + " ORDER BY " + SCORE_COL_SCORE + " DESC";//
 }

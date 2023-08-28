@@ -1,6 +1,8 @@
 package game.tetris;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Tetris {
   public static final int GAME_OVER = -2;
@@ -13,19 +15,24 @@ public class Tetris {
   private TetrominoFactory tetrominoFactory;
   private Tetromino tetromino;
   private Point[] shadows;
+  private Date startDate;
+
   public Board board;
   public int state;
   public int score;
+  public int nextTetrominoCode = 0;
   public int savedTetrominoCode = 0;
 
   public Tetris() {
     board = new Board();
     shadows = new Point[4];
+    startDate = new Date();
     for (int i = 0; i < 4; i++) {
       shadows[i] = new Point();
     }
     tetrominoFactory = new TetrominoFactory(BASIC_BLOCK_POINT_X, BASIC_BLOCK_POINT_y);
     tetromino = tetrominoFactory.get();
+    nextTetrominoCode = getNextBlock();
     markOn(tetromino);
   }
 
@@ -47,6 +54,7 @@ public class Tetris {
 
     // 새로운 블록을 가져온다.
     tetromino = tetrominoFactory.get();
+    nextTetrominoCode = getNextBlock();
     if (!isValid(tetromino)) {
       state = GAME_OVER;
       return;
@@ -103,24 +111,6 @@ public class Tetris {
     down();
   }
 
-  public void restart() {
-    state = 0;
-    score = 0;
-    savedTetrominoCode = 0;
-    board.clear();
-    tetrominoFactory.init();
-    tetromino = tetrominoFactory.get();
-    markOn(tetromino);
-  }
-
-  public int getNextBlock() {
-    return tetrominoFactory.next().color;
-  }
-
-  private boolean isValid(Tetromino t) {
-    return Arrays.stream(t.points).allMatch(p -> board.isValid(p));
-  }
-
   public void switchBlock() {
     // 무한히 사용하는 것을 방지
     if (score >= 3000) {
@@ -130,6 +120,7 @@ public class Tetris {
     markOff(tetromino);
     int curCode = tetromino.color;
     tetromino = tetrominoFactory.getTetrominoByCode(savedTetrominoCode);
+    nextTetrominoCode = getNextBlock();
     savedTetrominoCode = curCode;
     if (!isValid(tetromino)) {
       state = GAME_OVER;
@@ -137,6 +128,36 @@ public class Tetris {
     }
     markOn(tetromino);
   }
+
+  public void restart() {
+    state = 0;
+    score = 0;
+    savedTetrominoCode = 0;
+    board.clear();
+    tetrominoFactory.init();
+    tetromino = tetrominoFactory.get();
+    nextTetrominoCode = getNextBlock();
+    markOn(tetromino);
+  }
+
+  private int getNextBlock() {
+    return tetrominoFactory.next().color;
+  }
+
+  private boolean isValid(Tetromino t) {
+    return Arrays.stream(t.points).allMatch(p -> board.isValid(p));
+  }
+
+  public String getPlayTime() {
+    Calendar c = Calendar.getInstance();
+    c.setTime(startDate);
+    Long start = c.getTimeInMillis();
+    c.setTime(new Date());
+    Long cur = c.getTimeInMillis();
+
+    return "PlayTime : " + (cur - start) / 1000 + " seconds";
+  } // end getPlayTime()
+
 
   private void updateShadow() {
     // 내려간 위치 구하기
