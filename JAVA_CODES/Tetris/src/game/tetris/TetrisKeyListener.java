@@ -32,7 +32,7 @@ public class TetrisKeyListener implements KeyListener {
       return;
     }
 
-    if (tetris.state == Tetris.GAME_OVER || tetrisView.gamePause) {
+    if (tetris.state == Tetris.GAME_OVER || tetris.state == Tetris.GAME_PAUSE) {
       return;
     }
 
