@@ -10,8 +10,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,39 +30,49 @@ public class TetrisView extends JPanel {
       "res" + File.separator + "Tetrominos" + File.separator + "Single Blocks" + File.separator;
   private final String SHAPE_IMG_PATH =
       "res" + File.separator + "Tetrominos" + File.separator + "Shape Blocks" + File.separator;
+  public static final int REPLAY_MODE = 1;
+  public static final int PLAY_MODE = 2;
+
   private final int BOX_SIZE = 30;
 
   // member 변수
+  private int mode;
   private Main main;
   private UserDTO user;
   private TetrisDAO dao;
-
   private Tetris tetris;
-  private Board board;
   private Timer timer;
   private TetrisSoundManager sm;
-  private Date startTime;
-  private Date prevTime;
+  private Date prevDate;
+  private List<ReplayAtom> replay;
+  private Iterator<ReplayAtom> iter;
+  private String url;
   private KeyListener tetrisKeyListener;
 
   private Image bg;
   private Image[] blockImg;
   private Image[] shapeImg;
 
-  public TetrisView(Main main) {
+  public TetrisView(Main main, int mode, String url) {
     // 멤버 변수 초기화
     this.main = main;
+    this.mode = mode;
+    this.url = url;
     user = main.user;
     dao = TetrisDAOImpl.getInstance();
     sm = TetrisSoundManager.getInstance();
+    sm.reStart();
+
     tetris = new Tetris();
-    board = tetris.board;
     tetrisKeyListener = new TetrisKeyListener(tetris, this);
-    startTime = new Date();
-    prevTime = startTime;
+    prevDate = new Date();
     replay = new LinkedList<>();
-    timer = new Timer(500, actionEvent -> update());
-    timer.setInitialDelay(1000);
+
+    if (mode == REPLAY_MODE) {
+      initReplayMode();
+    } else {
+      initGameMode();
+    }
     initialize();
   }
 
@@ -95,15 +110,11 @@ public class TetrisView extends JPanel {
       @Override
       public void mouseClicked(MouseEvent e) {
         timer.stop();
-        main.navigate(new HomeView(main));
         sm.stop();
+        main.navigate(new HomeView(main));
       }
     });
     add(homeLabel);
-
-    addKeyListener(tetrisKeyListener);
-    timer.start();
-    sm.reStart();
   }
 
   private void update() {
@@ -114,11 +125,42 @@ public class TetrisView extends JPanel {
     }
   }
 
+  private void initGameMode() {
+    addKeyListener(tetrisKeyListener);
+    timer = new Timer(500, actionEvent -> update());
+    timer.setInitialDelay(1000);
+    timer.start();
+  }
+
+  private void initReplayMode() {
+    replay = ReplayFileManager.load(url);
+    iter = replay.iterator();
+
+    timer = new Timer(1000, e -> {
+      if (iter.hasNext()) {
+        ReplayAtom atom = iter.next();
+        tetris.board.map = atom.map;
+        tetris.score = atom.score;
+        tetris.savedTetrominoCode = atom.savedBlockCode;
+        tetris.nextTetrominoCode = atom.nextBlockCode;
+        timer.setDelay(atom.delay);
+        repaint();
+      } else {
+        timer.stop();
+      }
+    });
+    timer.start();
+  }
+
   @Override
   public void paint(Graphics g) {
     super.paint(g);
     int width = 12 * BOX_SIZE;
     int height = 22 * BOX_SIZE;
+
+    if (mode == PLAY_MODE) {
+      addReplayAtom();
+    }
 
     // 일시정지 판별
     if (tetris.state == Tetris.GAME_PAUSE) {
@@ -126,7 +168,6 @@ public class TetrisView extends JPanel {
       g.setFont(new Font("맑은 고딕", Font.BOLD, 20));
       g.drawString("Press " + KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC) + " to RESUME",
           this.getWidth() / 2 - 100, this.getHeight() / 2);
-      g.drawString("STOP", this.getWidth() / 2 - 20, this.getHeight() / 2 + 20);
       return;
     }
 
@@ -139,7 +180,7 @@ public class TetrisView extends JPanel {
     g.drawString("SCORE : " + Integer.toString(tetris.score), width + 20, 55);
 
     // Next Block
-    g.drawImage(shapeImg[tetris.getNextBlock()], width + 30, 100, this);
+    g.drawImage(shapeImg[tetris.nextTetrominoCode], width + 30, 100, this);
     g.setColor(Color.white);
     g.drawString("NEXT BLOCK", width + 20, 80);
 
@@ -150,36 +191,28 @@ public class TetrisView extends JPanel {
     // Description
     g.setColor(Color.white);
     g.drawString("HOW TO PLAY", width + 20, 400);
-
     g.drawString("Left:", width + 20, 430);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_LEFT), width + 200, 430);
-
     g.drawString("Right:", width + 20, 450);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_RIGHT), width + 200, 450);
-
     g.drawString("Rotate Left:", width + 20, 470);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ROTATE_LEFT), width + 200, 470);
-
     g.drawString("Rotate Right:", width + 20, 490);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ROTATE_RIGHT), width + 200, 490);
-
     g.drawString("Switch:", width + 20, 510);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_SWITCH), width + 200, 510);
-
     g.drawString("Hard Drop:", width + 20, 530);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_HARD_DROP), width + 200, 530);
-
     g.drawString("Pause/Resume:", width + 20, 550);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC), width + 200, 550);
-
-    g.drawString(getPlayTime(), width + 20, 600);
+    g.drawString(tetris.getPlayTime(), width + 20, 600);
     g.drawString(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ESC), width + 200, 550);
 
     // Board
     // 블록 생성을 위한 보이지않는 두 줄이 존재함
     for (int i = 2; i < Board.HEIGHT + 2; i++) {
       for (int j = 0; j < Board.WIDTH; j++) {
-        int type = board.map[i][j];
+        int type = tetris.board.map[i][j];
         g.drawImage(blockImg[type], (j + 1) * BOX_SIZE, (i - 1) * BOX_SIZE, this);
       }
     }
@@ -191,20 +224,35 @@ public class TetrisView extends JPanel {
         java.awt.Image.SCALE_SMOOTH);
   }// end getResizeImg()
 
-  private String getPlayTime() {
-    Calendar c = Calendar.getInstance();
-    c.setTime(startTime);
-    Long start = c.getTimeInMillis();
-    c.setTime(new Date());
-    Long cur = c.getTimeInMillis();
 
-    return "PlayTime : " + (cur - start) / 1000 + " seconds";
-  } // end getPlayTime()
+  private void addReplayAtom() {
+    // caculate delay
+    Calendar c = Calendar.getInstance();
+    c.setTime(prevDate);
+    long prev = c.getTimeInMillis();
+
+    Date curDate = new Date();
+    c.setTime(curDate);
+    long cur = c.getTimeInMillis();
+
+    // save atom
+    ReplayAtom atom = new ReplayAtom(tetris, (int) (cur - prev));
+    replay.add(atom);
+
+    // update prevDate
+    prevDate = curDate;
+  }
 
   private void handleGameOver() {
     timer.stop();
     sm.stop();
-    dao.insert(user.getNo(), tetris.score);
+
+    Date cur = new Date();
+    DateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    String fileName = format.format(cur);
+    String filePath = ReplayFileManager.getFilePath(user.getNo(), fileName);
+    dao.insert(user.getNo(), new ScoreDTO(-1, tetris.score, "", cur, filePath));
+
     int result = JOptionPane.showConfirmDialog(this,
         "게임 오버\n Score " + tetris.score + "\n 다시 시작하시겠습니까?", "정보", JOptionPane.YES_NO_OPTION);
     if (result == JOptionPane.YES_OPTION) {
@@ -213,6 +261,7 @@ public class TetrisView extends JPanel {
       sm.reStart();
       repaint();
     } else {
+      ReplayFileManager.save(user.getNo(), fileName, replay);
       main.navigate(new HomeView(main));
     }
   } // end handleGameOver()

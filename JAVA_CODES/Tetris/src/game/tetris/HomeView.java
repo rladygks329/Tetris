@@ -26,7 +26,7 @@ public class HomeView extends JPanel {
 
     JButton btnPlay = new JButton("Play");
     btnPlay.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-    btnPlay.addActionListener(e -> main.navigate(new TetrisView(main)));
+    btnPlay.addActionListener(e -> main.navigate(new TetrisView(main, TetrisView.PLAY_MODE, "")));
     btnPlay.setBounds(12, 107, 133, 84);
     add(btnPlay);
 

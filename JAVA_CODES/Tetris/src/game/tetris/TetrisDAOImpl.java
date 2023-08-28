@@ -47,12 +47,13 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
   }
 
   @Override
-  public int insert(int userNo, int score) {
+  public int insert(int userNo, ScoreDTO dto) {
     int result = 0;
     try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
         PreparedStatement pstmt = conn.prepareStatement(SQL_SCORE_INSERT)) {
       pstmt.setInt(1, userNo);
-      pstmt.setInt(2, score);
+      pstmt.setInt(2, dto.getScore());
+      pstmt.setString(3, dto.getImgURL());
       result = pstmt.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -191,7 +192,8 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
         int score = rs.getInt(2);
         String nickName = rs.getString(3);
         Timestamp time = rs.getTimestamp(4);
-        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time);
+        String imgURL = rs.getString(5);
+        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time, imgURL);
         list.add(dto);
       }
     } catch (Exception e) {
@@ -225,7 +227,8 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
         int score = rs.getInt(2);
         String nickName = rs.getString(3);
         Timestamp time = rs.getTimestamp(4);
-        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time);
+        String imgURL = rs.getString(5);
+        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time, imgURL);
         list.add(dto);
       }
     } catch (Exception e) {
