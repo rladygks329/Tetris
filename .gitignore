@@ -5,3 +5,4 @@ JAVA_CODES/.metadata/
 *.project
 *.prefs
 *.class
+*.replay
