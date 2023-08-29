@@ -37,7 +37,7 @@ public class Board {
   public int hanldeClear() {
     int line = 0;
 
-    for (int i = 2; i < Board.HEIGHT + 2; i++) {
+    for (int i = Board.HEIGHT; i >= 0; i--) {
       if (isLineFull(i)) {
         line += 1;
         pullLine(i);
@@ -50,7 +50,7 @@ public class Board {
   private boolean isLineFull(int height) {
     boolean result = true;
     for (int i = 0; i < Board.WIDTH; i++) {
-      if (map[height][i] == 0) {
+      if (map[height][i] == Board.EMPTY) {
         result = false;
         break;
       }
@@ -60,12 +60,12 @@ public class Board {
 
   // 라인이 지워졌을 때 map을 한칸씩 앞으로 당기는 함수
   private void pullLine(int height) {
-    for (int i = height; i > 0; i--) {
-      map[i] = Arrays.copyOf(map[i - 1], WIDTH);
+    for (int i = height; i < Board.HEIGHT + 1; i++) {
+      map[i] = Arrays.copyOf(map[i + 1], WIDTH);
     }
     // 맨 위에 칸 초기화
     for (int i = 0; i < WIDTH; i++) {
-      map[0][i] = 0;
+      map[Board.HEIGHT + 1][i] = Board.EMPTY;
     }
   }// end pullLine()
 

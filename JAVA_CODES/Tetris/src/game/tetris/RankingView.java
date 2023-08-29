@@ -27,21 +27,12 @@ public class RankingView extends JPanel {
     setLayout(null);
     setBounds(100, 100, 611, 480);
 
+    // <-- init lable -->
     JLabel lblTitle = new JLabel("Ranking");
     lblTitle.setFont(new Font("맑은 고딕", Font.BOLD, 30));
     lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
     lblTitle.setBounds(216, 20, 171, 57);
     add(lblTitle);
-
-    JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(12, 120, 565, 294);
-    add(scrollPane);
-
-    table = new JTable();
-    scrollPane.setViewportView(table);
-
-    model = new ScoreTableModel(dao.selectAll());
-    table.setModel(model);
 
     JLabel homeLabel = new HomeLabel(50, 50);
     homeLabel.setBounds(527, 20, 50, 50);
@@ -53,6 +44,18 @@ public class RankingView extends JPanel {
     });
     add(homeLabel);
 
+    // <--init table -->
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setBounds(12, 120, 565, 294);
+    add(scrollPane);
+
+    table = new JTable();
+    scrollPane.setViewportView(table);
+
+    model = new ScoreTableModel(dao.selectAll());
+    table.setModel(model);
+
+    // <-- init btn -->
     JButton btnPlayReplay = new JButton("리플레이 보기");
     btnPlayReplay.addActionListener(e -> playReplay());
     btnPlayReplay.setBounds(454, 80, 123, 23);

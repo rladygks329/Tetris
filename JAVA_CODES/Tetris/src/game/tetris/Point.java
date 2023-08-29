@@ -17,15 +17,6 @@ public class Point {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof Point) {
-      Point opponent = ((Point) obj);
-      return x == opponent.x && y == opponent.y;
-    }
-    return false;
-  }
-
-  @Override
   public String toString() {
     return "[POINT x: " + x + "y : " + y + "]";
   }

@@ -8,10 +8,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 
 class TetrisSoundManager {
+  private final String BGM_FILE_PATH = "res" + File.separator + "Tetrominos" + File.separator
+      + "BGM" + File.separator + "BGM_Bradinsky.wav";
   private static TetrisSoundManager instance;
-  private final String path = "res" + File.separator + "Tetrominos" + File.separator + "BGM"
-      + File.separator + "BGM_Bradinsky.wav";
-  public Clip clip;
+  private Clip clip;
 
   public static TetrisSoundManager getInstance() {
     if (instance == null) {
@@ -30,8 +30,7 @@ class TetrisSoundManager {
     AudioFormat format;
     DataLine.Info info;
 
-    bgm = new File(path); // 사용시에는 개별 폴더로 변경할 것
-
+    bgm = new File(BGM_FILE_PATH);
     try {
       stream = AudioSystem.getAudioInputStream(bgm);
       format = stream.getFormat();
@@ -40,12 +39,10 @@ class TetrisSoundManager {
       clip.open(stream);
       clip.loop(Clip.LOOP_CONTINUOUSLY);
       clip.stop();
-
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-  }
+  }// end init()
 
   public void reStart() {
     if (clip == null) {
@@ -54,19 +51,19 @@ class TetrisSoundManager {
 
     clip.setFramePosition(0);
     clip.start();
-  }
+  } // end reStart()
 
   public void resume() {
     if (clip == null) {
       return;
     }
     clip.start();
-  }
+  } // end resume()
 
   public void stop() {
     if (clip == null) {
       return;
     }
     clip.stop();
-  }
+  } // end stop()
 }
