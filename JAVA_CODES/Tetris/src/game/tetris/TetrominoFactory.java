@@ -1,5 +1,12 @@
 package game.tetris;
 
+import static game.tetris.Tetromino.ITETROMINO_COLOR_CODE;
+import static game.tetris.Tetromino.JTETROMINO_COLOR_CODE;
+import static game.tetris.Tetromino.LTETROMINO_COLOR_CODE;
+import static game.tetris.Tetromino.OTETROMINO_COLOR_CODE;
+import static game.tetris.Tetromino.STETROMINO_COLOR_CODE;
+import static game.tetris.Tetromino.TTETROMINO_COLOR_CODE;
+import static game.tetris.Tetromino.ZTETROMINO_COLOR_CODE;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,25 +45,25 @@ public class TetrominoFactory {
   public Tetromino getTetrominoByCode(int code) {
     Tetromino result = null;
     switch (code) {
-      case 1:
+      case JTETROMINO_COLOR_CODE:
         result = new JTetromino(x, y);
         break;
-      case 2:
+      case STETROMINO_COLOR_CODE:
         result = new STetromino(x, y);
         break;
-      case 3:
+      case ITETROMINO_COLOR_CODE:
         result = new ITetromino(x, y);
         break;
-      case 4:
+      case LTETROMINO_COLOR_CODE:
         result = new LTetromino(x, y);
         break;
-      case 5:
+      case TTETROMINO_COLOR_CODE:
         result = new TTetromino(x, y);
         break;
-      case 6:
+      case ZTETROMINO_COLOR_CODE:
         result = new ZTetromino(x, y);
         break;
-      case 7:
+      case OTETROMINO_COLOR_CODE:
         result = new OTetromino(x, y);
         break;
       default:

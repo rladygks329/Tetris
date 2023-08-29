@@ -10,13 +10,14 @@ public class Tetris {
   public static final int GAME_NORMAL = 0;
 
   private static final int BASIC_BLOCK_POINT_X = 5;
-  private static final int BASIC_BLOCK_POINT_y = 0;
+  private static final int BASIC_BLOCK_POINT_y = 20;
 
   private TetrominoFactory tetrominoFactory;
   private Tetromino tetromino;
   private Point[] shadows;
   private Date startDate;
 
+  private boolean isSwitchable;
   public Board board;
   public int state;
   public int score;
@@ -32,7 +33,8 @@ public class Tetris {
     }
     tetrominoFactory = new TetrominoFactory(BASIC_BLOCK_POINT_X, BASIC_BLOCK_POINT_y);
     tetromino = tetrominoFactory.get();
-    nextTetrominoCode = getNextBlock();
+    isSwitchable = true;
+    nextTetrominoCode = getNextBlockColorCode();
     markOn(tetromino);
   }
 
@@ -54,7 +56,8 @@ public class Tetris {
 
     // 새로운 블록을 가져온다.
     tetromino = tetrominoFactory.get();
-    nextTetrominoCode = getNextBlock();
+    isSwitchable = true;
+    nextTetrominoCode = getNextBlockColorCode();
     if (!isValid(tetromino)) {
       state = GAME_OVER;
       return;
@@ -112,15 +115,15 @@ public class Tetris {
   }
 
   public void switchBlock() {
-    // 무한히 사용하는 것을 방지
-    if (score >= 3000) {
-      score -= 3000;
+    if (!isSwitchable) {
+      return;
     }
 
+    isSwitchable = false;
     markOff(tetromino);
-    int curCode = tetromino.color;
+    int curCode = tetromino.colorCode;
     tetromino = tetrominoFactory.getTetrominoByCode(savedTetrominoCode);
-    nextTetrominoCode = getNextBlock();
+    nextTetrominoCode = getNextBlockColorCode();
     savedTetrominoCode = curCode;
     if (!isValid(tetromino)) {
       state = GAME_OVER;
@@ -136,12 +139,13 @@ public class Tetris {
     board.clear();
     tetrominoFactory.init();
     tetromino = tetrominoFactory.get();
-    nextTetrominoCode = getNextBlock();
+    isSwitchable = true;
+    nextTetrominoCode = getNextBlockColorCode();
     markOn(tetromino);
   }
 
-  private int getNextBlock() {
-    return tetrominoFactory.next().color;
+  private int getNextBlockColorCode() {
+    return tetrominoFactory.next().colorCode;
   }
 
   private boolean isValid(Tetromino t) {
@@ -168,13 +172,13 @@ public class Tetris {
     }
     tetromino.up();
 
-    // shadow 배열에 넣기
+    // shadow 위치 설정하기
     for (int i = 0; i < 4; i++) {
       Point p = tetromino.points[i];
       shadows[i].setPoint(p.x, p.y);
     }
 
-    // 다시 되돌리기
+    // 블록 되돌리기
     while (count > 0) {
       tetromino.up();
       count -= 1;
@@ -189,7 +193,7 @@ public class Tetris {
     }
 
     for (Point p : t.points) {
-      board.mark(p, t.color);
+      board.mark(p, t.colorCode);
     }
   } // end markOn()
 

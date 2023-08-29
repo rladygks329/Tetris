@@ -48,7 +48,6 @@ public class ReplayFileManager {
         }
       } catch (IOException e) {
         e.printStackTrace();
-        System.out.println(file.getAbsolutePath());
       }
     }
 
