@@ -2,10 +2,12 @@ package game.tetris;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
@@ -68,29 +70,30 @@ public class SignInView extends JPanel {
     add(lblSignUp);
 
 
-    // <-- init textField -- >
-    textField = new JTextField();
-    textField.addKeyListener(new KeyAdapter() {
+    KeyListener nextFocusListener = new KeyAdapter() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        super.keyReleased(e);
+        btnSubmit.setEnabled(isValidForm());
+      }
+
       @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KEY_CODE_ENTER) {
-          passwordField.requestFocus();
+          KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
         }
       }
-    });
+    };
+
+    // <-- init textField -- >
+    textField = new JTextField();
+    textField.addKeyListener(nextFocusListener);
     textField.setBounds(12, 90, 426, 34);
     add(textField);
     textField.setColumns(10);
 
     passwordField = new JPasswordField();
-    passwordField.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KEY_CODE_ENTER) {
-          btnSubmit.requestFocus();
-        }
-      }
-    });
+    passwordField.addKeyListener(nextFocusListener);
     passwordField.setBounds(12, 169, 426, 34);
     add(passwordField);
 
@@ -107,6 +110,7 @@ public class SignInView extends JPanel {
     });
     btnSubmit.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
     btnSubmit.setBounds(117, 235, 216, 41);
+    btnSubmit.setEnabled(false);
     add(btnSubmit);
 
     // panel에 focus를 받으면 input에 적용
@@ -118,20 +122,15 @@ public class SignInView extends JPanel {
     });
   }
 
+  private boolean isValidForm() {
+    String id = textField.getText();
+    String password = new String(passwordField.getPassword());
+    return !id.isBlank() && !password.isBlank();
+  }// end isValidForm()
+
   private void handleSubmit() {
     String id = textField.getText();
     String password = new String(passwordField.getPassword());
-
-    if (id.isBlank()) {
-      JOptionPane.showMessageDialog(this, "ID를 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
-
-    if (password.isBlank()) {
-      JOptionPane.showMessageDialog(this, "PASSWORD를 입력해주세요.", "정보",
-          JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
 
     UserDTO user = dao.select(id, password);
     if (user == null) {
@@ -141,10 +140,11 @@ public class SignInView extends JPanel {
     }
     main.user = user;
     main.navigate(new HomeView(main));
-  }
+  } // end handleSubmit()
 
   private void navigateSignUp() {
     SignUpView signUpView = new SignUpView(main);
     main.navigate(signUpView);
-  }
+  }// end navigateSignUp()
+
 }
