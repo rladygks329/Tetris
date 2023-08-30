@@ -1,22 +1,23 @@
 package game.tetris;
 
 import java.util.Date;
+import java.util.List;
 
 public class ScoreDTO {
   private int scoreNo;
   private int score;
   private String nickName;
   private Date time;
-  private String imgURL;
+  private List<ReplayAtom> replay;
 
   public ScoreDTO() {}
 
-  public ScoreDTO(int scoreNo, int score, String nickName, Date time, String imgURL) {
+  public ScoreDTO(int scoreNo, int score, String nickName, Date time, List<ReplayAtom> replay) {
     this.scoreNo = scoreNo;
     this.score = score;
     this.nickName = nickName;
     this.time = time;
-    this.imgURL = imgURL;
+    this.replay = replay;
   }
 
   public final int getScoreNo() {
@@ -51,17 +52,18 @@ public class ScoreDTO {
     this.time = time;
   }
 
-  public final String getImgURL() {
-    return imgURL;
+  public final List<ReplayAtom> getReplay() {
+    return replay;
   }
 
-  public final void setImgURL(String imgURL) {
-    this.imgURL = imgURL;
+  public final void setReplay(List<ReplayAtom> replay) {
+    this.replay = replay;
   }
 
   @Override
   public String toString() {
     return "ScoreDTO [scoreNo=" + scoreNo + ", score=" + score + ", nickName=" + nickName
-        + ", time=" + time + ", imgURL=" + imgURL + "]";
+        + ", time=" + time + ", replay=" + replay + "]";
   }
+
 }

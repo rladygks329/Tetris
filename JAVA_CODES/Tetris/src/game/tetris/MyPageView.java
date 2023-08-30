@@ -187,7 +187,6 @@ public class MyPageView extends JPanel {
     }
 
     int index = selected[0];
-    String filePath = model.getFilePath(index);
-    main.navigate(new TetrisView(main, TetrisView.REPLAY_MODE, filePath));
+    main.navigate(new TetrisView(main, TetrisView.REPLAY_MODE, model.getReplay(index)));
   }
 }

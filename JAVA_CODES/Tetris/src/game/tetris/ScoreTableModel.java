@@ -57,7 +57,7 @@ public class ScoreTableModel extends AbstractTableModel {
     return list.get(rowIndex).getScoreNo();
   }
 
-  public String getFilePath(int rowIndex) {
-    return list.get(rowIndex).getImgURL();
+  public List<ReplayAtom> getReplay(int rowIndex) {
+    return list.get(rowIndex).getReplay();
   }
 }

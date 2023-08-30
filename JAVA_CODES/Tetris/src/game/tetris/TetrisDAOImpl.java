@@ -1,5 +1,12 @@
 package game.tetris;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -51,9 +58,10 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
     int result = 0;
     try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
         PreparedStatement pstmt = conn.prepareStatement(SQL_SCORE_INSERT)) {
+      byte[] resultByte = convertObjectToBytes(dto.getReplay());
       pstmt.setInt(1, userNo);
       pstmt.setInt(2, dto.getScore());
-      pstmt.setString(3, dto.getImgURL());
+      pstmt.setBinaryStream(3, new ByteArrayInputStream(resultByte), resultByte.length);
       result = pstmt.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -192,8 +200,11 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
         int score = rs.getInt(2);
         String nickName = rs.getString(3);
         Timestamp time = rs.getTimestamp(4);
-        String imgURL = rs.getString(5);
-        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time, imgURL);
+
+        Blob blob = rs.getBlob(5);
+        byte[] blobbytes = blob.getBytes(1, (int) blob.length());
+        List<ReplayAtom> replay = (List<ReplayAtom>) convertBytesToObject(blobbytes);
+        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time, replay);
         list.add(dto);
       }
     } catch (Exception e) {
@@ -227,8 +238,11 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
         int score = rs.getInt(2);
         String nickName = rs.getString(3);
         Timestamp time = rs.getTimestamp(4);
-        String imgURL = rs.getString(5);
-        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time, imgURL);
+
+        Blob blob = rs.getBlob(5);
+        byte[] blobbytes = blob.getBytes(1, (int) blob.length());
+        List<ReplayAtom> replay = (List<ReplayAtom>) convertBytesToObject(blobbytes);
+        ScoreDTO dto = new ScoreDTO(scoreNo, score, nickName, time, replay);
         list.add(dto);
       }
     } catch (Exception e) {
@@ -257,4 +271,20 @@ public class TetrisDAOImpl implements OracleQuery, TetrisDAO {
     }
     return result;
   }// end deleteScore
+
+  public static byte[] convertObjectToBytes(Object obj) throws IOException {
+    ByteArrayOutputStream boas = new ByteArrayOutputStream();
+    try (ObjectOutputStream ois = new ObjectOutputStream(boas)) {
+      ois.writeObject(obj);
+      return boas.toByteArray();
+    }
+  }
+
+  public static Object convertBytesToObject(byte[] bytes)
+      throws IOException, ClassNotFoundException {
+    InputStream is = new ByteArrayInputStream(bytes);
+    try (ObjectInputStream ois = new ObjectInputStream(is)) {
+      return ois.readObject();
+    }
+  }
 }
