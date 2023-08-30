@@ -142,7 +142,7 @@ public class SettingsView extends JPanel {
     add(textFieldLeft);
 
     textFieldRight = new JTextField();
-    textFieldRight.setText(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_ROTATE_RIGHT));
+    textFieldRight.setText(KeyEvent.getKeyText(TetrisKeyListener.KEY_CODE_RIGHT));
     textFieldRight.addKeyListener(new KeyAdapter() {
 
       @Override
