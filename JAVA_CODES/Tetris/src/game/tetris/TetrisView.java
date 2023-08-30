@@ -44,8 +44,6 @@ public class TetrisView extends JPanel {
   private Date prevDate;
   private List<ReplayAtom> replay;
 
-  private String url;
-
   private Image bg;
   private Image[] blockImg;
   private Image[] shapeImg;
@@ -54,7 +52,6 @@ public class TetrisView extends JPanel {
     // 멤버 변수 초기화
     this.main = main;
     this.mode = mode;
-    this.url = url;
     dao = TetrisDAOImpl.getInstance();
     sm = TetrisSoundManager.getInstance();
     sm.reStart();
