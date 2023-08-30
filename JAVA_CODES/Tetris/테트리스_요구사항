@@ -18,6 +18,7 @@
 1. 키 설정은 수정 가능 해야한다.
 2. BGM이 있어야한다.
 3. 해당 게임의 replay를 볼 수 있어야한다.
+4. 일시정지를 할 수 있어야한다.
 
 
 (기능)
@@ -50,4 +51,7 @@ TABLE - [ TETRIS_SCORE ]
     SCORE NUMBER NOT NULL,
     REPLAY BLOB,
     TIME TIMESTAMP DEFAULT SYSDATE
+
+구현 못한 사항 
+- 블록 회전 시 좌, 우로 튀어나간 경우 그만큼 땡겨서 회전시켜주는 기능
 
