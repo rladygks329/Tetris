@@ -1,6 +1,7 @@
 package game.tetris;
 
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -22,6 +23,8 @@ public class SignUpView extends JPanel {
   private JTextField textFieldId;
   private JPasswordField passwordField;
   private JTextField textFieldNickName;
+  private JButton btnValidateId;
+  private JButton btnValidateNickName;
   private JButton btnSubmit;
 
   public SignUpView(Main main) {
@@ -61,9 +64,15 @@ public class SignUpView extends JPanel {
     textFieldId = new JTextField();
     textFieldId.addKeyListener(new KeyAdapter() {
       @Override
+      public void keyReleased(KeyEvent e) {
+        btnSubmit.setEnabled(isValidForm());
+        btnValidateId.setEnabled(!textFieldId.getText().isEmpty());
+      }
+
+      @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KEY_CODE_ENTER) {
-          passwordField.requestFocus();
+          KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
         }
       }
     });
@@ -73,6 +82,11 @@ public class SignUpView extends JPanel {
 
     passwordField = new JPasswordField();
     passwordField.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        btnSubmit.setEnabled(isValidForm());
+      }
+
       @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KEY_CODE_ENTER) {
@@ -86,9 +100,16 @@ public class SignUpView extends JPanel {
     textFieldNickName = new JTextField();
     textFieldNickName.addKeyListener(new KeyAdapter() {
       @Override
+      public void keyReleased(KeyEvent e) {
+        super.keyReleased(e);
+        btnSubmit.setEnabled(isValidForm());
+        btnValidateNickName.setEnabled(!textFieldNickName.getText().isEmpty());
+      }
+
+      @Override
       public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KEY_CODE_ENTER) {
-          btnSubmit.requestFocus();
+          KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
         }
       }
     });
@@ -109,14 +130,17 @@ public class SignUpView extends JPanel {
     });
     btnSubmit.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
     btnSubmit.setBounds(114, 301, 216, 41);
+    btnSubmit.setEnabled(false);
     add(btnSubmit);
 
-    JButton btnValidarteId = new JButton("중복 검사");
-    btnValidarteId.addActionListener(e -> validateId());
-    btnValidarteId.setBounds(341, 64, 97, 23);
-    add(btnValidarteId);
+    btnValidateId = new JButton("중복 검사");
+    btnValidateId.setEnabled(false);
+    btnValidateId.addActionListener(e -> validateId());
+    btnValidateId.setBounds(341, 64, 97, 23);
+    add(btnValidateId);
 
-    JButton btnValidateNickName = new JButton("중복 검사");
+    btnValidateNickName = new JButton("중복 검사");
+    btnValidateNickName.setEnabled(false);
     btnValidateNickName.addActionListener(e -> validateNickName());
     btnValidateNickName.setBounds(341, 221, 97, 23);
     add(btnValidateNickName);
@@ -135,21 +159,6 @@ public class SignUpView extends JPanel {
     String password = new String(passwordField.getPassword());
     String nickName = textFieldNickName.getText();
 
-    if (id.isBlank()) {
-      JOptionPane.showMessageDialog(this, "ID를 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
-
-    if (password.isBlank()) {
-      JOptionPane.showMessageDialog(this, "비밀번호를 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
-
-    if (nickName.isBlank()) {
-      JOptionPane.showMessageDialog(this, "닉네임을 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
-
     int result = dao.insert(new UserDTO(-1, id, password, nickName));
     if (result != 1) {
       JOptionPane.showMessageDialog(this, "이미 존재하는 ID 또는 닉네임 입니다.", "정보",
@@ -163,11 +172,6 @@ public class SignUpView extends JPanel {
 
   private void validateId() {
     String id = textFieldId.getText();
-    if (id.isBlank()) {
-      JOptionPane.showMessageDialog(this, "ID를 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
-      return;
-    }
-
     String msg = (dao.selectById(id) == 0) ? "사용 가능한 ID입니다." : "중복된 ID입니다.";
     JOptionPane.showMessageDialog(this, msg, "정보", JOptionPane.INFORMATION_MESSAGE);
   }
@@ -175,11 +179,20 @@ public class SignUpView extends JPanel {
   private void validateNickName() {
     String nickName = textFieldNickName.getText();
 
-    if (nickName.isBlank()) {
-      JOptionPane.showMessageDialog(this, "닉네임을 입력해주세요.", "정보", JOptionPane.INFORMATION_MESSAGE);
+    if (nickName.length() > 10) {
+      JOptionPane.showMessageDialog(this, "닉네임은 10글자 이내여야합니다.", "정보",
+          JOptionPane.INFORMATION_MESSAGE);
       return;
     }
+
     String msg = (dao.selectByNickName(nickName) == 0) ? "사용 가능한 닉네임입니다." : "중복된 닉네임입니다.";
     JOptionPane.showMessageDialog(this, msg, "정보", JOptionPane.INFORMATION_MESSAGE);
   }
+
+  private boolean isValidForm() {
+    String id = textFieldId.getText();
+    String password = new String(passwordField.getPassword());
+    String nickName = textFieldNickName.getText();
+    return !id.isBlank() && !password.isBlank() && !nickName.isBlank();
+  }// end isValidForm()
 }
