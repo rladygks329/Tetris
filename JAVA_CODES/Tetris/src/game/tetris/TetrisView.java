@@ -9,12 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,7 +50,7 @@ public class TetrisView extends JPanel {
   private Image[] blockImg;
   private Image[] shapeImg;
 
-  public TetrisView(Main main, int mode, String url) {
+  public TetrisView(Main main, int mode, List<ReplayAtom> replay) {
     // 멤버 변수 초기화
     this.main = main;
     this.mode = mode;
@@ -64,7 +61,7 @@ public class TetrisView extends JPanel {
 
     tetris = new Tetris();
     prevDate = new Date();
-    replay = new LinkedList<>();
+    this.replay = replay;
 
     if (mode == REPLAY_MODE) {
       initReplayMode();
@@ -137,7 +134,6 @@ public class TetrisView extends JPanel {
   }
 
   private void initReplayMode() {
-    replay = ReplayFileManager.load(url);
     Iterator<ReplayAtom> iter = replay.iterator();
 
     if (replay.isEmpty()) {
@@ -263,12 +259,7 @@ public class TetrisView extends JPanel {
   private void saveReplay() {
     UserDTO user = main.user;
     Date cur = new Date();
-    DateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-    String fileName = format.format(cur);
-    String filePath = ReplayFileManager.getFilePath(user.getNo(), fileName);
-
-    ReplayFileManager.save(user.getNo(), fileName, replay);
-    dao.insert(user.getNo(), new ScoreDTO(-1, tetris.score, "", cur, filePath));
+    dao.insert(user.getNo(), new ScoreDTO(-1, tetris.score, "", cur, replay));
   }
 
   private void handleGameOver() {

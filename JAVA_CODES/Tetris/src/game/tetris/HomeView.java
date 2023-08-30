@@ -1,6 +1,7 @@
 package game.tetris;
 
 import java.awt.Font;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,7 +27,8 @@ public class HomeView extends JPanel {
 
     JButton btnPlay = new JButton("Play");
     btnPlay.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-    btnPlay.addActionListener(e -> main.navigate(new TetrisView(main, TetrisView.PLAY_MODE, "")));
+    btnPlay.addActionListener(
+        e -> main.navigate(new TetrisView(main, TetrisView.PLAY_MODE, new ArrayList<>())));
     btnPlay.setBounds(12, 107, 133, 84);
     add(btnPlay);
 
