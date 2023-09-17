@@ -6,3 +6,6 @@ JAVA_CODES/.metadata/
 *.prefs
 *.class
 *.replay
+
+/.idea/
+Tetris.iml
