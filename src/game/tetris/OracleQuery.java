@@ -1,8 +1,7 @@
 package game.tetris;
 
 public interface OracleQuery {
-  public static final String IP_ADDRESS = "172.16.3.7";
-  // public static final String IP_ADDRESS = "127.0.0.1";
+  public static final String IP_ADDRESS = "127.0.0.1";
   public static final String URL = "jdbc:oracle:thin:@" + IP_ADDRESS + ":1521:xe";
   public static final String USER = "scott";
   public static final String PASSWORD = "tiger";
