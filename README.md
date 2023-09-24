@@ -1,7 +1,7 @@
 # TETRIS
 
 ### 플레이 영상
-
+[![테트리스 플레이 영상](https://img.youtube.com/vi/kpWVFvpcWVI/0.jpg)](https://www.youtube.com/watch?v=kpWVFvpcWVI)
 ### 구현 기능
 게임 룰
 1. 테트리스의 종류에는 크게 7가지가 있다 (i, o, t, l, j, s, z)
